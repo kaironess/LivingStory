@@ -1,21 +1,27 @@
 package createdGameClasses;
 
-import java.awt.Frame;
+import java.io.Serializable;
 import java.util.List;
 
 import sharedClasses.*;
 
-public class Save {
+public class Save implements Serializable {
     private int curFrame;
     private List<Decision> decisionsMade;
-    private Settings curSettings;
+    private Settings settings;
     private List<Stat> stats;
     
-    public Save(Frame curFrame, List<Decision> decisions, 
+    public Save(int curFrame, List<Decision> decisions, 
      Settings curSettings, List<Stat> stats) {
         this.curFrame = curFrame;
         this.decisionsMade = decisions;
-        this.curSettings = curSettings;
+        this.settings = curSettings;
         this.stats = stats;
     }
+    
+    public int getCurFrame() { return curFrame; }
+    public List<Decision> getDecisionsMade() { return decisionsMade; }
+    public Settings getSettings() { return settings; }
+    public List<Stat> getStats() { return stats; }
+    
 }
