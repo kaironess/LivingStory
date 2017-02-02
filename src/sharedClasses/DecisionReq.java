@@ -1,6 +1,6 @@
 package sharedClasses;
 
-import java.util.ArrayList;
+import java.util.*;
 
 public class DecisionReq implements Requirement {
 
@@ -12,7 +12,7 @@ public class DecisionReq implements Requirement {
     }
     
     @Override
-    public boolean isFulfilled() {
+    public boolean isFulfilled(List<Stat> stats) {
         // Check if all decisions are there
         return false;
     }

@@ -1,22 +1,27 @@
 package sharedClasses;
 
-import java.util.ArrayList;
+import java.util.*;
 
 public class StatReq implements Requirement {
 
     private int neededCount;
-    private int statIndex;
-    private ArrayList<Stat> stats;
+    private String statName;
     
-    public StatReq(int statIndex) {
-        this.statIndex = statIndex;
+    public StatReq(String statName, int neededCount) {
+        this.statName = statName;
+        this.neededCount = neededCount;
     }
     
     @Override
-    public boolean isFulfilled() {
-        // pass stats down from Game Controller?
-        // check if neededCount >= current stat
-        return neededCount >= stats.get(statIndex).getCount();
+    public boolean isFulfilled(List<Stat> curStats) {
+        Stat relStat = null;
+        
+        for (Stat s : curStats) {
+            if (s.getName().equals(statName))
+                relStat = s;
+        }
+        
+        return neededCount <= relStat.getCount();
     }
 
 }

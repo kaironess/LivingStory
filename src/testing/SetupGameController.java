@@ -9,7 +9,6 @@ import sharedClasses.*;
 import createdGameClasses.*;
 
 public class SetupGameController {
-    
     private static String matURL = "src/testing/TestingMaterials/";
     
     public static GameController createGameController() {
@@ -54,17 +53,23 @@ public class SetupGameController {
         Frame lastFrame = null;
 
         // Data for creating each frame.
-        String[] dialogs = {"This is the first frame.", "Second frame. Different background.",
-                            "Third frame. One character.", "Fourth frame."};
+        String[] dialogs = {
+                "This is the first frame.", 
+                "Second frame. Different background.", 
+                "Third frame. One character.",
+                "Fourth frame."
+        };
+        String[] extraFrames = {
+                "Our stats are too low to see this. STR = 10. Connected to Frame 1",
+                "Our stats are high enough to see this. LUCK = 5. Between Frame 3 and 4"
+        };
+        
         int[] bgOrder = {0, 1, 1, 2};
         
         // Create frames and add them to the overall list of frames.
         for (int i = 0; i < dialogs.length; i++) {
-            // Create a new frame and set its personal details
-            Frame curFrame = new Frame(lastFrame);
-            curFrame.setDialog(dialogs[i]);
-            curFrame.setBG(bgOrder[i]);
-            // Set characters
+            // Create a new frame and set its personal display details
+            Frame curFrame = createFrame(lastFrame, dialogs[i], bgOrder[i]);
             
             // Save the new frame to the totalList
             frames.add(curFrame);
@@ -74,11 +79,39 @@ public class SetupGameController {
                 Decision link = new Decision(lastFrame);
                 link.setNextFrame(curFrame);
                 lastFrame.addDecision(link);
-                lastFrame = curFrame;
             }
+            
+            lastFrame = curFrame;
         }
-
+        
+        addStatReq("STR", 10, frames.get(0), createFrame(frames.get(0), extraFrames[0], 0),
+         frames.get(1));
+        addStatReq("LUCK", 5, frames.get(2), createFrame(frames.get(2), extraFrames[1], 0),
+         frames.get(3));
+        
         return frames;
+    }
+    
+    private static Frame createFrame(Frame prev, String dialog, int bgIndex) {
+        Frame curFrame = new Frame(prev);
+        curFrame.setDialog(dialog);
+        curFrame.setBG(bgIndex);
+        // Set characters
+
+        return curFrame;
+    }
+    
+    private static void addStatReq(String statName, int reqCount, 
+     Frame fromFrame, Frame toFrame, Frame afterFrame) {
+        Decision newDec = new Decision(fromFrame);
+        Requirement req = new StatReq(statName, reqCount);
+        newDec.setNextFrame(toFrame);
+        newDec.addReq(req);
+        fromFrame.getNextDecisions().add(0, newDec);
+        
+        Decision link = new Decision(toFrame);
+        link.setNextFrame(afterFrame);
+        toFrame.addDecision(link);
     }
 
 }

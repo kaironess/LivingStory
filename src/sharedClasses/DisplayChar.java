@@ -14,4 +14,8 @@ public class DisplayChar {
     public Image getCharImg() {
         return character.getImage(imgIndex);
     }
+    
+    public String getCharName() {
+        return character.getName();
+    }
 }

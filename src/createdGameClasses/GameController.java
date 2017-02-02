@@ -48,15 +48,18 @@ public class GameController {
         
         // Run through list and choose which decision to take
         // Prioritize earlier decisions as opposed to later ones
-        for (int i = decs.size(); i > 0; i--) {
-            if (decs.get(i).satisfiesAllReqs()) {
+        for (int i = decs.size() - 1; i >= 0; i--) {
+            if (decs.get(i).satisfiesAllReqs(this.stats)) {
                 activeDec = decs.get(i);
             }
         }
         
+        // Get the next frame from the decision made
         if (activeDec != null && activeDec.getNextFrame() != null) {
+            this.decisionsMade.add(activeDec);
             curFrame = activeDec.getNextFrame();
         }
+        // Otherwise if we cannot progress, end the game
         else {
             endGame();
         }

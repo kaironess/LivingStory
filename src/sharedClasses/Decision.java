@@ -1,6 +1,6 @@
 package sharedClasses;
 
-import java.util.ArrayList;
+import java.util.*;
 
 public class Decision {
     private ArrayList<Requirement> requirements;
@@ -53,9 +53,9 @@ public class Decision {
         this.type = type;
     }
     
-    public boolean satisfiesAllReqs() {
+    public boolean satisfiesAllReqs(List<Stat> curStats) {
         for (Requirement r : requirements) {
-            if (!r.isFulfilled()) {
+            if (!r.isFulfilled(curStats)) {
                 return false;
             }
         }
