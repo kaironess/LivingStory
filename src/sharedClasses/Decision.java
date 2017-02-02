@@ -52,5 +52,15 @@ public class Decision {
     public void setType(Type type) {
         this.type = type;
     }
+    
+    public boolean satisfiesAllReqs() {
+        for (Requirement r : requirements) {
+            if (!r.isFulfilled()) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
 
 }

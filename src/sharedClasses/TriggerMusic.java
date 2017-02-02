@@ -1,12 +1,12 @@
 package sharedClasses;
 
 public class TriggerMusic {
-    private Music music;
+    //private Music music;
     private boolean play;
     private boolean loop;
     
-    public TriggerMusic(Music toTrigger) {
-        this.music = toTrigger;
+    public TriggerMusic() {//Music toTrigger) {
+        //this.music = toTrigger;
         this.play = false;
         this.loop = false;
     }

@@ -5,7 +5,12 @@ public class Stat {
     private int count;
     
     public Stat(String statName) {
+        this(statName, 0);
+    }
+    
+    public Stat(String statName, int initialVal) {
         this.name = statName;
+        this.count = initialVal;
     }
 
     public String getName() {
