@@ -21,9 +21,10 @@ public class DecisionReq implements Requirement {
     }
     
     @Override
+    @SuppressWarnings("unchecked")
     public boolean isFulfilled(List<?> pastDec) {
         boolean check = true;
-        ArrayList<Integer> neededId = getNeededId((List<Decision>)pastDec);
+        ArrayList<Integer> neededId = getNeededId((List<Decision>)(Object)pastDec);
         
         for (Decision d : currDecisions) {
             int index = neededId.indexOf(d.getId());
