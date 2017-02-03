@@ -11,19 +11,19 @@ public class DecisionReq implements Requirement {
         this.currDecisions = currDec;
     }
     
-    private ArrayList<Integer> getNeededId() {
+    private ArrayList<Integer> getNeededId(List<Decision> myDec) {
         // Get all the IDs of the needed decisions for later use
         ArrayList<Integer> allId = new ArrayList<Integer>();
-        for (Decision d : neededDecisions) {
+        for (Decision d : myDec) {
             allId.add(d.getId());
         }
         return allId;
     }
     
     @Override
-    public boolean isFulfilled(List<Stat> stats) {
+    public boolean isFulfilled(List<?> pastDec) {
         boolean check = true;
-        ArrayList<Integer> neededId = getNeededId();
+        ArrayList<Integer> neededId = getNeededId((List<Decision>)pastDec);
         
         for (Decision d : currDecisions) {
             int index = neededId.indexOf(d.getId());

@@ -13,10 +13,11 @@ public class StatReq implements Requirement {
     }
     
     @Override
-    public boolean isFulfilled(List<Stat> curStats) {
+    @SuppressWarnings("unchecked")
+    public boolean isFulfilled(List<?> curStats) {
         Stat relStat = null;
         
-        for (Stat s : curStats) {
+        for (Stat s : (List<Stat>)(Object)curStats) {
             if (s.getName().equals(statName))
                 relStat = s;
         }
