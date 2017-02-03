@@ -7,11 +7,9 @@ public class Decision {
     private Frame nextFrame;
     private Frame myFrame;
     private String dialogChoice;
+    private int id;
     
-    public enum Type {
-        DIALOG_OPTION, STATS, PREV_DECISION;
-    };
-    private Type type;
+    static int decisionId = 0;
     
     public Decision(Frame curr) {
         // default so the user can update it?
@@ -19,6 +17,15 @@ public class Decision {
         this.nextFrame = null;
         this.myFrame = curr;
         this.dialogChoice = "";
+        this.id = decisionId++;
+    }
+    
+    public int getId() {
+        return id;
+    }
+    
+    public int decisionNum() {
+        return decisionId;
     }
     
     public ArrayList<Requirement> getReqs() {
@@ -47,10 +54,6 @@ public class Decision {
     
     public void setDialog(String message) {
         this.dialogChoice = message;
-    }
-    
-    public void setType(Type type) {
-        this.type = type;
     }
     
     public boolean satisfiesAllReqs(List<Stat> curStats) {
