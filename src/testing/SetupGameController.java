@@ -48,6 +48,24 @@ public class SetupGameController {
         return stats;
     }
     
+    private static List<Image> setupCharImgs() {
+        List<Image> charImgs = new LinkedList<>();
+        
+        // Images to add in for the testing game.
+        String[] fileNames = {"brachy.png", "clear brachy.png", "teenybrachy.PNG"};
+        // Read each file as an image and add it to the list of images
+        try {
+            for (String file : fileNames) {
+                charImgs.add(ImageIO.read(new File(matURL + file)));
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return charImgs;
+    }
+    
     private static List<Frame> setupFrames() {
         List<Frame> frames = new LinkedList<>();
         Frame lastFrame = null;
@@ -59,6 +77,23 @@ public class SetupGameController {
                 "Third frame. One character.",
                 "Fourth frame."
         };
+        
+        // Characters to make
+        List<Image> charImgs = setupCharImgs();
+        DisplayChar[] chars = {
+            new DisplayChar(new StoryCharacter(charImgs.get(0), "Rawr"), 0),
+            new DisplayChar(new StoryCharacter(charImgs.get(1), "Clear Rawr"), 0),
+            new DisplayChar(new StoryCharacter(charImgs.get(2), "Teeny Rawr"), 0)
+        };
+        
+        int[][] charsToAdd = {
+            {0, 1},
+            {1},
+            {0, 1, 2},
+            {}
+        };
+        
+        // Frames with stat requirements
         String[] extraFrames = {
                 "Our stats are too low to see this. STR = 10. Connected to Frame 1",
                 "Our stats are high enough to see this. LUCK = 5. Between Frame 3 and 4"
@@ -73,6 +108,9 @@ public class SetupGameController {
             
             // Save the new frame to the totalList
             frames.add(curFrame);
+            
+            for (int j : charsToAdd[i])
+                curFrame.addChar(chars[j]);
             
             // Set links from the last previous frame to the newly created frame
             if (lastFrame != null) {
