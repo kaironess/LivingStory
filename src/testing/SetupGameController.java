@@ -59,6 +59,8 @@ public class SetupGameController {
                 "Third frame. One character.",
                 "Fourth frame."
         };
+        
+        // Frames with stat requirements
         String[] extraFrames = {
                 "Our stats are too low to see this. STR = 10. Connected to Frame 1",
                 "Our stats are high enough to see this. LUCK = 5. Between Frame 3 and 4"
