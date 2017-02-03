@@ -27,6 +27,11 @@ public class GameController {
             this.curFrame = null;
     }
     
+    // Things to do when the game is first turned on
+    public void setup() {
+        System.out.println("Game has been started.");
+    }
+    
     public void loadSave(Save save) {
         this.curFrame = save.getCurFrame();
         this.stats = save.getStats();
