@@ -20,4 +20,8 @@ public class Stat {
     public int getCount() {
         return count;
     }
+    
+    public void updateStat(int change) {
+        count += change;
+    }
 }

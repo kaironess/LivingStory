@@ -1,6 +1,6 @@
 package sharedClasses;
 
-import java.util.ArrayList;
+import java.util.*;
 
 public class Frame {
     private int bg;
@@ -9,6 +9,7 @@ public class Frame {
     private Frame prevFrame;
     private ArrayList<Decision> dialogOptions;
     private ArrayList<Decision> nextDecisions;
+    private ArrayList<StatChange> statChanges;
     
     public Frame(Frame prev) {
         // default so the user can update it?
@@ -18,6 +19,7 @@ public class Frame {
         this.prevFrame = prev;
         this.dialogOptions = new ArrayList<Decision>();
         this.nextDecisions = new ArrayList<Decision>();
+        this.statChanges = new ArrayList<>();
     }
     
     public int getBG() {
@@ -66,5 +68,14 @@ public class Frame {
     
     public void addDecision(Decision next) {
         nextDecisions.add(next);
+    }
+    
+    public void addStatChange(StatChange sc) {
+        statChanges.add(sc);
+    }
+
+    public void applyStatChanges(List<Stat> stats) {
+        for (StatChange sc : statChanges) 
+            sc.updateStats(stats);
     }
 }

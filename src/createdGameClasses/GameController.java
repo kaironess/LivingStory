@@ -58,6 +58,7 @@ public class GameController {
         if (activeDec != null && activeDec.getNextFrame() != null) {
             this.decisionsMade.add(activeDec);
             curFrame = activeDec.getNextFrame();
+            curFrame.applyStatChanges(this.stats);
         }
         // Otherwise if we cannot progress, end the game
         else {
