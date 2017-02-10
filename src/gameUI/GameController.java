@@ -4,9 +4,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 
@@ -88,13 +85,7 @@ public class GameController implements Initializable {
             try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AudioWindow.fxml"));
                     Parent root1 = (Parent) fxmlLoader.load();
-                    Stage stage = new Stage();
-                    
-                    volumeSlider = new Slider();
-                    volumeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-                        System.out.println("Slider Value Changed (newValue: " + newValue.intValue() + ")");
-                    });
-                    
+                    Stage stage = new Stage();                    
                     stage.setScene(new Scene(root1));                    
                     stage.show();
                     
