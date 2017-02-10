@@ -8,15 +8,16 @@ import sharedClasses.*;
 public class GameController {
     private List<Frame> frameList;
     private List<Image> bgList;
-    //private List<Music> musicList;
+    private List<Music> musicList;
     private Frame curFrame;
     private List<Stat> stats;
     private Settings settings;
     private List<Decision> decisionsMade;
     
-    public GameController(List<Frame> frames, List<Image> bgs, List<Stat> stats) {
+    public GameController(List<Frame> frames, List<Image> bgs, List<Stat> stats, List<Music> music) {
         this.frameList = frames;
         this.bgList = bgs;
+        this.musicList = music;
         this.stats = stats;
         this.settings = new Settings();
         this.decisionsMade = new LinkedList<>();
@@ -25,6 +26,11 @@ public class GameController {
             this.curFrame = frameList.get(0);
         else
             this.curFrame = null;
+    }
+    
+    // Things to do when the game is first turned on
+    public void setup() {
+        System.out.println("Game has been started.");
     }
     
     public void loadSave(Save save) {

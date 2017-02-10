@@ -15,8 +15,13 @@ public class SetupGameController {
         List<Image> bgs = setupBGs();
         List<Stat> stats = setupStats();
         List<Frame> frames = setupFrames();
+        List<Music> musics = setupMusic();
         
-        return new GameController(frames, bgs, stats);
+        return new GameController(frames, bgs, stats, musics);
+    }
+    
+    private static List<Music> setupMusic() {
+        return new LinkedList<Music>();
     }
     
     private static List<Image> setupBGs() {
@@ -81,9 +86,9 @@ public class SetupGameController {
         // Characters to make
         List<Image> charImgs = setupCharImgs();
         DisplayChar[] chars = {
-            new DisplayChar(new StoryCharacter(charImgs.get(0), "Rawr"), 0),
-            new DisplayChar(new StoryCharacter(charImgs.get(1), "Clear Rawr"), 0),
-            new DisplayChar(new StoryCharacter(charImgs.get(2), "Teeny Rawr"), 0)
+            new DisplayChar(new StoryChar(charImgs.get(0), "Rawr"), 0),
+            new DisplayChar(new StoryChar(charImgs.get(1), "Clear Rawr"), 0),
+            new DisplayChar(new StoryChar(charImgs.get(2), "Teeny Rawr"), 0)
         };
         
         int[][] charsToAdd = {

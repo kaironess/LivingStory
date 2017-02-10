@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="basePane" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gameUI.GameController">
+   <children>
+      <BorderPane fx:id="menuPane" prefHeight="800.0" prefWidth="1200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <top>
+            <MenuBar fx:id="myMenu" BorderPane.alignment="CENTER">
+              <menus>
+                <Menu fx:id="saveMenu" mnemonicParsing="false" text="Save">
+                  <items>
+                    <MenuItem fx:id="saveGameButton" mnemonicParsing="false" text="Save Game" />
+                        <MenuItem fx:id="quitGameButton" mnemonicParsing="false" text="Quit Game" />
+                  </items>
+                </Menu>
+                <Menu fx:id="settingsMenu" mnemonicParsing="false" text="Settings">
+                  <items>
+                    <MenuItem fx:id="audioSetButton" mnemonicParsing="false" onAction="#openAudioDialog" text="Audio Settings" />
+                        <MenuItem fx:id="displaySetButton" mnemonicParsing="false" text="Display Settings" />
+                  </items>
+                </Menu>
+                <Menu fx:id="helpMenu" mnemonicParsing="false" text="Help">
+                  <items>
+                    <MenuItem fx:id="aboutButton" mnemonicParsing="false" text="About" />
+                  </items>
+                </Menu>
+              </menus>
+            </MenuBar>
+         </top>
+         <center>
+            <StackPane fx:id="displayPane" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>

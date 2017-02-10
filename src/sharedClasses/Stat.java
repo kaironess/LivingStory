@@ -21,6 +21,14 @@ public class Stat {
         return count;
     }
     
+    public void rename(String newName) {
+        this.name = newName;
+    }
+    
+    public void setCount(int newInit) {
+        this.count = newInit;
+    }
+    
     public void updateStat(int change) {
         count += change;
     }

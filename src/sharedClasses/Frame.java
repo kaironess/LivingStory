@@ -10,6 +10,7 @@ public class Frame {
     private ArrayList<Decision> dialogOptions;
     private ArrayList<Decision> nextDecisions;
     private ArrayList<StatChange> statChanges;
+    private ArrayList<MusicTrigger> musicTriggers;
     
     public Frame(Frame prev) {
         // default so the user can update it?
@@ -20,6 +21,7 @@ public class Frame {
         this.dialogOptions = new ArrayList<Decision>();
         this.nextDecisions = new ArrayList<Decision>();
         this.statChanges = new ArrayList<>();
+        this.musicTriggers = new ArrayList<>();
     }
     
     public int getBG() {
@@ -72,6 +74,10 @@ public class Frame {
     
     public void addStatChange(StatChange sc) {
         statChanges.add(sc);
+    }
+    
+    public void addMusicTrigger(MusicTrigger trigger) {
+        musicTriggers.add(trigger);
     }
 
     public void applyStatChanges(List<Stat> stats) {
