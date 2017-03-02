@@ -1,10 +1,19 @@
 package sharedClasses;
 
 import java.awt.Image;
+import java.awt.image.RenderedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.*;
 
-public class StoryChar {
-    private List<Image> images;
+import javax.imageio.ImageIO;
+
+public class StoryChar implements Serializable {
+    private transient List<Image> images;
     private String name;
     
     public StoryChar(Image img, String charName) {
@@ -31,5 +40,36 @@ public class StoryChar {
     
     public void setName(String newName) {
         this.name = newName;
+    }
+    
+    // Overridden so that we can serialize BufferedImages
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        out.defaultWriteObject();
+        out.writeInt(images.size());
+        
+        for (Image img : images) {
+            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+            ImageIO.write((RenderedImage)img, "jpg", buffer);
+            
+            out.writeInt(buffer.size());
+            buffer.writeTo(out);
+        }
+    }
+    
+    // Overridden so that we can serialize BufferedImages
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        
+        int imageCount = in.readInt();
+        images = new ArrayList<Image>();
+        
+        for (int i = 0; i < imageCount; i++) {
+            int size = in.readInt();
+            
+            byte[] buffer = new byte[size];
+            in.readFully(buffer);
+            
+            images.add(ImageIO.read(new ByteArrayInputStream(buffer)));
+        }
     }
 }

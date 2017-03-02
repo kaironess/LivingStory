@@ -1,8 +1,10 @@
 package sharedClasses;
 
+import java.io.Serializable;
+
 import sharedClasses.Music;
 
-public class MusicTrigger {
+public class MusicTrigger implements Serializable {
     private Music music;
     private Trigger trigger;
     private boolean loop;

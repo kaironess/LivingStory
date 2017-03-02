@@ -1,8 +1,9 @@
 package sharedClasses;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class Frame {
+public class Frame implements Serializable {
     private int bg;
     private ArrayList<DisplayChar> curChars;
     private String dialog;
@@ -28,10 +29,6 @@ public class Frame {
         return bg;
     }
     
-    public ArrayList<DisplayChar> getChars() {
-        return curChars;
-    }
-    
     public String getDialog() {
         return dialog;
     }
@@ -52,10 +49,6 @@ public class Frame {
         this.bg = index;
     }
     
-    public void addChar(DisplayChar character) {
-        curChars.add(character);
-    }
-    
     public void setDialog(String message) {
         this.dialog = message;
     }
@@ -72,16 +65,17 @@ public class Frame {
         nextDecisions.add(next);
     }
     
-    public void addStatChange(StatChange sc) {
-        statChanges.add(sc);
-    }
-    
-    public void addMusicTrigger(MusicTrigger trigger) {
-        musicTriggers.add(trigger);
-    }
-
     public void applyStatChanges(List<Stat> stats) {
         for (StatChange sc : statChanges) 
             sc.updateStats(stats);
     }
+    
+    public void addChar(DisplayChar character) { curChars.add(character); }
+    public ArrayList<DisplayChar> getChars() { return curChars; }
+    
+    public void addMusicTrigger(MusicTrigger trigger) { musicTriggers.add(trigger); }
+    public List<MusicTrigger> getMusicTriggers() { return musicTriggers; }
+    
+    public void addStatChange(StatChange sc) { statChanges.add(sc); }
+    public List<StatChange> getStatChanges() { return statChanges; }
 }

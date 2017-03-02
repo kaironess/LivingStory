@@ -24,7 +24,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 
-public class GameController implements Initializable {
+public class UIControl implements Initializable {
 
     @FXML
     private Menu settingsMenu;

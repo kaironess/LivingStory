@@ -1,8 +1,9 @@
 package sharedClasses;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class Decision {
+public class Decision implements Serializable {
     private ArrayList<Requirement> requirements;
     private Frame nextFrame;
     private Frame myFrame;

@@ -1,6 +1,8 @@
 package sharedClasses;
 
-public class Stat {
+import java.io.Serializable;
+
+public class Stat implements Serializable {
     private String name;
     private int count;
     

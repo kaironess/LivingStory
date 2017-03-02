@@ -1,6 +1,7 @@
 package sharedClasses;
 
 import java.io.File;
+import java.io.Serializable;
 import java.net.URL;
 import java.util.Scanner;
 
@@ -8,7 +9,7 @@ import javafx.scene.media.*;
 import javafx.stage.Stage;
 import javafx.embed.swing.JFXPanel;
 
-public class Music {
+public class Music implements Serializable {
     private String name;
     private MediaPlayer player;
     private State curState;

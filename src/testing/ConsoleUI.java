@@ -9,6 +9,7 @@ public class ConsoleUI {
     
     public static void main(String[] args) {
         GameController gc = SetupGameController.createGameController();
+        
         Scanner scanner = new Scanner(System.in);
         
         System.out.println("Starting the game...");

@@ -1,13 +1,22 @@
 package createdGameClasses;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.awt.Image;
+import java.awt.image.RenderedImage;
 import java.util.*;
+
+import javax.imageio.ImageIO;
 
 import sharedClasses.*;
 
-public class GameController {
+public class GameController implements Serializable {
     private List<Frame> frameList;
-    private List<Image> bgList;
+    private transient List<Image> bgList;
     private List<Music> musicList;
     private Frame curFrame;
     private List<Stat> stats;
@@ -42,10 +51,10 @@ public class GameController {
     
     public void createSave() {
         Save newSave = new Save(curFrame, decisionsMade, settings, stats);
-        //TODO
-        // Check if save folder exists
-        // Figure out what the save file should be named
-        // Save the |newSave|
+//        TODO
+//         Check if save folder exists
+//         Figure out what the save file should be named
+//         Save the |newSave|
     }
     
     public void nextFrame() {
@@ -84,5 +93,36 @@ public class GameController {
     // to the main menu
     public void endGame() {
         System.out.println("GameController: No more frames.");
+    }
+    
+    // Overridden so that we can serialize BufferedImages
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        out.defaultWriteObject();
+        out.writeInt(bgList.size());
+        
+        for (Image img : bgList) {
+            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+            ImageIO.write((RenderedImage)img, "jpg", buffer);
+            
+            out.writeInt(buffer.size());
+            buffer.writeTo(out);
+        }
+    }
+    
+    // Overridden so that we can serialize BufferedImages
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        
+        int imageCount = in.readInt();
+        bgList = new ArrayList<Image>();
+        
+        for (int i = 0; i < imageCount; i++) {
+            int size = in.readInt();
+            
+            byte[] buffer = new byte[size];
+            in.readFully(buffer);
+            
+            bgList.add(ImageIO.read(new ByteArrayInputStream(buffer)));
+        }
     }
 }

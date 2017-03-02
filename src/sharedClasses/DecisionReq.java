@@ -1,8 +1,9 @@
 package sharedClasses;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class DecisionReq implements Requirement {
+public class DecisionReq implements Requirement, Serializable {
 
     private ArrayList<Decision> neededDecisions;
     private ArrayList<Decision> currDecisions;

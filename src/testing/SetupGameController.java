@@ -20,6 +20,25 @@ public class SetupGameController {
         return new GameController(frames, bgs, stats, musics);
     }
     
+    public static void saveGC() {
+        GameController gc = createGameController();
+        
+        try {
+            FileOutputStream fos = new FileOutputStream("testGame.save");
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            
+            oos.writeObject(gc);
+            oos.close();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public static void main(String[] args) {
+        SetupGameController.saveGC();
+    }
+    
     private static List<Music> setupMusic() {
         return new LinkedList<Music>();
     }

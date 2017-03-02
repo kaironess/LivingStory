@@ -2,7 +2,7 @@ package sharedClasses;
 
 import java.util.*;
 
-public class StatChange {
+public class StatChange  {
     private int change;
     private String statName;
     private Frame myFrame;
