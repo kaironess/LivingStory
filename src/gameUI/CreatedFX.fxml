@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="basePane" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gameUI.UIControl">
+<AnchorPane fx:id="basePane" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gameUI.UIControl">
    <children>
       <BorderPane fx:id="menuPane" prefHeight="800.0" prefWidth="1200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -34,7 +34,10 @@
             </MenuBar>
          </top>
          <center>
-            <StackPane fx:id="displayPane" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+            <StackPane fx:id="displayPane" BorderPane.alignment="CENTER">
+               <children>
+                  <Button fx:id="nextButton" mnemonicParsing="false" text="&gt;&gt;" translateX="450.0" translateY="-250.0" />
+               </children></StackPane>
          </center>
       </BorderPane>
    </children>
