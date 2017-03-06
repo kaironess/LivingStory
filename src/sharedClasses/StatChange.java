@@ -1,8 +1,11 @@
 package sharedClasses;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class StatChange  {
+public class StatChange implements Serializable {
+    static final long serialVersionUID = 9L;
+    
     private int change;
     private String statName;
     private Frame myFrame;

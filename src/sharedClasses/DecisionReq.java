@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.*;
 
 public class DecisionReq implements Requirement, Serializable {
+    static final long serialVersionUID = 2L;
 
     private ArrayList<Decision> neededDecisions;
     private ArrayList<Decision> currDecisions;

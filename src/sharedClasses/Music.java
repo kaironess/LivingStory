@@ -10,6 +10,8 @@ import javafx.stage.Stage;
 import javafx.embed.swing.JFXPanel;
 
 public class Music implements Serializable {
+    static final long serialVersionUID = 5L;
+    
     private String name;
     private MediaPlayer player;
     private State curState;

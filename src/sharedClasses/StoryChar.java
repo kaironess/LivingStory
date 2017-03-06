@@ -13,6 +13,8 @@ import java.util.*;
 import javax.imageio.ImageIO;
 
 public class StoryChar implements Serializable {
+    static final long serialVersionUID = 11L;
+    
     private transient List<Image> images;
     private String name;
     

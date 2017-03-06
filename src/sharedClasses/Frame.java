@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.*;
 
 public class Frame implements Serializable {
+    static final long serialVersionUID = 4L;
+    
     private int bg;
     private ArrayList<DisplayChar> curChars;
     private String dialog;

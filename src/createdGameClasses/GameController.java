@@ -15,6 +15,8 @@ import javax.imageio.ImageIO;
 import sharedClasses.*;
 
 public class GameController implements Serializable {
+    static final long serialVersionUID = 0L;
+    
     private List<Frame> frameList;
     private transient List<Image> bgList;
     private List<Music> musicList;
@@ -87,6 +89,10 @@ public class GameController implements Serializable {
     
     public Image getBG(int index) {
         return bgList.get(index);
+    }
+    
+    public Image getCurBG() {
+        return bgList.get(curFrame.getBG());
     }
     
     // Anything that needs to be done before ending the game and returning

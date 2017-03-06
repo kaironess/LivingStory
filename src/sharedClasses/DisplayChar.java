@@ -4,6 +4,8 @@ import java.awt.Image;
 import java.io.Serializable;
 
 public class DisplayChar implements Serializable {
+    static final long serialVersionUID = 3L;
+    
     private StoryChar character;
     private int imgIndex;
     private int leftMargin; //% of the screen away from left edge 

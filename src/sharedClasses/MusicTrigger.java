@@ -5,6 +5,8 @@ import java.io.Serializable;
 import sharedClasses.Music;
 
 public class MusicTrigger implements Serializable {
+    static final long serialVersionUID = 6L;
+    
     private Music music;
     private Trigger trigger;
     private boolean loop;

@@ -1,7 +1,12 @@
 package gameUI;
 
+import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import createdGameClasses.GameController;
 import javafx.fxml.Initializable;
 
 import javafx.fxml.FXML;
@@ -14,17 +19,20 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.image.Image;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
 import javafx.scene.control.Button;
 
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.*;
+import javafx.scene.layout.BackgroundImage;
 
 import javafx.stage.Stage;
+import sharedClasses.Frame;
 
 
 public class UIControl implements Initializable {
+    private GameController gc;
 
     @FXML
     private Menu settingsMenu;
@@ -93,7 +101,27 @@ public class UIControl implements Initializable {
     
     @Override // This method is called by the FXMLLoader when initialization is complete
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
-        
+        // Testing: Load in a Game
+        try {
+            FileInputStream fis = new FileInputStream("testGame.save");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            
+            this.gc = (GameController)ois.readObject();
+            displayCurFrame();
+            
+            ois.close();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void displayCurFrame() {
+        Frame curFrame = this.gc.getCurFrame();
+        Image bg = imgConverter(this.gc.getCurBG());
+        BackgroundImage img = new BackgroundImage((Image)bg, BackgroundRepeat.NO_REPEAT, 
+         BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+        this.displayPane.setBackground(new Background(img));
     }
     
     @FXML
@@ -186,4 +214,20 @@ public class UIControl implements Initializable {
         stage.close();
     }
 
+    private Image imgConverter(java.awt.Image img) {
+        BufferedImage bi = (BufferedImage)img;
+        
+        WritableImage wr = null;
+        if (img != null) {
+            wr = new WritableImage(bi.getWidth(), bi.getHeight());
+            PixelWriter pw = wr.getPixelWriter();
+            for (int x = 0; x < bi.getWidth(); x++) {
+                for (int y = 0; y < bi.getHeight(); y++) {
+                    pw.setArgb(x, y, bi.getRGB(x, y));
+                }
+            }
+        }
+        
+        return wr;
+    }
 }

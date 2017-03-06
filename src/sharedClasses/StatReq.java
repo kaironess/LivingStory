@@ -3,6 +3,7 @@ package sharedClasses;
 import java.util.*;
 
 public class StatReq implements Requirement {
+    static final long serialVersionUID = 10L;
 
     private int neededCount;
     private String statName;

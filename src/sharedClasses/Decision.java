@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.*;
 
 public class Decision implements Serializable {
+    static final long serialVersionUID = 1L;
+    
     private ArrayList<Requirement> requirements;
     private Frame nextFrame;
     private Frame myFrame;

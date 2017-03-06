@@ -3,6 +3,8 @@ package sharedClasses;
 import java.io.Serializable;
 
 public class Stat implements Serializable {
+    static final long serialVersionUID = 8L;
+    
     private String name;
     private int count;
     
