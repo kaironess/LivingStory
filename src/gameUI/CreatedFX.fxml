@@ -11,7 +11,7 @@
    		<!-- Where the gameplay takes place -->
 	   	<AnchorPane fx:id="gamePane" prefHeight="600.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 	   		<children>
-	            <StackPane fx:id="displayPane" BorderPane.alignment="CENTER">
+	            <StackPane fx:id="displayPane" prefHeight="600.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" BorderPane.alignment="CENTER">
 	               <children>
 	                  <Button fx:id="nextButton" mnemonicParsing="false" text="&gt;&gt;" translateX="450.0" translateY="-250.0" />
 	               </children>
@@ -20,7 +20,7 @@
 	   	</AnchorPane>
 	   	
 	   	<!-- The Main Menu -->
-	   	<BorderPane fx:id="mainPane">
+	   	<BorderPane fx:id="mainPane" prefHeight="600.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
    			<bottom>
    				<VBox fx:id="mainMenuButtons" BorderPane.alignment="CENTER">
 	   				<children>
@@ -35,7 +35,7 @@
 	   	</BorderPane>
 	   	
 	   	<!-- menu shown when the game is paused -->
-	   	<BorderPane fx:id="pausePane">
+	   	<BorderPane fx:id="pausePane" prefHeight="600.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
    			<bottom>
    				<VBox fx:id="pauseMenuButtons" BorderPane.alignment="CENTER">
 	   				<children>

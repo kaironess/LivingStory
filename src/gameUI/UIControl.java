@@ -139,7 +139,6 @@ public class UIControl implements Initializable {
                     
                     // Change current frame
                     changeFrame();
-                    displayCurFrame();
                     
                 }
                 else if (event.getCode().equals(KeyCode.ESCAPE)) {
@@ -200,13 +199,15 @@ public class UIControl implements Initializable {
     }
     
     private void displayCurFrame() {
+        this.gamePane.getChildren().removeAll();
+        
         // Display the frame's background picture
         Frame curFrame = this.gc.getCurFrame();
         Image bg = imgConverter(this.gc.getCurBG());
         bgView = new ImageView(bg);
         bgView.fitWidthProperty().bind(this.gamePane.widthProperty());
         bgView.fitHeightProperty().bind(this.gamePane.heightProperty());
-        this.gamePane.getChildren().add(0, bgView);
+        this.gamePane.getChildren().add(bgView);
         
        
         // Display characters present in the current frame
