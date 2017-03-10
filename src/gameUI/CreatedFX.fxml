@@ -8,79 +8,56 @@
 
 <AnchorPane fx:id="basePane" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gameUI.UIControl">
    <children>
+   		<!-- Where the gameplay takes place -->
 	   	<Pane fx:id="gamePane">
 	   		<children>
-		   		<BorderPane fx:id="menuPane" prefHeight="800.0" prefWidth="1200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-		         <top>
-		            <MenuBar fx:id="myMenu" BorderPane.alignment="CENTER">
-		              <menus>
-		                <Menu fx:id="saveMenu" mnemonicParsing="false" text="File">
-		                  <items>
-		                    <MenuItem fx:id="saveGameButton" mnemonicParsing="false" onAction="#saveGameState" text="Save Game" />
-		                        <MenuItem fx:id="quitGameButton" mnemonicParsing="false" onAction="#exitGame" text="Quit Game" />
-		                        <MenuItem fx:id="closeWindowButton" mnemonicParsing="false" onAction="#closeWindow" text="Close" />
-		                  </items>
-		                </Menu>
-		                <Menu fx:id="settingsMenu" mnemonicParsing="false" text="Settings">
-		                  <items>
-		                    <MenuItem fx:id="audioSetButton" mnemonicParsing="false" onAction="#openAudioDialog" text="Audio Settings" />
-		                        <MenuItem fx:id="displaySetButton" mnemonicParsing="false" onAction="#openDisplayDialog" text="Display Settings" />
-		                  </items>
-		                </Menu>
-		                <Menu fx:id="helpMenu" mnemonicParsing="false" text="Help">
-		                  <items>
-		                    <MenuItem fx:id="aboutButton" mnemonicParsing="false" onAction="#openAboutDialog" text="About" />
-		                  </items>
-		                </Menu>
-		              </menus>
-		            </MenuBar>
-		         </top>
-		         <center>
-		            <StackPane fx:id="displayPane" BorderPane.alignment="CENTER">
-		               <children>
-		                  <Button fx:id="nextButton" mnemonicParsing="false" text="&gt;&gt;" translateX="450.0" translateY="-250.0" />
-		               </children></StackPane>
-		         </center>
-		      </BorderPane>
-	      </children>
+	            <StackPane fx:id="displayPane" BorderPane.alignment="CENTER">
+	               <children>
+	                  <Button fx:id="nextButton" mnemonicParsing="false" text="&gt;&gt;" translateX="450.0" translateY="-250.0" />
+	               </children>
+                </StackPane>
+	      	</children>
 	   	</Pane>
 	   	
+	   	<!-- The Main Menu -->
 	   	<BorderPane fx:id="mainPane">
    			<bottom>
    				<VBox fx:id="mainMenuButtons" BorderPane.alignment="CENTER">
 	   				<children>
-	   					<Button fx:id="startButton" text="Start">
-	   					</Button>
-	   					<Button fx:id="loadButton" text="Load">
-	   					</Button>
-	   					<Button fx:id="settingsButton" text="Settings">
-	   					</Button>
-	   					<Button fx:id="galleryButton" text="Gallery">
-	   					</Button>
-	   					<Button fx:id="quitButton" text="Quit">
-	   					</Button>
+	   					<Button fx:id="startButton" text="Start"></Button>
+	   					<Button fx:id="loadButton" text="Load"></Button>
+	   					<Button fx:id="settingsButton" text="Settings"></Button>
+	   					<Button fx:id="galleryButton" text="Gallery"></Button>
+	   					<Button fx:id="quitButton" text="Quit"></Button>
 	   				</children>
    				</VBox>
    			</bottom>
 	   	</BorderPane>
 	   	
+	   	<!-- menu shown when the game is paused -->
 	   	<BorderPane fx:id="pausePane">
    			<bottom>
    				<VBox fx:id="pauseMenuButtons" BorderPane.alignment="CENTER">
 	   				<children>
-	   					<Button fx:id="pauseSaveButton" text="Save">
-	   					</Button>
-	   					<Button fx:id="pauseLoadButton" text="Load">
-	   					</Button>
-	   					<Button fx:id="pauseSettingsButton" text="Settings">
-	   					</Button>
-	   					<Button fx:id="pauseGalleryButton" text="Gallery">
-	   					</Button>
-	   					<Button fx:id="pauseQuitButton" text="Quit">
-	   					</Button>
+	   					<Button fx:id="pauseSaveButton" text="Save"></Button>
+	   					<Button fx:id="pauseLoadButton" text="Load"></Button>
+	   					<Button fx:id="pauseSettingsButton" text="Settings"></Button>
+	   					<Button fx:id="pauseGalleryButton" text="Gallery"></Button>
+	   					<Button fx:id="pauseQuitButton" text="Quit"></Button>
 	   				</children>
    				</VBox>
    			</bottom>
+	   	</BorderPane>
+	   	
+	   	
+	   	<!-- menu shown when the game is paused -->
+	   	<BorderPane fx:id="settingsPane">
+   			<center>
+   				<VBox fx:id="settingsMenu" BorderPane.alignment="CENTER">
+	   				<children>
+	   				</children>
+   				</VBox>
+   			</center>
 	   	</BorderPane>
    </children>
 </AnchorPane>

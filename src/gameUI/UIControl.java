@@ -53,38 +53,38 @@ public class UIControl implements Initializable {
     @FXML
     private Pane gamePane;
     @FXML
-    private BorderPane menuPane, mainPane, pausePane;
-
-    @FXML
-    private GridPane audioGrid;
-
+    private BorderPane mainPane, pausePane, settingsPane;
+    
+    private List<Pane> allMainPanes;
+    
     @FXML
     private StackPane displayPane;
     
     @FXML
-    private AnchorPane basePane, audioWindowBasePane;
+    private AnchorPane basePane; //, audioWindowBasePane;
     
     @FXML
-    private Menu settingsMenu, helpMenu, saveMenu;
-
-    @FXML
-    private MenuBar myMenu;
-
-    @FXML
-    private MenuItem audioSetButton, aboutButton, displaySetButton, saveGameButton, quitGameButton, 
-     closeWindowButton;
-
-    @FXML
-    private Button nextButton, closeAudioButton, startButton;
-    
-    @FXML
-    private Label audioTitle, sfxVol, musicVol;
-    
-    @FXML
-    private Slider volumeSlider, sfxvolumeSlider;
+    private Button nextButton, startButton, settingsButton, quitButton;
     
     @FXML
     private VBox mainMenuButtons;
+
+//    @FXML
+//    private GridPane audioGrid;
+//
+//    @FXML
+//    private MenuItem audioSetButton, aboutButton, displaySetButton, saveGameButton, quitGameButton, 
+//     closeWindowButton;
+//
+//    @FXML
+//    private Button closeAudioButton;
+//    
+//    @FXML
+//    private Label audioTitle, sfxVol, musicVol;
+//    
+//    @FXML
+//    private Slider volumeSlider, sfxvolumeSlider;
+//    
 
     @Override // This method is called by the FXMLLoader when initialization is complete
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
@@ -102,44 +102,31 @@ public class UIControl implements Initializable {
         catch (Exception e) {
             e.printStackTrace();
         }
-        gamePane.managedProperty().bind(gamePane.visibleProperty());
-        mainPane.managedProperty().bind(mainPane.visibleProperty());
-        pausePane.managedProperty().bind(pausePane.visibleProperty());
+        
+        allMainPanes = new ArrayList<Pane>();
+        allMainPanes.add(gamePane);
+        allMainPanes.add(mainPane);
+        allMainPanes.add(pausePane);
+        allMainPanes.add(settingsPane);
+        
+        setupMainMenu();
         displayPane(mainPane);
         
-        gameTitle = new TextFlow(new Text("Game Title"));
-        gameTitle.setTextAlignment(TextAlignment.CENTER);
-        mainPane.getChildren().add(gameTitle);
-        mainPane.setBorder(new Border(new BorderStroke(Color.BLACK, 
-         BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-        
-        //displayCurFrame();
-    
         // Handle window resizing events
         basePane.heightProperty().addListener(new ChangeListener<Number>() {
             @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldHeight,
              Number newHeight) {
-                gamePane.setPrefHeight(newHeight.doubleValue());
-                mainPane.setPrefHeight(newHeight.doubleValue());
-                pausePane.setPrefHeight(newHeight.doubleValue());
+                for (Pane pane : allMainPanes) 
+                    pane.setPrefHeight(newHeight.doubleValue());
             }
         });
         basePane.widthProperty().addListener(new ChangeListener<Number>() {
             @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldWidth,
              Number newWidth) {
-                gamePane.setPrefWidth(newWidth.doubleValue());
-                mainPane.setPrefWidth(newWidth.doubleValue());
-                pausePane.setPrefWidth(newWidth.doubleValue());
+                for (Pane pane : allMainPanes) 
+                    pane.setPrefWidth(newWidth.doubleValue());
             }
         });
-        
-        // Switch over to the start of the game
-        startButton.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                displayPane(gamePane);
-            }
-         });
         
         // Handle next frame event
         nextButton.setAlignment(Pos.TOP_RIGHT);
@@ -162,10 +149,48 @@ public class UIControl implements Initializable {
         
     }
     
+    private void setupMainMenu() {
+        // Add the game's title to the mainPane
+        gameTitle = new TextFlow(new Text("Game Title"));
+        gameTitle.setTextAlignment(TextAlignment.CENTER);
+        mainPane.getChildren().add(gameTitle);
+        mainPane.setBorder(new Border(new BorderStroke(Color.BLACK, 
+         BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        
+        // Switch over to the start of the game
+        startButton.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                displayPane(gamePane);
+            }
+         });
+        
+        // Open the settings menu
+        settingsButton.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                displayPane(settingsPane);
+            }
+         });
+        
+        //Quit the game and close the program
+        quitButton.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                ((Stage) basePane.getScene().getWindow()).close();
+            }
+         });
+    }
+    
+    private void setupMainPanes() {
+        for (Pane pane : allMainPanes) 
+            pane.managedProperty().bind(pane.visibleProperty());
+    }
+    
+    // Displays the given Pane and sets all other Panes to be not visible
     private void displayPane(Pane displayPane) {
-        gamePane.setVisible(gamePane.equals(displayPane));
-        pausePane.setVisible(pausePane.equals(displayPane));
-        mainPane.setVisible(mainPane.equals(displayPane));
+        for (Pane pane : allMainPanes) 
+            pane.setVisible(pane.equals(displayPane));
     }
     
     private void changeFrame() {
@@ -180,7 +205,7 @@ public class UIControl implements Initializable {
         bgView = new ImageView(bg);
         bgView.fitWidthProperty().bind(this.gamePane.widthProperty());
         bgView.fitHeightProperty().bind(this.gamePane.heightProperty());
-        this.gamePane.getChildren().add(bgView);
+        this.gamePane.getChildren().add(0, bgView);
         
 //        Image bg = new Image("https://s-media-cache-ak0.pinimg.com/originals/92/15/a2/9215a21cb4be4b2a92e981c87da88331.jpg");
 //        BackgroundImage img = new BackgroundImage((Image)bg, BackgroundRepeat.NO_REPEAT, 
@@ -237,12 +262,6 @@ public class UIControl implements Initializable {
     }
     
     @FXML
-    private void closeWindow() {
-        Stage stage = (Stage) myMenu.getScene().getWindow();
-        stage.close();
-    }
-    
-    @FXML
     private void openAudioDialog() {            
             try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AudioWindow.fxml"));
@@ -292,30 +311,29 @@ public class UIControl implements Initializable {
     
     @FXML
     private void setAudioVolume() {
-        volumeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if (! volumeSlider.isValueChanging()) {
-                System.out.println("Vol Slider Value Changed (newValue: " + newValue.intValue() + ")");
-            }
-        });
-        
+//        volumeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+//            if (! volumeSlider.isValueChanging()) {
+//                System.out.println("Vol Slider Value Changed (newValue: " + newValue.intValue() + ")");
+//            }
+//        });
     }
     
     @FXML
     private void setSFXVolume() {
-        sfxvolumeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if (! sfxvolumeSlider.isValueChanging()) {
-                System.out.println("SFX Slider Value Changed (newValue: " + newValue.intValue() + ")");
-            }
-        });
-
+//        sfxvolumeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+//            if (! sfxvolumeSlider.isValueChanging()) {
+//                System.out.println("SFX Slider Value Changed (newValue: " + newValue.intValue() + ")");
+//            }
+//        });
     }
     
     @FXML
     private void closeAudioWindow() {
-        Stage stage = (Stage) closeAudioButton.getScene().getWindow();
-        stage.close();
+//        Stage stage = (Stage) closeAudioButton.getScene().getWindow();
+//        stage.close();
     }
 
+    // Converts a regular Java Image to a JavaFX Image
     private Image imgConverter(java.awt.Image img) {
         BufferedImage bi = (BufferedImage)img;
         
