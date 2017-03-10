@@ -31,4 +31,8 @@ public class DisplayChar implements Serializable {
     public String getCharName() {
         return character.getName();
     }
+    
+    public int getLeftMargin() {
+        return leftMargin;
+    }
 }

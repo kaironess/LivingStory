@@ -9,7 +9,7 @@
 <AnchorPane fx:id="basePane" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gameUI.UIControl">
    <children>
    		<!-- Where the gameplay takes place -->
-	   	<Pane fx:id="gamePane">
+	   	<AnchorPane fx:id="gamePane" prefHeight="600.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 	   		<children>
 	            <StackPane fx:id="displayPane" BorderPane.alignment="CENTER">
 	               <children>
@@ -17,18 +17,18 @@
 	               </children>
                 </StackPane>
 	      	</children>
-	   	</Pane>
+	   	</AnchorPane>
 	   	
 	   	<!-- The Main Menu -->
 	   	<BorderPane fx:id="mainPane">
    			<bottom>
    				<VBox fx:id="mainMenuButtons" BorderPane.alignment="CENTER">
 	   				<children>
-	   					<Button fx:id="startButton" text="Start"></Button>
-	   					<Button fx:id="loadButton" text="Load"></Button>
-	   					<Button fx:id="settingsButton" text="Settings"></Button>
-	   					<Button fx:id="galleryButton" text="Gallery"></Button>
-	   					<Button fx:id="quitButton" text="Quit"></Button>
+	   					<Button fx:id="startButton" text="Start" />
+	   					<Button fx:id="loadButton" text="Load" />
+	   					<Button fx:id="settingsButton" text="Settings" />
+	   					<Button fx:id="galleryButton" text="Gallery" />
+	   					<Button fx:id="quitButton" text="Quit" />
 	   				</children>
    				</VBox>
    			</bottom>
@@ -39,11 +39,11 @@
    			<bottom>
    				<VBox fx:id="pauseMenuButtons" BorderPane.alignment="CENTER">
 	   				<children>
-	   					<Button fx:id="pauseSaveButton" text="Save"></Button>
-	   					<Button fx:id="pauseLoadButton" text="Load"></Button>
-	   					<Button fx:id="pauseSettingsButton" text="Settings"></Button>
-	   					<Button fx:id="pauseGalleryButton" text="Gallery"></Button>
-	   					<Button fx:id="pauseQuitButton" text="Quit"></Button>
+	   					<Button fx:id="pauseSaveButton" text="Save" />
+	   					<Button fx:id="pauseLoadButton" text="Load" />
+	   					<Button fx:id="pauseSettingsButton" text="Settings" />
+	   					<Button fx:id="pauseGalleryButton" text="Gallery" />
+	   					<Button fx:id="pauseQuitButton" text="Quit" />
 	   				</children>
    				</VBox>
    			</bottom>
