@@ -53,9 +53,10 @@ public class UIControl implements Initializable {
     @FXML
     private Pane gamePane;
     @FXML
-    private BorderPane mainPane, pausePane, settingsPane;
+    private BorderPane mainPane, pausePane, settingsPane, galleryPane;
     
     private List<Pane> allMainPanes;
+    private Pane prevPane; // last pane that was displayed before the current one
     
     @FXML
     private StackPane displayPane;
@@ -63,8 +64,16 @@ public class UIControl implements Initializable {
     @FXML
     private AnchorPane basePane; //, audioWindowBasePane;
     
-    @FXML
-    private Button nextButton, startButton, settingsButton, quitButton;
+    @FXML // Game Menu
+    private Button nextButton;
+    @FXML // Main Menu
+    private Button startButton, settingsButton, quitButton;
+    @FXML // Pause Menu
+    private Button pauseSettingsButton, pauseQuitButton;
+    @FXML // Settings Menu
+    private Button settingsQuitButton;
+    @FXML // Gallery Menu
+    private Button galleryQuitButton;
     
     @FXML
     private VBox mainMenuButtons;
@@ -108,9 +117,12 @@ public class UIControl implements Initializable {
         allMainPanes.add(mainPane);
         allMainPanes.add(pausePane);
         allMainPanes.add(settingsPane);
+        allMainPanes.add(galleryPane);
         
         setupMainMenu();
-        displayPane(mainPane);
+        setupPauseMenu();
+        setupSettingsMenu();
+        displayPane(mainPane); // Start at the main menu
         
         // Handle window resizing events
         basePane.heightProperty().addListener(new ChangeListener<Number>() {
@@ -158,7 +170,7 @@ public class UIControl implements Initializable {
          BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
         
         // Switch over to the start of the game
-        startButton.setOnMousePressed(new EventHandler<MouseEvent>() {
+        startButton.setOnMouseReleased(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 displayPane(gamePane);
@@ -166,7 +178,7 @@ public class UIControl implements Initializable {
          });
         
         // Open the settings menu
-        settingsButton.setOnMousePressed(new EventHandler<MouseEvent>() {
+        settingsButton.setOnMouseReleased(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 displayPane(settingsPane);
@@ -174,10 +186,37 @@ public class UIControl implements Initializable {
          });
         
         //Quit the game and close the program
-        quitButton.setOnMousePressed(new EventHandler<MouseEvent>() {
+        quitButton.setOnMouseReleased(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 ((Stage) basePane.getScene().getWindow()).close();
+            }
+         });
+    }
+    
+    private void setupPauseMenu() {
+         // Open the settings menu
+        pauseSettingsButton.setOnMouseReleased(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                displayPane(settingsPane);
+            }
+         });
+        
+        //Quit the game and close the program
+        pauseQuitButton.setOnMouseReleased(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                displayPane(mainPane);
+            }
+         });
+    }
+    
+    private void setupSettingsMenu() {
+        settingsQuitButton.setOnMouseReleased(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                returnToPrevPane();
             }
          });
     }
@@ -189,8 +228,22 @@ public class UIControl implements Initializable {
     
     // Displays the given Pane and sets all other Panes to be not visible
     private void displayPane(Pane displayPane) {
+        // Save the previous pane
+        for (Pane pane : allMainPanes) 
+            if (pane.isVisible()) {
+                prevPane = pane;
+                break;
+            }
+                
+        // Switch to the requested pane 
         for (Pane pane : allMainPanes) 
             pane.setVisible(pane.equals(displayPane));
+    }
+    
+    // Displays the previous pane, and saves the current pane as the new "prevPane"
+    private void returnToPrevPane() {
+        Pane nextFrame = prevPane;
+        displayPane(nextFrame);
     }
     
     private void changeFrame() {

@@ -49,12 +49,23 @@
    			</bottom>
 	   	</BorderPane>
 	   	
-	   	
 	   	<!-- menu shown when the game is paused -->
 	   	<BorderPane fx:id="settingsPane">
    			<center>
    				<VBox fx:id="settingsMenu" BorderPane.alignment="CENTER">
 	   				<children>
+	   					<Button fx:id="settingsQuitButton" text="Quit"></Button>
+	   				</children>
+   				</VBox>
+   			</center>
+	   	</BorderPane>
+	   	
+	   	<!-- gallery of pictures and music -->
+	   	<BorderPane fx:id="galleryPane">
+   			<center>
+   				<VBox fx:id="galleryMenu" BorderPane.alignment="CENTER">
+	   				<children>
+	   					<Button fx:id="galleryQuitButton" text="Quit"></Button>
 	   				</children>
    				</VBox>
    			</center>
