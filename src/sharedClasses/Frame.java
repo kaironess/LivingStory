@@ -72,6 +72,11 @@ public class Frame implements Serializable {
             sc.updateStats(stats);
     }
     
+    public void applyMusicTriggers() {
+        for (MusicTrigger trigger : musicTriggers)
+            trigger.trigger();
+    }
+    
     public void addChar(DisplayChar character) { curChars.add(character); }
     public ArrayList<DisplayChar> getChars() { return curChars; }
     
