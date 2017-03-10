@@ -51,7 +51,7 @@ public class UIControl implements Initializable {
     private ImageView bgView;
 
     @FXML
-    private Pane gamePane;
+    private AnchorPane gamePane;
     @FXML
     private BorderPane mainPane, pausePane, settingsPane, galleryPane;
     
@@ -148,10 +148,11 @@ public class UIControl implements Initializable {
                 if (event.getCode().equals(KeyCode.ENTER) || 
                     event.getCode().equals(KeyCode.SPACE)) {
                     System.out.println("ENTER PRESSED! NEXT FRAME TIME!");
+                    
                     // Change current frame
-                    /** changeFrame();
+                    changeFrame();
                     displayCurFrame();
-                    */
+                    
                 }
                 else if (event.getCode().equals(KeyCode.ESCAPE)) {
                     displayPane(pausePane);
@@ -260,46 +261,32 @@ public class UIControl implements Initializable {
         bgView.fitHeightProperty().bind(this.gamePane.heightProperty());
         this.gamePane.getChildren().add(0, bgView);
         
-//        Image bg = new Image("https://s-media-cache-ak0.pinimg.com/originals/92/15/a2/9215a21cb4be4b2a92e981c87da88331.jpg");
-//        BackgroundImage img = new BackgroundImage((Image)bg, BackgroundRepeat.NO_REPEAT, 
-//                BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
-//            this.displayPane.setBackground(new Background(img));
-//        
-//        // Display characters present in the current frame
-//        /** ArrayList<DisplayChar> frameChars = curFrame.getChars();
-//        for (DisplayChar c : frameChars) {
-//            Image currImg = imgConverter(c.getCharImg());
-//            ImageView currImgView = new ImageView();
-//            currImgView.setImg(currImg);
-//            someChar.setPreserveRatio(true);
-//            someChar.setCache(true);
-//            someChar.setSmooth(true);
-//            someChar.setTranslateX(c.getLeftMargin());
-//            someChar.setTranslateY(125);            
-//            this.displayPane.getChildren().addAll(someChar);
-//        }
-//        */
-//        Image cloud = new Image("http://s33.postimg.org/xqnceoz67/reffence.png", 400, 300, false, false);
-//        ImageView someChar = new ImageView();
-//        someChar.setImage(cloud);
-//        someChar.setPreserveRatio(true);
-//        someChar.setSmooth(true);
-//        someChar.setCache(true);
-//        someChar.setTranslateX(275.0);
-//        someChar.setTranslateY(125);
-//        this.displayPane.getChildren().addAll(someChar);
-//        
-//        // Display dialog box and dialog text
-//        /** Label dialogLabel = new Label(curFrame.getDialog());
-//         */
-//        Label dialogLabel = new Label("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque efficitur augue nec porta ullamcorper. Ut cursus vestibulum blandit. Proin mollis ut est bibendum laoreet. Ut sagittis ante id ante sollicitudin, bibendum laoreet ligula elementum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aliquam vulputate libero diam, eu tincidunt mi placerat quis. Curabitur consequat eget orci sit amet ullamcorper. Nam rhoncus, mauris sit amet mattis consequat, ipsum lectus consequat augue, quis sodales tellus ligula et elit. Aenean euismod sollicitudin congue. Maecenas interdum ac ante quis venenatis. Nunc faucibus, urna sed condimentum condimentum, quam massa porttitor neque, ac congue mauris diam eleifend purus. Vestibulum elementum felis vitae auctor cursus. Mauris mattis dapibus ipsum, id gravida elit rhoncus hendrerit. Fusce lobortis tellus lacus, sit amet porttitor velit feugiat non. Pellentesque tincidunt eleifend tellus ut condimentum.");
-//        dialogLabel.setMaxWidth(this.basePane.getPrefWidth() - 40);
-//        dialogLabel.setPadding(new Insets(10, 10, 10, 10));
-//        dialogLabel.setWrapText(true);
-//        dialogLabel.setStyle("-fx-background-color: rgba(255, 255, 255, 0.8);");
-//        dialogLabel.setBorder(new Border(new BorderStroke(Color.GRAY, BorderStrokeStyle.SOLID, null, null)));
-//        this.displayPane.setAlignment(dialogLabel, Pos.BOTTOM_CENTER);   
-//        this.displayPane.getChildren().addAll(dialogLabel);
+       
+        // Display characters present in the current frame
+        ArrayList<DisplayChar> frameChars = curFrame.getChars();
+        for (DisplayChar c : frameChars) {
+            Image currImg = imgConverter(c.getCharImg());
+            ImageView currChar = new ImageView();
+            currChar.setImage(currImg);
+            currChar.setPreserveRatio(true);
+            currChar.setCache(true);
+            currChar.setSmooth(true);
+            currChar.setTranslateX(c.getLeftMargin());
+            currChar.setTranslateY(125);            
+            this.gamePane.getChildren().addAll(currChar);
+        }
+        
+        // Display dialog box and dialog text
+        Label dialogLabel = new Label(curFrame.getDialog());
+        dialogLabel.setMinHeight(this.gamePane.getPrefWidth() / 8);
+        dialogLabel.setPadding(new Insets(10, 10, 10, 10));
+        dialogLabel.setWrapText(true);
+        dialogLabel.setStyle("-fx-background-color: rgba(255, 255, 255, 0.8);");
+        dialogLabel.setBorder(new Border(new BorderStroke(Color.GRAY, BorderStrokeStyle.SOLID, null, null)));
+        this.gamePane.setLeftAnchor(dialogLabel, 10.0);
+        this.gamePane.setRightAnchor(dialogLabel, 10.0);
+        this.gamePane.setBottomAnchor(dialogLabel, 10.0);
+        this.gamePane.getChildren().addAll(dialogLabel);
         
     }
     
