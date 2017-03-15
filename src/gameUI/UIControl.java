@@ -52,6 +52,7 @@ public class UIControl implements Initializable {
 
     @FXML
     private AnchorPane gamePane;
+    
     @FXML
     private BorderPane mainPane, pausePane, settingsPane;
     
@@ -235,6 +236,27 @@ public class UIControl implements Initializable {
         this.gamePane.setRightAnchor(dialogLabel, 10.0);
         this.gamePane.setBottomAnchor(dialogLabel, 10.0);
         this.gamePane.getChildren().addAll(dialogLabel);
+        
+        // Display dialog options
+        // Vbox with dialog options? How do we want it to look?
+        // What's the difference between dialogOptions and nextDecisions
+        VBox dialogChoices = new VBox();
+        dialogChoices.setPadding(new Insets(10, 10, 10, 10));
+        dialogChoices.setSpacing(10);
+        
+        ArrayList<Decision> decisions = curFrame.getDialogOptions();
+        for (Decision d : decisions) {
+            Button btn = new Button();
+            btn.setText(d.getDialog());
+            btn.setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    // Do something??
+                }
+             });
+            dialogChoices.getChildren().addAll(btn);
+        }
+        this.gamePane.getChildren().addAll(dialogChoices);
         
     }
     
