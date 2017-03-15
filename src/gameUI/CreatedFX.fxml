@@ -22,7 +22,10 @@
 	   	<!-- The Main Menu -->
 	   	<BorderPane fx:id="mainPane" prefHeight="600.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
    			<bottom>
-   				<VBox fx:id="mainMenuButtons" BorderPane.alignment="CENTER">
+   				<VBox fx:id="mainMenuButtons" alignment="TOP_CENTER" BorderPane.alignment="CENTER">
+	   				<BorderPane.margin>
+             			<Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+        			</BorderPane.margin>
 	   				<children>
 	   					<Button fx:id="startButton" text="Start" />
 	   					<Button fx:id="loadButton" text="Load" />
@@ -37,7 +40,10 @@
 	   	<!-- menu shown when the game is paused -->
 	   	<BorderPane fx:id="pausePane" prefHeight="600.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
    			<bottom>
-   				<VBox fx:id="pauseMenuButtons" BorderPane.alignment="CENTER">
+   				<VBox fx:id="pauseMenuButtons" alignment="TOP_CENTER" BorderPane.alignment="CENTER">
+	   				<BorderPane.margin>
+             			<Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+        			</BorderPane.margin>
 	   				<children>
 	   					<Button fx:id="pauseSaveButton" text="Save" />
 	   					<Button fx:id="pauseLoadButton" text="Load" />
@@ -53,7 +59,10 @@
 	   	<!-- menu shown when the game is paused -->
 	   	<BorderPane fx:id="settingsPane">
    			<center>
-   				<VBox fx:id="settingsMenu" BorderPane.alignment="CENTER">
+   				<VBox fx:id="settingsMenu" alignment="TOP_CENTER" BorderPane.alignment="CENTER">
+	   				<BorderPane.margin>
+             			<Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+        			</BorderPane.margin>
 	   				<children>
 	   				</children>
    				</VBox>
