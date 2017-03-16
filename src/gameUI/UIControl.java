@@ -52,6 +52,7 @@ public class UIControl implements Initializable {
 
     @FXML
     private AnchorPane gamePane;
+    
     @FXML
     private BorderPane mainPane, pausePane, settingsPane, galleryPane;
     
@@ -151,7 +152,6 @@ public class UIControl implements Initializable {
                     
                     // Change current frame
                     changeFrame();
-                    displayCurFrame();
                     
                 }
                 else if (event.getCode().equals(KeyCode.ESCAPE)) {
@@ -253,13 +253,15 @@ public class UIControl implements Initializable {
     }
     
     private void displayCurFrame() {
+        this.gamePane.getChildren().removeAll();
+        
         // Display the frame's background picture
         Frame curFrame = this.gc.getCurFrame();
         Image bg = imgConverter(this.gc.getCurBG());
         bgView = new ImageView(bg);
         bgView.fitWidthProperty().bind(this.gamePane.widthProperty());
         bgView.fitHeightProperty().bind(this.gamePane.heightProperty());
-        this.gamePane.getChildren().add(0, bgView);
+        this.gamePane.getChildren().add(bgView);
         
        
         // Display characters present in the current frame
@@ -287,6 +289,27 @@ public class UIControl implements Initializable {
         this.gamePane.setRightAnchor(dialogLabel, 10.0);
         this.gamePane.setBottomAnchor(dialogLabel, 10.0);
         this.gamePane.getChildren().addAll(dialogLabel);
+        
+        // Display dialog options
+        // Vbox with dialog options? How do we want it to look?
+        // What's the difference between dialogOptions and nextDecisions
+        VBox dialogChoices = new VBox();
+        dialogChoices.setPadding(new Insets(10, 10, 10, 10));
+        dialogChoices.setSpacing(10);
+        
+        ArrayList<Decision> decisions = curFrame.getDialogOptions();
+        for (Decision d : decisions) {
+            Button btn = new Button();
+            btn.setText(d.getDialog());
+            btn.setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    // Do something??
+                }
+             });
+            dialogChoices.getChildren().addAll(btn);
+        }
+        this.gamePane.getChildren().addAll(dialogChoices);
         
     }
     
