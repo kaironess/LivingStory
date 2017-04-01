@@ -22,6 +22,8 @@ public class Main extends Application {
         try {
             AnchorPane page = (AnchorPane) FXMLLoader.load(Main.class.getResource("CreatedFX.fxml"));
             Scene scene = new Scene(page);
+            String css = this.getClass().getResource("redbutton.css").toExternalForm(); 
+            scene.getStylesheets().add(css);
             primaryStage.setScene(scene);
             primaryStage.show();
         } catch (Exception ex) {

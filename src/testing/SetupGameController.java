@@ -125,6 +125,9 @@ public class SetupGameController {
         
         int[] bgOrder = {0, 1, 1, 2};
         
+        // Testing dialog options
+        Frame testLast;
+        
         // Create frames and add them to the overall list of frames.
         for (int i = 0; i < dialogs.length; i++) {
             // Create a new frame and set its personal display details
@@ -138,6 +141,7 @@ public class SetupGameController {
             
             // Set links from the last previous frame to the newly created frame
             if (lastFrame != null) {
+                testLast = curFrame;
                 Decision link = new Decision(lastFrame);
                 link.setNextFrame(curFrame);
                 lastFrame.addDecision(link);
@@ -145,6 +149,14 @@ public class SetupGameController {
             
             lastFrame = curFrame;
         }
+        
+        // Testing dialog options
+        Decision opt1 = new Decision(lastFrame);
+        Decision opt2 = new Decision(lastFrame);
+        opt1.setDialog("PICK ME");
+        opt2.setDialog("NO PICK ME!");
+        lastFrame.addDialog(opt1);
+        lastFrame.addDialog(opt2);
         
         addStatReq("STR", 10, frames.get(0), createFrame(frames.get(0), extraFrames[0], 0),
          frames.get(1));

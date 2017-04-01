@@ -49,6 +49,8 @@ public class UIControl implements Initializable {
     private GameController gc;
     private TextFlow gameTitle;
     private ImageView bgView;
+    private double getHeight;
+    private double getWidth;
 
     @FXML
     private AnchorPane gamePane;
@@ -117,6 +119,7 @@ public class UIControl implements Initializable {
         basePane.heightProperty().addListener(new ChangeListener<Number>() {
             @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldHeight,
              Number newHeight) {
+                getHeight = newHeight.doubleValue();
                 for (Pane pane : allMainPanes) 
                     pane.setPrefHeight(newHeight.doubleValue());
             }
@@ -124,6 +127,7 @@ public class UIControl implements Initializable {
         basePane.widthProperty().addListener(new ChangeListener<Number>() {
             @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldWidth,
              Number newWidth) {
+                getWidth = newWidth.doubleValue();
                 for (Pane pane : allMainPanes) 
                     pane.setPrefWidth(newWidth.doubleValue());
             }
@@ -184,8 +188,9 @@ public class UIControl implements Initializable {
     }
     
     private void setupMainPanes() {
-        for (Pane pane : allMainPanes) 
+        for (Pane pane : allMainPanes)  {
             pane.managedProperty().bind(pane.visibleProperty());
+        }
     }
     
     // Displays the given Pane and sets all other Panes to be not visible
@@ -239,10 +244,13 @@ public class UIControl implements Initializable {
         
         // Display dialog options
         // Vbox with dialog options? How do we want it to look?
-        // What's the difference between dialogOptions and nextDecisions
         VBox dialogChoices = new VBox();
         dialogChoices.setPadding(new Insets(10, 10, 10, 10));
         dialogChoices.setSpacing(10);
+        dialogChoices.setAlignment(Pos.BOTTOM_CENTER);
+        this.gamePane.setLeftAnchor(dialogChoices, 10.0);
+        this.gamePane.setRightAnchor(dialogChoices, 10.0);
+        this.gamePane.setBottomAnchor(dialogChoices, getHeight / 2);
         
         ArrayList<Decision> decisions = curFrame.getDialogOptions();
         for (Decision d : decisions) {
@@ -252,6 +260,7 @@ public class UIControl implements Initializable {
                 @Override
                 public void handle(MouseEvent event) {
                     // Do something??
+                    // Will the gc be able to tell a dialog has been chosen
                 }
              });
             dialogChoices.getChildren().addAll(btn);
