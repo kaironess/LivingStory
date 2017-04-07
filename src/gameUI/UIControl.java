@@ -57,7 +57,7 @@ public class UIControl implements Initializable {
     private AnchorPane gamePane;
     
     @FXML
-    private BorderPane mainPane, pausePane, settingsPane, galleryPane;
+    private BorderPane mainPane, pausePane, savePane, loadPane, settingsPane, galleryPane;
     
     private List<Pane> allMainPanes;
     private Pane prevPane; // last pane that was displayed before the current one
@@ -71,13 +71,18 @@ public class UIControl implements Initializable {
     @FXML // Game Menu
     private Button nextButton;
     @FXML // Main Menu
-    private Button startButton, settingsButton, galleryButton, quitButton;
+    private Button startButton, loadButton, settingsButton, galleryButton, quitButton;
     @FXML // Pause Menu
-    private Button pauseSettingsButton, pauseQuitButton;
+    private Button pauseSaveButton, pauseLoadButton, pauseSettingsButton, pauseMainMenuButton,
+     pauseGalleryButton, pauseReturnButton;
     @FXML // Settings Menu
-    private Button settingsQuitButton;
+    private Button settingsReturnButton;
     @FXML // Gallery Menu
-    private Button galleryQuitButton;
+    private Button galleryReturnButton;
+    @FXML // Save Menu
+    private Button saveReturnButton;
+    @FXML // Load Menu
+    private Button loadReturnButton;
     
     @FXML
     private VBox mainMenuButtons;
@@ -120,6 +125,8 @@ public class UIControl implements Initializable {
         allMainPanes.add(gamePane);
         allMainPanes.add(mainPane);
         allMainPanes.add(pausePane);
+        allMainPanes.add(savePane);
+        allMainPanes.add(loadPane);
         allMainPanes.add(settingsPane);
         allMainPanes.add(galleryPane);
         
@@ -127,6 +134,8 @@ public class UIControl implements Initializable {
         setupPauseMenu();
         setupSettingsMenu();
         setupGalleryMenu();
+        setupSaveMenu();
+        setupLoadMenu();
         displayPane(mainPane); // Start at the main menu
         
         // Handle window resizing events
@@ -184,6 +193,13 @@ public class UIControl implements Initializable {
             }
          });
         
+        loadButton.setOnMouseReleased(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                displayPane(loadPane);
+            }
+         });
+        
         // Open the settings menu
         settingsButton.setOnMouseReleased(new EventHandler<MouseEvent>() {
             @Override
@@ -217,7 +233,7 @@ public class UIControl implements Initializable {
         bgView.fitHeightProperty().bind(this.pausePane.heightProperty());
         this.pausePane.getChildren().add(0, bgView);
         
-         // Open the settings menu
+        // Open the settings menu
         pauseSettingsButton.setOnMouseReleased(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -225,8 +241,70 @@ public class UIControl implements Initializable {
             }
          });
         
-        //Quit the game and close the program
-        pauseQuitButton.setOnMouseReleased(new EventHandler<MouseEvent>() {
+        pauseSaveButton.setOnMouseReleased(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                displayPane(savePane);
+            }
+         });
+        
+        pauseLoadButton.setOnMouseReleased(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                displayPane(loadPane);
+            }
+         });
+        
+        // Open the gallery menu
+        pauseGalleryButton.setOnMouseReleased(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                displayPane(galleryPane);
+            }
+         });
+        
+        // Open the main menu
+        pauseMainMenuButton.setOnMouseReleased(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                displayPane(mainPane);
+            }
+         });
+        
+        // Return to the game 
+        pauseReturnButton.setOnMouseReleased(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                displayPane(gamePane);
+            }
+         });
+    }
+    
+    private void setupSaveMenu() {
+        // Display the save menu's bg
+        Image bg = imgConverter(this.gc.getBG(BGIndex.SAVE));
+        bgView = new ImageView(bg);
+        bgView.fitWidthProperty().bind(this.savePane.widthProperty());
+        bgView.fitHeightProperty().bind(this.savePane.heightProperty());
+        this.savePane.getChildren().add(0, bgView);
+        
+        saveReturnButton.setOnMouseReleased(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                displayPane(pausePane);
+            }
+         });
+    }
+    
+    private void setupLoadMenu() {
+        // Display the save menu's bg
+        Image bg = imgConverter(this.gc.getBG(BGIndex.LOAD));
+        bgView = new ImageView(bg);
+        bgView.fitWidthProperty().bind(this.loadPane.widthProperty());
+        bgView.fitHeightProperty().bind(this.loadPane.heightProperty());
+        this.loadPane.getChildren().add(0, bgView);
+        
+        loadReturnButton.setOnMouseReleased(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 returnToPrevPane();
@@ -242,7 +320,7 @@ public class UIControl implements Initializable {
         bgView.fitHeightProperty().bind(this.settingsPane.heightProperty());
         this.settingsPane.getChildren().add(0, bgView);
         
-        settingsQuitButton.setOnMouseReleased(new EventHandler<MouseEvent>() {
+        settingsReturnButton.setOnMouseReleased(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 returnToPrevPane();
@@ -258,7 +336,7 @@ public class UIControl implements Initializable {
         bgView.fitHeightProperty().bind(this.galleryPane.heightProperty());
         this.galleryPane.getChildren().add(0, bgView);
         
-        galleryQuitButton.setOnMouseReleased(new EventHandler<MouseEvent>() {
+        galleryReturnButton.setOnMouseReleased(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 returnToPrevPane();
@@ -274,6 +352,13 @@ public class UIControl implements Initializable {
     
     // Displays the given Pane and sets all other Panes to be not visible
     private void displayPane(Pane displayPane) {
+        // Reset the game if we're returning to the main menu
+        if (displayPane.equals(mainPane)) 
+            this.gc.reset();
+        // Display the current frame if we're going to the game pane
+        else if (displayPane.equals(gamePane))
+            displayCurFrame();
+        
         // Save the previous pane
         for (Pane pane : allMainPanes) 
             if (pane.isVisible()) {

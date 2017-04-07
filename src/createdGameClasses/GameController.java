@@ -21,7 +21,7 @@ public class GameController implements Serializable {
     public enum BGIndex {MAIN_MENU, PAUSE_MENU, SETTINGS, SAVE, LOAD, GALLERY}
     private static final int bgOffset = BGIndex.values().length;
     private List<Frame> frameList;
-    private transient List<Image> bgList; //First few are for the diff menu screens
+    private transient List<Image> bgList; 
     private List<Music> musicList;
     private Frame curFrame;
     private List<Stat> stats;
@@ -45,6 +45,18 @@ public class GameController implements Serializable {
     // Things to do when the game is first turned on
     public void setup() {
         System.out.println("Game has been started.");
+    }
+    
+    
+    // Resets the game 
+    public void reset() {
+        if (frameList.size() > 0)
+            this.curFrame = frameList.get(0);
+        else
+            this.curFrame = null;
+        
+        this.settings = new Settings();
+        this.decisionsMade = new LinkedList<>();
     }
     
     public void loadSave(Save save) {
