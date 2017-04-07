@@ -64,6 +64,7 @@
              			<Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
         			</BorderPane.margin>
 	   				<children>
+	   					<Button fx:id="saveButton" text="Save"></Button>
 	   					<Button fx:id="saveReturnButton" text="Return"></Button>
 	   				</children>
    				</VBox>
@@ -78,6 +79,7 @@
              			<Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
         			</BorderPane.margin>
 	   				<children>
+	   					<Button fx:id="loadLoadButton" text="Load"></Button>
 	   					<Button fx:id="loadReturnButton" text="Return"></Button>
 	   				</children>
    				</VBox>

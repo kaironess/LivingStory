@@ -2,10 +2,16 @@ package createdGameClasses;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.awt.Image;
 import java.awt.image.RenderedImage;
 import java.util.*;
@@ -16,6 +22,9 @@ import sharedClasses.*;
 
 public class GameController implements Serializable {
     static final long serialVersionUID = 0L;
+    
+    // Save folder path
+    private String savePath = System.getProperty("user.dir") + File.separator + "saves" + File.separator;
     
     //First few bgs are for the diff menu screens
     public enum BGIndex {MAIN_MENU, PAUSE_MENU, SETTINGS, SAVE, LOAD, GALLERY}
@@ -68,10 +77,49 @@ public class GameController implements Serializable {
     
     public void createSave() {
         Save newSave = new Save(curFrame, decisionsMade, settings, stats);
-//        TODO
-//         Check if save folder exists
-//         Figure out what the save file should be named
-//         Save the |newSave|
+        Path savePath = Paths.get(this.savePath);
+        
+        // Make the save folder if it doesn't exist
+        if (!Files.exists(savePath)) {
+            boolean madeSaveFile = new File(savePath.toString()).mkdirs();
+            
+        }
+        
+        // Make the file name based off of epoch time
+        String saveName = new Long(new Date().getTime()).toString();
+        
+        // Save the file
+        try {
+            FileOutputStream fos = new FileOutputStream(savePath + File.separator + saveName +  ".save");
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            
+            oos.writeObject(newSave);
+            oos.close();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void loadSave(String fileName) {
+        String filePath = savePath + fileName;
+        
+        try {
+            FileInputStream fis = new FileInputStream(filePath);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            
+            Save save = (Save)ois.readObject();
+            
+            curFrame = save.getCurFrame();
+            decisionsMade = save.getDecisionsMade();
+            settings = save.getSettings();
+            stats = save.getStats();
+            
+            ois.close();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     
     public void nextFrame() {

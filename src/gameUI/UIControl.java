@@ -80,9 +80,9 @@ public class UIControl implements Initializable {
     @FXML // Gallery Menu
     private Button galleryReturnButton;
     @FXML // Save Menu
-    private Button saveReturnButton;
+    private Button saveButton, saveReturnButton;
     @FXML // Load Menu
-    private Button loadReturnButton;
+    private Button loadLoadButton, loadReturnButton;
     
     @FXML
     private VBox mainMenuButtons;
@@ -288,6 +288,13 @@ public class UIControl implements Initializable {
         bgView.fitHeightProperty().bind(this.savePane.heightProperty());
         this.savePane.getChildren().add(0, bgView);
         
+        saveButton.setOnMouseReleased(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                gc.createSave();
+            }
+         });
+        
         saveReturnButton.setOnMouseReleased(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -303,6 +310,14 @@ public class UIControl implements Initializable {
         bgView.fitWidthProperty().bind(this.loadPane.widthProperty());
         bgView.fitHeightProperty().bind(this.loadPane.heightProperty());
         this.loadPane.getChildren().add(0, bgView);
+        
+        loadLoadButton.setOnMouseReleased(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                //gc.loadSave("");
+                displayPane(gamePane);
+            }
+         });
         
         loadReturnButton.setOnMouseReleased(new EventHandler<MouseEvent>() {
             @Override
