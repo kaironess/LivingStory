@@ -14,7 +14,7 @@ public class FrameManager {
     public static void setCurFrame(Frame newFrame) { curFrame = newFrame; }
     public static Frame getCurFrame() { return curFrame; }
     
-    public static void editBG() {}
+    public static void editBG(int index) { curFrame.setBG(index); }
     public static void editDialog(String dialog) { curFrame.setDialog(dialog); }
 
     public static void addDialogOption(String dialog) { 

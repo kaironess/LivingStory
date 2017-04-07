@@ -2,7 +2,8 @@ package creationToolClasses;
 
 import sharedClasses.*;
 import java.util.*;
-import java.awt.Image;
+//import java.awt.Image;
+import javafx.scene.image.Image;
 
 public class WIP {
     private static WIP wip = new WIP();
