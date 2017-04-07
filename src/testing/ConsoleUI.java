@@ -30,7 +30,7 @@ public class ConsoleUI {
         
         System.out.println("Frame:");
         System.out.println("Dialog: " + f.getDialog());
-        System.out.println("Background: " + gc.getBG(f.getBG()));
+        System.out.println("Background: " + gc.getCurBG());
         System.out.print("Chars: ");
         if (f.getChars().size() == 0) 
             System.out.println("None");

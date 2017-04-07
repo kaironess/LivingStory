@@ -6,6 +6,8 @@ import java.util.List;
 import sharedClasses.*;
 
 public class Save implements Serializable {
+    static final long serialVersionUID = 234531L;
+    
     private Frame curFrame;
     private List<Decision> decisionsMade;
     private Settings settings;

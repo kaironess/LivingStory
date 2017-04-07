@@ -31,7 +31,7 @@
 	   					<Button fx:id="loadButton" text="Load" />
 	   					<Button fx:id="settingsButton" text="Settings" />
 	   					<Button fx:id="galleryButton" text="Gallery" />
-	   					<Button fx:id="quitButton" text="Quit" />
+	   					<Button fx:id="quitButton" text="Quit Game" />
 	   				</children>
    				</VBox>
    			</bottom>
@@ -49,24 +49,69 @@
 	   					<Button fx:id="pauseLoadButton" text="Load" />
 	   					<Button fx:id="pauseSettingsButton" text="Settings" />
 	   					<Button fx:id="pauseGalleryButton" text="Gallery" />
-	   					<Button fx:id="pauseQuitButton" text="Quit" />
+	   					<Button fx:id="pauseMainMenuButton" text="Main Menu" />
+	   					<Button fx:id="pauseReturnButton" text="Return" />
 	   				</children>
    				</VBox>
    			</bottom>
 	   	</BorderPane>
 	   	
+	   	<!-- saving screen -->
+	   	<BorderPane fx:id="savePane">
+   			<bottom>
+   				<VBox fx:id="saveMenu" alignment="TOP_CENTER" BorderPane.alignment="CENTER">
+   				    <BorderPane.margin>
+             			<Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+        			</BorderPane.margin>
+	   				<children>
+	   					<Button fx:id="saveButton" text="Save"></Button>
+	   					<Button fx:id="saveReturnButton" text="Return"></Button>
+	   				</children>
+   				</VBox>
+   			</bottom>
+	   	</BorderPane>
+	   	
+	   	<!-- loading screen -->
+	   	<BorderPane fx:id="loadPane">
+   			<bottom>
+   				<VBox fx:id="loadMenu" alignment="TOP_CENTER" BorderPane.alignment="CENTER">
+   				    <BorderPane.margin>
+             			<Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+        			</BorderPane.margin>
+	   				<children>
+	   					<Button fx:id="loadLoadButton" text="Load"></Button>
+	   					<Button fx:id="loadReturnButton" text="Return"></Button>
+	   				</children>
+   				</VBox>
+   			</bottom>
+	   	</BorderPane>
 	   	
 	   	<!-- menu shown when the game is paused -->
 	   	<BorderPane fx:id="settingsPane">
-   			<center>
+   			<bottom>
    				<VBox fx:id="settingsMenu" alignment="TOP_CENTER" BorderPane.alignment="CENTER">
 	   				<BorderPane.margin>
              			<Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
         			</BorderPane.margin>
 	   				<children>
+	   					<Button fx:id="settingsReturnButton" text="Return"></Button>
 	   				</children>
    				</VBox>
-   			</center>
+   			</bottom>
+	   	</BorderPane>
+	   	
+	   	<!-- gallery of pictures and music -->
+	   	<BorderPane fx:id="galleryPane">
+   			<bottom>
+   				<VBox fx:id="galleryMenu" alignment="TOP_CENTER" BorderPane.alignment="CENTER">
+   				    <BorderPane.margin>
+             			<Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+        			</BorderPane.margin>
+	   				<children>
+	   					<Button fx:id="galleryReturnButton" text="Return"></Button>
+	   				</children>
+   				</VBox>
+   			</bottom>
 	   	</BorderPane>
    </children>
 </AnchorPane>
