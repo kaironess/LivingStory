@@ -165,6 +165,7 @@ public class ToolController implements Initializable {
         
         dialogLabel.setStyle("-fx-background-color: rgba(" + red + ", " + 
                 green + ", " + blue + ", 0.8)");
+        dialogLabel.toFront();
 
     }
     
@@ -176,6 +177,7 @@ public class ToolController implements Initializable {
         // Display new frame dialog
         Frame currFrame = FrameManager.getCurFrame();
         dialogLabel.setText(currFrame.getDialog());
+        dialogLabel.toFront();
     }
     
     // --------------------------------------------------------------------------
