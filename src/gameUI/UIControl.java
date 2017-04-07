@@ -10,6 +10,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import createdGameClasses.GameController;
+import createdGameClasses.GameController.BGIndex;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -70,7 +71,7 @@ public class UIControl implements Initializable {
     @FXML // Game Menu
     private Button nextButton;
     @FXML // Main Menu
-    private Button startButton, settingsButton, quitButton;
+    private Button startButton, settingsButton, galleryButton, quitButton;
     @FXML // Pause Menu
     private Button pauseSettingsButton, pauseQuitButton;
     @FXML // Settings Menu
@@ -125,6 +126,7 @@ public class UIControl implements Initializable {
         setupMainMenu();
         setupPauseMenu();
         setupSettingsMenu();
+        setupGalleryMenu();
         displayPane(mainPane); // Start at the main menu
         
         // Handle window resizing events
@@ -167,12 +169,12 @@ public class UIControl implements Initializable {
     }
     
     private void setupMainMenu() {
-        // Add the game's title to the mainPane
-        gameTitle = new TextFlow(new Text("Game Title"));
-        gameTitle.setTextAlignment(TextAlignment.CENTER);
-        mainPane.getChildren().add(gameTitle);
-        mainPane.setBorder(new Border(new BorderStroke(Color.BLACK, 
-         BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        // Display the main menu's bg
+        Image bg = imgConverter(this.gc.getBG(BGIndex.MAIN_MENU));
+        bgView = new ImageView(bg);
+        bgView.fitWidthProperty().bind(this.mainPane.widthProperty());
+        bgView.fitHeightProperty().bind(this.mainPane.heightProperty());
+        this.mainPane.getChildren().add(0, bgView);
         
         // Switch over to the start of the game
         startButton.setOnMouseReleased(new EventHandler<MouseEvent>() {
@@ -190,6 +192,14 @@ public class UIControl implements Initializable {
             }
          });
         
+        // Open the gallery menu
+        galleryButton.setOnMouseReleased(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                displayPane(galleryPane);
+            }
+         });
+        
         //Quit the game and close the program
         quitButton.setOnMouseReleased(new EventHandler<MouseEvent>() {
             @Override
@@ -200,6 +210,13 @@ public class UIControl implements Initializable {
     }
     
     private void setupPauseMenu() {
+        // Display the pause menu's bg
+        Image bg = imgConverter(this.gc.getBG(BGIndex.PAUSE_MENU));
+        bgView = new ImageView(bg);
+        bgView.fitWidthProperty().bind(this.pausePane.widthProperty());
+        bgView.fitHeightProperty().bind(this.pausePane.heightProperty());
+        this.pausePane.getChildren().add(0, bgView);
+        
          // Open the settings menu
         pauseSettingsButton.setOnMouseReleased(new EventHandler<MouseEvent>() {
             @Override
@@ -212,13 +229,36 @@ public class UIControl implements Initializable {
         pauseQuitButton.setOnMouseReleased(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                displayPane(mainPane);
+                returnToPrevPane();
             }
          });
     }
     
     private void setupSettingsMenu() {
+        // Display the setting menu's bg
+        Image bg = imgConverter(this.gc.getBG(BGIndex.SETTINGS));
+        bgView = new ImageView(bg);
+        bgView.fitWidthProperty().bind(this.settingsPane.widthProperty());
+        bgView.fitHeightProperty().bind(this.settingsPane.heightProperty());
+        this.settingsPane.getChildren().add(0, bgView);
+        
         settingsQuitButton.setOnMouseReleased(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                returnToPrevPane();
+            }
+         });
+    }
+    
+    private void setupGalleryMenu() {
+        // Display the gallery menu's bg
+        Image bg = imgConverter(this.gc.getBG(BGIndex.GALLERY));
+        bgView = new ImageView(bg);
+        bgView.fitWidthProperty().bind(this.galleryPane.widthProperty());
+        bgView.fitHeightProperty().bind(this.galleryPane.heightProperty());
+        this.galleryPane.getChildren().add(0, bgView);
+        
+        galleryQuitButton.setOnMouseReleased(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 returnToPrevPane();
@@ -267,7 +307,6 @@ public class UIControl implements Initializable {
         bgView.fitWidthProperty().bind(this.gamePane.widthProperty());
         bgView.fitHeightProperty().bind(this.gamePane.heightProperty());
         this.gamePane.getChildren().add(bgView);
-        
        
         // Display characters present in the current frame
         ArrayList<DisplayChar> frameChars = curFrame.getChars();

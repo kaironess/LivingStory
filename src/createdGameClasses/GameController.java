@@ -17,8 +17,11 @@ import sharedClasses.*;
 public class GameController implements Serializable {
     static final long serialVersionUID = 0L;
     
+    //First few bgs are for the diff menu screens
+    public enum BGIndex {MAIN_MENU, PAUSE_MENU, SETTINGS, SAVE, LOAD, GALLERY}
+    private static final int bgOffset = BGIndex.values().length;
     private List<Frame> frameList;
-    private transient List<Image> bgList;
+    private transient List<Image> bgList; //First few are for the diff menu screens
     private List<Music> musicList;
     private Frame curFrame;
     private List<Stat> stats;
@@ -87,12 +90,12 @@ public class GameController implements Serializable {
         return curFrame;
     }
     
-    public Image getBG(int index) {
-        return bgList.get(index);
+    public Image getBG(BGIndex bg) {
+        return bgList.get(bg.ordinal());
     }
     
     public Image getCurBG() {
-        return bgList.get(curFrame.getBG());
+        return bgList.get(curFrame.getBG() + bgOffset);
     }
     
     // Anything that needs to be done before ending the game and returning

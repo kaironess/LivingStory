@@ -47,7 +47,8 @@ public class SetupGameController {
         List<Image> bgs = new LinkedList<>();
         
         // Images to add in for the testing game.
-        String[] fileNames = {"puppers.jpg", "amSmols.jpg", "foxy.jpg", "poofball.jpg"};
+        String[] fileNames = {"mainmenu.png", "paused.png", "settings.png", "save.png", "load.png", "gallery.png",
+                "puppers.jpg", "amSmols.jpg", "foxy.jpg", "poofball.jpg"};
         
         // Read each file as an image and add it to the list of images
         try {

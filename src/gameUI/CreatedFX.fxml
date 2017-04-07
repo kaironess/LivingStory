@@ -57,7 +57,7 @@
 	   	
 	   	<!-- menu shown when the game is paused -->
 	   	<BorderPane fx:id="settingsPane">
-   			<center>
+   			<bottom>
    				<VBox fx:id="settingsMenu" alignment="TOP_CENTER" BorderPane.alignment="CENTER">
 	   				<BorderPane.margin>
              			<Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
@@ -66,18 +66,21 @@
 	   					<Button fx:id="settingsQuitButton" text="Quit"></Button>
 	   				</children>
    				</VBox>
-   			</center>
+   			</bottom>
 	   	</BorderPane>
 	   	
 	   	<!-- gallery of pictures and music -->
 	   	<BorderPane fx:id="galleryPane">
-   			<center>
-   				<VBox fx:id="galleryMenu" BorderPane.alignment="CENTER">
+   			<bottom>
+   				<VBox fx:id="galleryMenu" alignment="TOP_CENTER" BorderPane.alignment="CENTER">
+   				    <BorderPane.margin>
+             			<Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+        			</BorderPane.margin>
 	   				<children>
 	   					<Button fx:id="galleryQuitButton" text="Quit"></Button>
 	   				</children>
    				</VBox>
-   			</center>
+   			</bottom>
 	   	</BorderPane>
    </children>
 </AnchorPane>
