@@ -4,6 +4,8 @@ import sharedClasses.*;
 import java.util.*;
 
 public class FrameManager {
+    private FrameManager() {}
+    
     private WIP wip = WIP.getWIP();
     private static Frame curFrame;
     

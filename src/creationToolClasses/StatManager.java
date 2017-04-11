@@ -3,6 +3,7 @@ package creationToolClasses;
 import sharedClasses.*;
 
 public class StatManager {
+    private StatManager() {}
     private static WIP wip = WIP.getWIP();
     
     public static void createStat(String statName) {

@@ -2,7 +2,6 @@ package gameUI;
 
 import sharedClasses.*;
 import java.util.*;
-
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
@@ -25,6 +24,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
@@ -85,7 +85,9 @@ public class UIControl implements Initializable {
     private Button loadLoadButton, loadReturnButton;
     
     @FXML
-    private VBox mainMenuButtons;
+    private VBox mainMenuButtons, savesBox;
+    @FXML
+    private ScrollPane savesScroll;
 
 //    @FXML
 //    private GridPane audioGrid;
@@ -311,10 +313,30 @@ public class UIControl implements Initializable {
         bgView.fitHeightProperty().bind(this.loadPane.heightProperty());
         this.loadPane.getChildren().add(0, bgView);
         
+        //Setup for the scrollbox for saves
+        savesScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        
+        // Width / Height Listeners
+        loadPane.heightProperty().addListener(new ChangeListener<Number>() {
+            @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldHeight,
+             Number newHeight) {
+                getHeight = newHeight.doubleValue();
+                savesScroll.setPrefHeight(getHeight / 2.0);
+            }
+        });
+        loadPane.widthProperty().addListener(new ChangeListener<Number>() {
+            @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldWidth,
+             Number newWidth) {
+                getWidth = newWidth.doubleValue();
+                savesScroll.setPrefWidth(getWidth / 20);
+            }
+        });
+        
         loadLoadButton.setOnMouseReleased(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                //gc.loadSave("");
+                //TODO Add file chooser name thing
+                gc.loadSave("");
                 displayPane(gamePane);
             }
          });
@@ -325,6 +347,39 @@ public class UIControl implements Initializable {
                 returnToPrevPane();
             }
          });
+    }
+    
+    private void updateLoadSavesBox() {
+        // Empty current save list
+        savesBox.getChildren().clear();
+        
+        // Add all save files to the savesBox
+        for (String save : gc.getSaveNames()) {
+            Button saveButton = new Button(save);
+            saveButton.setFont(new javafx.scene.text.Font(24));
+            saveButton.setBorder(new Border(new BorderStroke(Color.BLACK, 
+                    BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+            saveButton.setPrefWidth(savesScroll.getWidth() - 2);
+            savesBox.getChildren().add(0, saveButton);
+            
+            // Link the width of the button to the scroll box
+            savesScroll.widthProperty().addListener(new ChangeListener<Number>() {
+                @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldWidth,
+                 Number newWidth) {
+                    getWidth = newWidth.doubleValue();
+                    saveButton.setPrefWidth(getWidth - 2);
+                }
+            });
+            
+            // If the button was clicked, load the save and switch to the game pane
+            saveButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override public void handle(MouseEvent event) {
+                    gc.loadSave(save + ".save");
+                    displayPane(gamePane);
+                }
+                
+            });
+        }
     }
     
     private void setupSettingsMenu() {
@@ -373,6 +428,8 @@ public class UIControl implements Initializable {
         // Display the current frame if we're going to the game pane
         else if (displayPane.equals(gamePane))
             displayCurFrame();
+        else if (displayPane.equals(loadPane)) 
+            updateLoadSavesBox();
         
         // Save the previous pane
         for (Pane pane : allMainPanes) 
@@ -392,11 +449,13 @@ public class UIControl implements Initializable {
         displayPane(nextFrame);
     }
     
+    // Proceeds to the next frame and displays it
     private void changeFrame() {
         this.gc.nextFrame();
         displayCurFrame();
     }
     
+    // Updates the display to show the current frame
     private void displayCurFrame() {
         this.gamePane.getChildren().removeAll();
         
@@ -459,17 +518,6 @@ public class UIControl implements Initializable {
         }
         this.gamePane.getChildren().addAll(dialogChoices);
         
-    }
-    
-    @FXML
-    private void saveGameState() {
-        System.out.println("SAVE CURR FRAME / GAME STATE");
-        this.gc.createSave();
-    }
-
-    @FXML
-    private void exitGame() {
-        System.out.println("EXIT GAME? BACK TO MAIN MENU?");
     }
     
     @FXML

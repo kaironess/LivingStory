@@ -3,6 +3,7 @@ package creationToolClasses;
 import sharedClasses.*;
 
 public class MusicManager {
+    private MusicManager() {}
     private static WIP wip = WIP.getWIP();
     
     public static void createMusic(String musicName, String statName) {

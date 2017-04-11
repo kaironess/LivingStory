@@ -68,13 +68,6 @@ public class GameController implements Serializable {
         this.decisionsMade = new LinkedList<>();
     }
     
-    public void loadSave(Save save) {
-        this.curFrame = save.getCurFrame();
-        this.stats = save.getStats();
-        this.decisionsMade = save.getDecisionsMade();
-        this.settings = save.getSettings();
-    }
-    
     public void createSave() {
         Save newSave = new Save(curFrame, decisionsMade, settings, stats);
         Path savePath = Paths.get(this.savePath);
@@ -120,6 +113,33 @@ public class GameController implements Serializable {
         catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    // Returns all .save filenames in the saves folder, without the extension
+    public List<String> getSaveNames() {
+        ArrayList<String> savesList = new ArrayList<>();
+        
+        Path savePath = Paths.get(this.savePath);
+        File savesFolder = null;
+        
+        // Figure out if the saves folder even exists
+        if (Files.exists(savePath)) 
+            savesFolder = new File(savePath.toString());
+
+        // If it does, find all the saves
+        if (savesFolder != null) {
+            File[] saves = savesFolder.listFiles();
+            for (File save : saves) {
+                String saveName = save.getName();
+                int extIndex = saveName.lastIndexOf('.');
+                String ext = saveName.substring(extIndex + 1);
+                if (ext.equals("save")) {
+                    savesList.add(saveName.substring(0, extIndex));
+                }
+            }
+        }     
+        
+        return savesList;
     }
     
     public void nextFrame() {

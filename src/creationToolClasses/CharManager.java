@@ -4,6 +4,7 @@ import sharedClasses.*;
 import java.awt.Image;
 
 public class CharManager {
+    private CharManager() {}
     private static WIP wip = WIP.getWIP();
     
     public static void createChar(String charName, Image img) {
