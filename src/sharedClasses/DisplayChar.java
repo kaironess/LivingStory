@@ -8,14 +8,15 @@ public class DisplayChar implements Serializable {
     
     private StoryChar character;
     private int imgIndex;
-    private int leftMargin; //% of the screen away from left edge 
+    private int leftMargin; // pixels of the screen away from left edge 
+    private int topMargin; // pixels of the screen away from the top edge
     private int height, width; //ratio between original picture height / width and screen height / width
     
     public DisplayChar(StoryChar character, int index) {
-        this(character, index, 0, 0, 0);
+        this(character, index, 0, 0, 0, 0);
     }
     
-    public DisplayChar(StoryChar character, int index, int leftMargin, 
+    public DisplayChar(StoryChar character, int index, int leftMargin, int topMargin,
      int heightRatio, int widthRatio) {
         this.character = character;
         this.imgIndex = index;
@@ -34,5 +35,13 @@ public class DisplayChar implements Serializable {
     
     public int getLeftMargin() {
         return leftMargin;
+    }
+    
+    public int getTopMargin() {
+        return topMargin;
+    }
+    
+    public StoryChar getStoryChar() {
+        return character;
     }
 }
