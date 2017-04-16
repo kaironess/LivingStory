@@ -9,6 +9,7 @@ public class Frame implements Serializable {
     private int bg;
     private ArrayList<DisplayChar> curChars;
     private String dialog;
+    private int dialogRGB[];
     private Frame prevFrame;
     private ArrayList<Decision> dialogOptions;
     private ArrayList<Decision> nextDecisions;
@@ -20,6 +21,7 @@ public class Frame implements Serializable {
         this.bg = -1;
         this.curChars = new ArrayList<DisplayChar>();
         this.dialog = "";
+        this.dialogRGB = new int[]{255, 255, 255};
         this.prevFrame = prev;
         this.dialogOptions = new ArrayList<Decision>();
         this.nextDecisions = new ArrayList<Decision>();
@@ -33,6 +35,10 @@ public class Frame implements Serializable {
     
     public String getDialog() {
         return dialog;
+    }
+    
+    public int[] getDialogRGB() {
+        return dialogRGB;
     }
     
     public Frame getPrevFrame() {
@@ -53,6 +59,12 @@ public class Frame implements Serializable {
     
     public void setDialog(String message) {
         this.dialog = message;
+    }
+    
+    public void setDialogRGB(int r, int g, int b) {
+        this.dialogRGB[0] = r;
+        this.dialogRGB[1] = g;
+        this.dialogRGB[2] = b;
     }
     
     public void setPrev(Frame previous) {
@@ -78,7 +90,27 @@ public class Frame implements Serializable {
     }
     
     public void addChar(DisplayChar character) { curChars.add(character); }
+    public void removeChar(String charName) {
+        int i;
+        for (i = 0; i < curChars.size(); i++) {
+            if (curChars.get(i).getCharName().equals(charName)) {
+                curChars.remove(i);
+                return;
+            }
+            i++;
+        }
+    }
     public ArrayList<DisplayChar> getChars() { return curChars; }
+    public DisplayChar getChar(String charName) {
+        int i;
+        for (i = 0; i < curChars.size(); i++) {
+            if (curChars.get(i).getCharName().equals(charName)) {
+                return curChars.get(i);
+            }
+            i++;
+        }
+        return null;
+    }
     
     public void addMusicTrigger(MusicTrigger trigger) { musicTriggers.add(trigger); }
     public List<MusicTrigger> getMusicTriggers() { return musicTriggers; }
