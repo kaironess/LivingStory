@@ -76,10 +76,10 @@ public class ToolController implements Initializable {
     private MenuBar menuBar;    
     
     @FXML
-    private Menu fileMenu, editMenu, viewMenu, helpMenu;
+    private Menu fileMenu, editMenu, viewMenu, statMenu;
     
     @FXML
-    private MenuItem openFile, newStatCommand, saveProject, newDFrame, statList, newBFrame;
+    private MenuItem openFile, statMenuCommand, saveProject, newDFrame, statList, newBFrame;
     
     @FXML
     private SplitPane toolPane;
@@ -462,26 +462,40 @@ public class ToolController implements Initializable {
     }
     
     // --------------------------------------------------------------------------
-    //                              STAT CONTROLS
+    //                              STAT MENU CONTROLS
     // --------------------------------------------------------------------------
     
     @FXML
-    void openNewStatDialog() {
+    void openStatsDialog() {
         try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("StatCreateWindow.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
+                 "statMenu" + File.separator + "StatsWindow.fxml"));
                 Parent root1 = (Parent) fxmlLoader.load();
                 Stage stage = new Stage();
                 Scene scene = new Scene(root1);
                 stage.setScene(scene);  
                 stage.show();
-            } 
-            catch(Exception e) {
-               e.printStackTrace();
-            }
+        } 
+        catch(Exception e) {
+           e.printStackTrace();
+        }
     }
     
     @FXML
-    void openStatList() {}
+    void openStatList() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
+             "statMenu" + File.separator + "EditStatsWindow.fxml"));
+            Parent root1 = (Parent) fxmlLoader.load();
+            Stage stage = new Stage();
+            Scene scene = new Scene(root1);
+            stage.setScene(scene);  
+            stage.show();
+        } 
+        catch(Exception e) {
+           e.printStackTrace();
+        }
+    }
     
     // Converts a regular Java Image to a JavaFX Image
     private javafx.scene.image.Image imgConverter(java.awt.Image img) {

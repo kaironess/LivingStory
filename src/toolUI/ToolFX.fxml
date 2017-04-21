@@ -25,7 +25,6 @@
                         <MenuItem fx:id="saveProject" mnemonicParsing="false" text="Save Project" />
                         <MenuItem fx:id="newBFrame" mnemonicParsing="false" text="New Blank Frame" />
                         <MenuItem fx:id="newDFrame" mnemonicParsing="false" text="New Duplicate Frame" />
-                        <MenuItem fx:id="newStatCommand" mnemonicParsing="false" onAction="#openNewStatDialog" text="New Stat" />
                   </items>
                 </Menu>
                 
@@ -44,14 +43,13 @@
                   <items>
                     <MenuItem mnemonicParsing="false" text="Graph View" />
                         <MenuItem mnemonicParsing="false" text="Frame View" />
-                        <MenuItem fx:id="statList" mnemonicParsing="false" onAction="#openStatList" text="Stat List" />
                   </items>
                 </Menu>
                 
-                <!-- HELP drop down menu -->
-                  <Menu fx:id="helpMenu" mnemonicParsing="false" text="Help">
+                <!-- STAT drop down menu -->
+                  <Menu fx:id="statMenu" mnemonicParsing="false" text="Stats">
                      <items>
-                        <MenuItem mnemonicParsing="false" text="About" />
+                        <MenuItem fx:id="statMenuCommand" mnemonicParsing="false" onAction="#openStatsDialog" text="Edit Stats" />
                      </items>
                   </Menu>
               </menus>
