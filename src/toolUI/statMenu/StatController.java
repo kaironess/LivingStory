@@ -27,9 +27,15 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import sharedClasses.Stat;
 
@@ -37,20 +43,26 @@ public class StatController implements Initializable {
     private WIP wip = WIP.getWIP();
     
     @FXML
-    private AnchorPane optionPane;
+    private AnchorPane optionPane, statInfoPane;
     @FXML
     private ListView statList;
     @FXML
     private Label newStatCmd;
+    @FXML
+    private TextField curStatName, curStatVal;
+    
+    private Stat curDisplayStat;
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
+        statInfoPane.setVisible(false);
         setupStatList();
     }
     
+    // Setups the New Stat Button functionality and updates the stat list
     private void setupStatList() {
         // Functionality for the New Stat option
-        newStatCmd.setOnMouseReleased(new EventHandler<MouseEvent>() {
+        newStatCmd.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 TextInputDialog saveDialog = new TextInputDialog();
@@ -67,9 +79,18 @@ public class StatController implements Initializable {
             }
         });
         
+        statList.widthProperty().addListener(new ChangeListener<Number>() {
+            @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldWidth,
+             Number newWidth) {
+                double getWidth = newWidth.doubleValue();
+                newStatCmd.setPrefWidth(getWidth);
+            }
+        });
+        
         updateStatList();
     }
     
+    // Updates the stat list on the left
     private void updateStatList() {
         statList.getItems().clear();
         statList.getItems().add(newStatCmd);
@@ -78,51 +99,42 @@ public class StatController implements Initializable {
         
         for (Stat stat : stats) {
             Label newStat = new Label(stat.getName());
+ 
+            newStat.setPrefWidth(newStatCmd.getPrefWidth());
+            newStatCmd.widthProperty().addListener(new ChangeListener<Number>() {
+                @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldWidth,
+                 Number newWidth) {
+                    double getWidth = newWidth.doubleValue();
+                    newStat.setPrefWidth(getWidth);
+                }
+            });
+            
             addStatDisplay(newStat);
             statList.getItems().add(newStat);
         }
     }
     
+    // Adds functionality to a label so it displays stat info on the right
     private void addStatDisplay(Label statLabel) {
         // Functionality for each Stat in the list
-        newStatCmd.setOnMouseReleased(new EventHandler<MouseEvent>() {
+        statLabel.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
- 
+                statInfoPane.setVisible(true);
+                Stat curStat = wip.getStatByName(statLabel.getText());
+                curDisplayStat = curStat;
+                // Update the right side's stat info
+                curStatName.setText(curStat.getName());
+                curStatVal.setText(new Integer(curStat.getCount()).toString());
             }
         });
     }
     
-    // --------------------------------------------------------------------------
-    //                              STAT CONTROLS
-    // --------------------------------------------------------------------------
-    
     @FXML
-    void enterStatName() {}
-    
-    @FXML
-    void enterStatVal() {}
-    
-    @FXML
-    void saveNewStat() {
-//        String statname = "";
-//        int statvalue = 0;
-//        
-//        if ((newStatNameField.getText() != null && !newStatNameField.getText().isEmpty())) {
-//             statname = newStatNameField.getText();
-//        }
-//        
-//        if ((newStatInitField.getText() != null && !newStatInitField.getText().isEmpty())) {
-//            String input = newStatInitField.getText();
-//            if (input.matches("\\d*")) {
-//                statvalue = Integer.parseInt(input);
-//            }
-//            
-//            Stat myStat = new Stat(statname, statvalue);
-//            System.out.println("Saved Stat Name: " + myStat.getName());
-//            System.out.println("Saved Stat Initial Val: " + myStat.getCount());
-//
-//        }
+    void changeStatInfo() {
+        curDisplayStat.setCount(Integer.valueOf(curStatVal.getText()));
+        curDisplayStat.rename(curStatName.getText());
+        
+        updateStatList();
     }
-
 }
