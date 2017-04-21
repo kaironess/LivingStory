@@ -76,10 +76,10 @@ public class ToolController implements Initializable {
     private MenuBar menuBar;    
     
     @FXML
-    private Menu fileMenu, editMenu, viewMenu, statMenu;
+    private Menu fileMenu, editMenu, viewMenu, statMenu, charMenu;
     
     @FXML
-    private MenuItem openFile, statMenuCommand, saveProject, newDFrame, statList, newBFrame;
+    private MenuItem openFile, statMenuCommand, charMenuCommand, saveProject, newDFrame, statList, newBFrame;
     
     @FXML
     private SplitPane toolPane;
@@ -419,7 +419,7 @@ public class ToolController implements Initializable {
     }
     
     // --------------------------------------------------------------------------
-    //                              STAT MENU CONTROLS
+    //                              TOP MENU CONTROLS
     // --------------------------------------------------------------------------
     
     @FXML
@@ -439,10 +439,10 @@ public class ToolController implements Initializable {
     }
     
     @FXML
-    void openStatList() {
+    void openCharDialog() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
-             "statMenu" + File.separator + "EditStatsWindow.fxml"));
+             "charMenu" + File.separator + "CharsWindow.fxml"));
             Parent root1 = (Parent) fxmlLoader.load();
             Stage stage = new Stage();
             Scene scene = new Scene(root1);
