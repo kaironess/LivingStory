@@ -69,16 +69,13 @@ public class Music implements Serializable {
         curState = State.STOPPED;
     }
     
-    public void lowerVol() {
-        double newVol = player.getVolume() - .5;
-        if (newVol >= 0)
-            player.setVolume(newVol);
-    }
-    
-    public void raiseVol() {
-        double newVol = player.getVolume() + .5;
-        if (newVol <= 1)
-            player.setVolume(newVol);
+    public void setVol(double musicVol) {
+        if (musicVol < 0)
+            musicVol = 0;
+        else if (musicVol > 1.0)
+            musicVol = 1.0;
+        
+        player.setVolume(musicVol);
     }
     
     public void loop() {
@@ -95,49 +92,5 @@ public class Music implements Serializable {
     
     public void setName(String newName) {
         this.name = newName;
-    }
-    
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        //Music music = new Music("poke3", "testMusic.mp3");
-        //Music music = new Music("pokeWav", "testMusicWAV.wav");
-        Music music = new Music("short", "shortClip.mp3");
-        
-        while(scanner.hasNext()) {
-            String nextInput = scanner.nextLine();
-            
-            if (nextInput.equals("play")) {
-                System.out.println("Now Playing...");
-                music.play();
-            }
-            else if (nextInput.equals("pause")) {
-                System.out.println("Pausing...");
-                music.pause();
-            }
-            else if (nextInput.equals("stop")) {
-                System.out.println("Stopping...");
-                music.stop();
-            }
-            else if (nextInput.equals("loop")) {
-                System.out.println("Enabling looping...");
-                music.stop();
-                music.loop();
-                music.play();
-            }
-            else if (nextInput.equals("no loop")) {
-                System.out.println("Disabling looping...");
-                music.stop();
-                music.noLoop();
-                music.play();
-            }
-            else if (nextInput.equals("quiet")) {
-                music.lowerVol();
-                System.out.println("Lowering volume to: " + music.player.getVolume());
-            }
-            else if (nextInput.equals("loud")) {
-                music.raiseVol();
-                System.out.println("Raising volume to: " + music.player.getVolume());
-            }
-        }      
     }
 }

@@ -68,7 +68,7 @@ public class GameController implements Serializable {
         this.decisionsMade = new LinkedList<>();
     }
     
-    public void createSave() {
+    public void createSave(String saveName) {
         Save newSave = new Save(curFrame, decisionsMade, settings, stats);
         Path savePath = Paths.get(this.savePath);
         
@@ -77,9 +77,6 @@ public class GameController implements Serializable {
             boolean madeSaveFile = new File(savePath.toString()).mkdirs();
             
         }
-        
-        // Make the file name based off of epoch time
-        String saveName = new Long(new Date().getTime()).toString();
         
         // Save the file
         try {
@@ -129,6 +126,14 @@ public class GameController implements Serializable {
         // If it does, find all the saves
         if (savesFolder != null) {
             File[] saves = savesFolder.listFiles();
+            
+            Arrays.sort(saves, new Comparator<File>(){
+                public int compare(File f1, File f2)
+                {
+                    return Long.valueOf(f1.lastModified()).compareTo(f2.lastModified());
+                } 
+            });
+            
             for (File save : saves) {
                 String saveName = save.getName();
                 int extIndex = saveName.lastIndexOf('.');
@@ -140,6 +145,12 @@ public class GameController implements Serializable {
         }     
         
         return savesList;
+    }
+    
+    public void setMusicVol(double newVol) {
+        for (Music music : this.musicList)
+            music.setVol(newVol);
+        this.settings.musicVol = newVol;
     }
     
     public void nextFrame() {
@@ -159,6 +170,7 @@ public class GameController implements Serializable {
             this.decisionsMade.add(activeDec);
             curFrame = activeDec.getNextFrame();
             curFrame.applyStatChanges(this.stats);
+            curFrame.applyMusicTriggers();
         }
         // Otherwise if we cannot progress, end the game
         else {

@@ -121,30 +121,6 @@ public class ToolController implements Initializable {
     @FXML
     private Button openCharImg, charSaveButton, removeCharButton;
 
-    
-    // CREATE STAT WINDOW INJECTIONS
-    
-    @FXML
-    private TextField newStatNameField;
-    
-    @FXML
-    private Label newStatLabel, newStatInit, newStatName;
-    
-    @FXML
-    private Button newStatButton;
-    
-    @FXML
-    private GridPane newStatGrid;
-    
-    @FXML
-    private TextField newStatInitField;
-    
-    @FXML
-    private AnchorPane newStatAnchor;
-    
-    @FXML
-    private VBox newStatVbox;
-    
     // --------------------------------------------------------------------------
     //                              UI INITIALIZATIONS
     // --------------------------------------------------------------------------
@@ -155,16 +131,18 @@ public class ToolController implements Initializable {
     @Override
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
 
-        wip = WIP.getWIP();  
-        Frame startFrame = new Frame(null);
-        FrameManager.setCurFrame(startFrame);
-        wip.frames.add(startFrame);
-        
-        // Display the current frame's dialog label
-        dialogInit();
-        
-        // Initialize frame character items
-        charDefaultInit();
+        if (wip == null) {
+            wip = WIP.getWIP();  
+            Frame startFrame = new Frame(null);
+            FrameManager.setCurFrame(startFrame);
+            wip.frames.add(startFrame);
+            
+            // Display the current frame's dialog label
+            dialogInit();
+            
+            // Initialize frame character items
+            charDefaultInit();
+        }
     }
     
     /**
@@ -490,13 +468,12 @@ public class ToolController implements Initializable {
     @FXML
     void openNewStatDialog() {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("StatCreateWindow.fxml"));
-                    Parent root1 = (Parent) fxmlLoader.load();
-                    Stage stage = new Stage();        
-                    Scene scene = new Scene(root1);
-                    stage.setScene(scene);  
-                    stage.show();
-                    
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("StatCreateWindow.fxml"));
+                Parent root1 = (Parent) fxmlLoader.load();
+                Stage stage = new Stage();
+                Scene scene = new Scene(root1);
+                stage.setScene(scene);  
+                stage.show();
             } 
             catch(Exception e) {
                e.printStackTrace();
@@ -504,35 +481,7 @@ public class ToolController implements Initializable {
     }
     
     @FXML
-    void enterStatName() {}
-    
-    @FXML
-    void enterStatVal() {}
-    
-    @FXML
-    void saveNewStat() {
-        String statname = "";
-        int statvalue = 0;
-        
-        if ((newStatNameField.getText() != null && !newStatNameField.getText().isEmpty())) {
-             statname = newStatNameField.getText();
-        }
-        
-        if ((newStatInitField.getText() != null && !newStatInitField.getText().isEmpty())) {
-            String input = newStatInitField.getText();
-            if (input.matches("\\d*")) {
-                statvalue = Integer.parseInt(input);
-            }
-            
-            Stat myStat = new Stat(statname, statvalue);
-            System.out.println("Saved Stat Name: " + myStat.getName());
-            System.out.println("Saved Stat Initial Val: " + myStat.getCount());
-        }
-    }
-
-    @FXML
     void openStatList() {}
-
     
     // Converts a regular Java Image to a JavaFX Image
     private javafx.scene.image.Image imgConverter(java.awt.Image img) {

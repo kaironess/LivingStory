@@ -13,6 +13,7 @@ import createdGameClasses.GameController.BGIndex;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
@@ -27,6 +28,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
@@ -34,8 +36,10 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.*;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.paint.Color;
@@ -80,31 +84,16 @@ public class UIControl implements Initializable {
     @FXML // Gallery Menu
     private Button galleryReturnButton;
     @FXML // Save Menu
-    private Button saveButton, saveReturnButton;
+    private Button saveNewSaveButton, saveReturnButton;
     @FXML // Load Menu
     private Button loadLoadButton, loadReturnButton;
     
     @FXML
-    private VBox mainMenuButtons, savesBox;
+    private VBox mainMenuButtons, loadSavesBox, saveSavesBox, settingsVolume;
     @FXML
-    private ScrollPane savesScroll;
+    private ScrollPane loadSavesScroll, saveSavesScroll;
 
-//    @FXML
-//    private GridPane audioGrid;
-//
-//    @FXML
-//    private MenuItem audioSetButton, aboutButton, displaySetButton, saveGameButton, quitGameButton, 
-//     closeWindowButton;
-//
-//    @FXML
-//    private Button closeAudioButton;
-//    
-//    @FXML
-//    private Label audioTitle, sfxVol, musicVol;
-//    
-//    @FXML
-//    private Slider volumeSlider, sfxvolumeSlider;
-//    
+    private Slider volumeSlider;   
 
     @Override // This method is called by the FXMLLoader when initialization is complete
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
@@ -290,10 +279,74 @@ public class UIControl implements Initializable {
         bgView.fitHeightProperty().bind(this.savePane.heightProperty());
         this.savePane.getChildren().add(0, bgView);
         
-        saveButton.setOnMouseReleased(new EventHandler<MouseEvent>() {
+        //Setup for the scrollbox for saves
+        saveSavesScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        
+        // Width / Height Listeners
+        savePane.heightProperty().addListener(new ChangeListener<Number>() {
+            @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldHeight,
+             Number newHeight) {
+                getHeight = newHeight.doubleValue();
+                saveSavesScroll.setPrefHeight(getHeight / 2.0);
+            }
+        });
+        savePane.widthProperty().addListener(new ChangeListener<Number>() {
+            @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldWidth,
+             Number newWidth) {
+                getWidth = newWidth.doubleValue();
+                saveSavesScroll.setPrefWidth(getWidth / 20);
+            }
+        });
+        
+        // Setup for the button to create a new save
+        saveNewSaveButton.setFont(new javafx.scene.text.Font(24));
+        saveNewSaveButton.setBorder(new Border(new BorderStroke(Color.BLACK, 
+                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        saveNewSaveButton.setPrefWidth(saveSavesScroll.getWidth() - 2);
+        
+        saveSavesScroll.widthProperty().addListener(new ChangeListener<Number>() {
+            @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldWidth,
+             Number newWidth) {
+                getWidth = newWidth.doubleValue();
+                saveNewSaveButton.setPrefWidth(getWidth - 2);
+            }
+        });
+        
+        saveNewSaveButton.setOnMouseReleased(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                gc.createSave();
+                //TODO create name entry box
+                TextInputDialog saveDialog = new TextInputDialog();
+                saveDialog.setTitle("New Save");
+                saveDialog.setHeaderText(null);
+                saveDialog.setContentText("Please enter a name for the new save.");
+
+                // Traditional way to get the response value.
+                Optional<String> result = saveDialog.showAndWait();
+                if (result.isPresent()){
+                    String saveName = result.get();
+                    gc.createSave(saveName);
+                    createSavedFileButton(1, saveName, saveSavesBox, saveSavesScroll, new EventHandler<MouseEvent>() {
+                        @Override public void handle(MouseEvent event) {
+                            // Show a dialog asking if the player really wants to write over the chosen save
+                            Alert confirm = new Alert(AlertType.CONFIRMATION);
+                            confirm.setTitle("Overwriting Save");
+                            confirm.setHeaderText(null);
+                            confirm.setContentText("You are about to overwrite " + saveName + ". Is this okay?");
+                            
+                            Optional<ButtonType> result = confirm.showAndWait();
+                            if (result.get() == ButtonType.OK){
+                                gc.createSave(saveName);
+                                // Show a dialog confirming the save has been overwritten
+                                Alert saved = new Alert(AlertType.INFORMATION);
+                                saved.setTitle("Save Overwritten");
+                                saved.setHeaderText(null);
+                                saved.setContentText("Save complete");
+                                saved.showAndWait();
+                            }
+                        }
+                    });
+                }
             }
          });
         
@@ -314,21 +367,21 @@ public class UIControl implements Initializable {
         this.loadPane.getChildren().add(0, bgView);
         
         //Setup for the scrollbox for saves
-        savesScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        loadSavesScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         
         // Width / Height Listeners
         loadPane.heightProperty().addListener(new ChangeListener<Number>() {
             @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldHeight,
              Number newHeight) {
                 getHeight = newHeight.doubleValue();
-                savesScroll.setPrefHeight(getHeight / 2.0);
+                loadSavesScroll.setPrefHeight(getHeight / 2.0);
             }
         });
         loadPane.widthProperty().addListener(new ChangeListener<Number>() {
             @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldWidth,
              Number newWidth) {
                 getWidth = newWidth.doubleValue();
-                savesScroll.setPrefWidth(getWidth / 20);
+                loadSavesScroll.setPrefWidth(getWidth / 20);
             }
         });
         
@@ -349,30 +402,66 @@ public class UIControl implements Initializable {
          });
     }
     
-    private void updateLoadSavesBox() {
+    private void createSavedFileButton(int position, String buttonText, VBox parentBox, ScrollPane parentPane, 
+     EventHandler<? super MouseEvent> handle) {
+        Button newButton = new Button(buttonText);
+        newButton.setFont(new javafx.scene.text.Font(24));
+        newButton.setBorder(new Border(new BorderStroke(Color.BLACK, 
+                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        newButton.setPrefWidth(parentPane.getWidth() - 2);
+        parentBox.getChildren().add(position, newButton);
+        
+        // Link the width of the button to the scroll box
+        parentPane.widthProperty().addListener(new ChangeListener<Number>() {
+            @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldWidth,
+             Number newWidth) {
+                getWidth = newWidth.doubleValue();
+                newButton.setPrefWidth(getWidth - 2);
+            }
+        });
+        
+        // If the button was clicked, create a save with the same name
+        newButton.setOnMouseClicked(handle);
+    }
+    
+    private void updateSaveSavesBox() {
         // Empty current save list
-        savesBox.getChildren().clear();
+        saveSavesBox.getChildren().clear();
         
         // Add all save files to the savesBox
         for (String save : gc.getSaveNames()) {
-            Button saveButton = new Button(save);
-            saveButton.setFont(new javafx.scene.text.Font(24));
-            saveButton.setBorder(new Border(new BorderStroke(Color.BLACK, 
-                    BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-            saveButton.setPrefWidth(savesScroll.getWidth() - 2);
-            savesBox.getChildren().add(0, saveButton);
-            
-            // Link the width of the button to the scroll box
-            savesScroll.widthProperty().addListener(new ChangeListener<Number>() {
-                @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldWidth,
-                 Number newWidth) {
-                    getWidth = newWidth.doubleValue();
-                    saveButton.setPrefWidth(getWidth - 2);
+            createSavedFileButton(0, save, saveSavesBox, saveSavesScroll, new EventHandler<MouseEvent>() {
+                @Override public void handle(MouseEvent event) {
+                    // Show a dialog asking if the player really wants to write over the chosen save
+                    Alert confirm = new Alert(AlertType.CONFIRMATION);
+                    confirm.setTitle("Overwriting Save");
+                    confirm.setHeaderText(null);
+                    confirm.setContentText("You are about to overwrite " + save + ". Is this okay?");
+                    
+                    Optional<ButtonType> result = confirm.showAndWait();
+                    if (result.get() == ButtonType.OK){
+                        gc.createSave(save);
+                        // Show a dialog confirming the save has been overwritten
+                        Alert saved = new Alert(AlertType.INFORMATION);
+                        saved.setTitle("Save Overwritten");
+                        saved.setHeaderText(null);
+                        saved.setContentText("Save complete");
+                        saved.showAndWait();
+                    }
                 }
             });
-            
-            // If the button was clicked, load the save and switch to the game pane
-            saveButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        }
+        
+        saveSavesBox.getChildren().add(0, saveNewSaveButton);
+    }
+    
+    private void updateLoadSavesBox() {
+        // Empty current save list
+        loadSavesBox.getChildren().clear();
+        
+        // Add all save files to the savesBox
+        for (String save : gc.getSaveNames()) {
+            createSavedFileButton(0, save, loadSavesBox, loadSavesScroll, new EventHandler<MouseEvent>() {
                 @Override public void handle(MouseEvent event) {
                     gc.loadSave(save + ".save");
                     displayPane(gamePane);
@@ -389,6 +478,28 @@ public class UIControl implements Initializable {
         bgView.fitWidthProperty().bind(this.settingsPane.widthProperty());
         bgView.fitHeightProperty().bind(this.settingsPane.heightProperty());
         this.settingsPane.getChildren().add(0, bgView);
+        
+        // Create the volume label
+        Label volLabel = new Label("Music Volume");
+        volLabel.setFont(new javafx.scene.text.Font(18));
+        
+        // Create the volume slider
+        volumeSlider = new Slider(0, 1.0, 1.0);
+        volumeSlider.setShowTickLabels(true);
+        volumeSlider.setShowTickMarks(true);
+        volumeSlider.setMajorTickUnit(.1);
+        volumeSlider.setMinorTickCount(0);
+        volumeSlider.setSnapToTicks(true);
+        
+        // Update the music volume if the slider value changes
+        volumeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (! volumeSlider.isValueChanging()) {
+                this.gc.setMusicVol(newValue.intValue());
+            }
+        });
+        
+        this.settingsVolume.getChildren().add(volLabel);
+        this.settingsVolume.getChildren().add(volumeSlider);
         
         settingsReturnButton.setOnMouseReleased(new EventHandler<MouseEvent>() {
             @Override
@@ -428,6 +539,8 @@ public class UIControl implements Initializable {
         // Display the current frame if we're going to the game pane
         else if (displayPane.equals(gamePane))
             displayCurFrame();
+        else if (displayPane.equals(savePane))
+            updateSaveSavesBox();
         else if (displayPane.equals(loadPane)) 
             updateLoadSavesBox();
         
@@ -566,15 +679,6 @@ public class UIControl implements Initializable {
             catch(Exception e) {
                e.printStackTrace();
             }
-    }
-    
-    @FXML
-    private void setAudioVolume() {
-//        volumeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-//            if (! volumeSlider.isValueChanging()) {
-//                System.out.println("Vol Slider Value Changed (newValue: " + newValue.intValue() + ")");
-//            }
-//        });
     }
     
     @FXML

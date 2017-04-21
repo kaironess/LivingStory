@@ -59,13 +59,28 @@
 	   	
 	   	<!-- saving screen -->
 	    <BorderPane fx:id="savePane" prefHeight="600.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+   			<top>
+   				<VBox alignment="TOP_CENTER" BorderPane.alignment="CENTER"> 
+   					<BorderPane.margin>
+	             			<Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+        			</BorderPane.margin>
+	   				<children>
+	        			<ScrollPane fx:id="saveSavesScroll">
+	   						<content>
+		   						<VBox fx:id="saveSavesBox">
+		   							<Button fx:id="saveNewSaveButton" text="New Save"></Button>
+		   						</VBox>
+	   						</content>
+	   					</ScrollPane>
+	   				</children>
+   				</VBox> 
+			</top>
    			<bottom>
    				<VBox fx:id="saveMenu" alignment="TOP_CENTER" BorderPane.alignment="CENTER">
    				    <BorderPane.margin>
              			<Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
         			</BorderPane.margin>
 	   				<children>
-	   					<Button fx:id="saveButton" text="Save"></Button>
 	   					<Button fx:id="saveReturnButton" text="Return"></Button>
 	   				</children>
    				</VBox>
@@ -80,9 +95,9 @@
 	             			<Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
         			</BorderPane.margin>
 	   				<children>
-	        			<ScrollPane fx:id="savesScroll">
+	        			<ScrollPane fx:id="loadSavesScroll">
 	   						<content>
-		   						<VBox fx:id="savesBox">
+		   						<VBox fx:id="loadSavesBox">
 		   						</VBox>
 	   						</content>
 	   					</ScrollPane>
@@ -104,6 +119,15 @@
 	   	
 	   	<!-- menu shown when the game is paused -->
 	   	<BorderPane fx:id="settingsPane">
+	   		<top>
+	   			<VBox fx:id="settingsVolume" >
+	   				<BorderPane.margin>
+             			<Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+        			</BorderPane.margin>
+	   				<children>
+	   				</children>
+   				</VBox>
+	   		</top>
    			<bottom>
    				<VBox fx:id="settingsMenu" alignment="TOP_CENTER" BorderPane.alignment="CENTER">
 	   				<BorderPane.margin>
