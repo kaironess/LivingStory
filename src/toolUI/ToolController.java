@@ -58,7 +58,7 @@ public class ToolController implements Initializable {
 
     WIP wip;
     Label dialogLabel;
-    StoryChar currChar = null;
+    DisplayChar currChar = null;
     double currX = 0, currY = 0;
     int currImgIdx;
     ObservableList<String> allChars;
@@ -113,13 +113,13 @@ public class ToolController implements Initializable {
     private ChoiceBox<String> charaChoice, charImgChoice;
     
     @FXML
-    private TextField charNameField, charXOffset, charYOffset;
+    private TextField charXOffset, charYOffset;
     
     @FXML
-    private Label charNameDisplay, charNameChangeLabel, charSetImgLabel, charXLabel, charYLabel;
+    private Label charNameDisplay, charSetImgLabel, charXLabel, charYLabel;
     
     @FXML
-    private Button openCharImg, charSaveButton, removeCharButton;
+    private Button charSaveButton, removeCharButton;
 
     // --------------------------------------------------------------------------
     //                              UI INITIALIZATIONS
@@ -149,7 +149,7 @@ public class ToolController implements Initializable {
      * Initialize current frame character list
      */
     private void charDefaultInit() {
-        allChars = FXCollections.observableArrayList("NEW CHAR");
+        allChars = FXCollections.observableArrayList();
         int char_num = wip.chars.size() - 1;
         while (char_num >= 0) {
             allChars.add(wip.chars.get(char_num).getName());
@@ -159,12 +159,9 @@ public class ToolController implements Initializable {
         
         // Hide specific character properties
         charNameDisplay.setVisible(false);
-        charNameField.setVisible(false);
-        charNameChangeLabel.setVisible(false);
         
         charSetImgLabel.setVisible(false);
         charImgChoice.setVisible(false);
-        openCharImg.setVisible(false);
         
         charXLabel.setVisible(false);
         charYLabel.setVisible(false);
@@ -187,37 +184,25 @@ public class ToolController implements Initializable {
                        
                        // CHANGE PROPERTY FIELDS TO MATCH CHOSEN CHARACTER
                        int index = new_value.intValue();
-                       if (index > 0) {
-                           // Must check to make sure this character is not already
-                           // in the frame
+                       if (index >= 0) {
                            Frame currFrame = FrameManager.getCurFrame();
+                           System.out.println(allChars.get(index));
+                           
+                           // If char not already in frame, ADD new display char
                            if (currFrame.getChar(allChars.get(index)) == null) {
-                               currChar = wip.chars.get(new_value.intValue() - 1);
+                               currChar = new DisplayChar(wip.chars.get(index), 0);
+                               System.out.println("ADDING DISPLAY CHAR");
                            }
+                           // If char already in frame, EDIT a display char
                            else {
-                               currChar = currFrame.getChar(allChars.get(index)).getStoryChar();
+                               currChar = currFrame.getChar(allChars.get(index));
+                               System.out.println("EDITING DISPLAY CHAR");
                            }
-                       } 
-                       else { 
-                           CharManager.createChar("DEFAULT_NAME", null);
-                           currChar = wip.getCharByName("DEFAULT_NAME");
                        }
                        
                        charPropInit();
                    }
                 });
-        
-        // Listener to grab character name changes
-        charNameField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if(!newValue) {
-                    String newName = charNameField.getText();
-                    CharManager.renameChar(currChar.getName(), newName);
-                    charNameDisplay.setText(currChar.getName());
-                }
-            }
-        });
         
         // Listener to grab character image selections
         charImgChoice.getSelectionModel().selectedIndexProperty().addListener(
@@ -225,16 +210,19 @@ public class ToolController implements Initializable {
                    public void changed(ObservableValue ov, 
                            Number value, Number new_value) {
                        currImgIdx = new_value.intValue();
-                       if (currImgIdx > 0) {
-                           ImageView im = (ImageView) framePane.lookup("#" + currChar.getName() + "_img");
-                           Image charImg = imgConverter(wip.getCharByName(currChar.getName()).getImage(currImgIdx));
-                           if (im == null) {
-                               currImg.setImage(charImg);
-                           }
-                           else {
+                       if (currImgIdx >= 0) {                           
+                           // If chosen image is a diff image
+                           Image charImg = imgConverter(currChar.getCharImg());
+                           if (currChar.getCharImgIndex() != currImgIdx) {
+                               currChar.setCharImg(currImgIdx);
                                currImg = new ImageView(charImg);
-                               currImg.setId(currChar.getName() + "_img");
+                               currImg.setId(currChar.getCharName() + "_img");
                                framePane.getChildren().add(currImg);
+                           }
+                           // If chosen image doesn't change
+                           else {
+                               ImageView im = (ImageView) framePane.lookup("#" + currChar.getCharName() + "_img");
+                               currImg = im;
                            }
                        }
                    }
@@ -247,7 +235,7 @@ public class ToolController implements Initializable {
                 if(!newValue) {
                     String x = charXOffset.getText();
                     try {
-                        ImageView im = (ImageView) framePane.lookup("#" + currChar.getName() + "_img");
+                        ImageView im = (ImageView) framePane.lookup("#" + currChar.getCharName() + "_img");
                         currX = Double.parseDouble(x);
                         im.setTranslateX(currX);
                     } catch (Exception e) { /* bad input */ };
@@ -262,7 +250,7 @@ public class ToolController implements Initializable {
                 if(!newValue) {
                     String y = charYOffset.getText();
                     try {
-                        ImageView im = (ImageView) framePane.lookup("#" + currChar.getName() + "_img");
+                        ImageView im = (ImageView) framePane.lookup("#" + currChar.getCharName() + "_img");
                         currY = Double.parseDouble(y);
                         im.setTranslateY(currY);
                     } catch (Exception e) { /* bad input */ };
@@ -278,7 +266,7 @@ public class ToolController implements Initializable {
     private void charPropInit() {             
         
         // Initialize character image list
-        int img_num = currChar.getImgNum(), i = 0;
+        int img_num = currChar.getStoryChar().getImgNum(), i = 0;
         allCharImgs = FXCollections.observableArrayList();
         while (i < img_num) {
             allCharImgs.add("IMG " + i);
@@ -287,14 +275,11 @@ public class ToolController implements Initializable {
         charImgChoice.setItems(allCharImgs);
         
         // Set character properties visible
-        charNameDisplay.setText(currChar.getName());
+        charNameDisplay.setText(currChar.getCharName());
         charNameDisplay.setVisible(true);
-        charNameField.setVisible(true);
-        charNameChangeLabel.setVisible(true);
         
         charSetImgLabel.setVisible(true);
         charImgChoice.setVisible(true);
-        openCharImg.setVisible(true);
         
         charXLabel.setVisible(true);
         charYLabel.setVisible(true);
@@ -346,34 +331,6 @@ public class ToolController implements Initializable {
             this.framePane.getChildren().add(bgView);
         }
     }
-    
-    /**
-     * Open file explorer and set char image
-     * @throws IOException
-     */
-    @FXML
-    private void openImgFile() throws IOException {
-        FileChooser fileChooser = new FileChooser();
-        File file = fileChooser.showOpenDialog(new Stage());
-        if (file != null) {
-            String path = file.toURI().toString();
-            
-            // Save newly chosen char img
-            Image charImg = new Image(path);
-            CharManager.addImgToChar(currChar.getName(), SwingFXUtils.fromFXImage(charImg, null));
-            currX = 0;
-            currY = 0;
-            currImgIdx = 0;
-            
-            // Display new char img
-            // Doubles as a visual test
-            int last = currChar.getImgNum() - 1;
-            Image charImgTest = imgConverter(wip.getCharByName(currChar.getName()).getImage(last));
-            currImg = new ImageView(charImgTest);
-            currImg.setId(currChar.getName() + "_img");
-            this.framePane.getChildren().add(currImg);
-        }
-    }
 
     /**
      * Save all character property changes
@@ -381,12 +338,15 @@ public class ToolController implements Initializable {
     @FXML
     private void setCharProp() {
         
-        FrameManager.removeCharacter(currChar.getName());
-        DisplayChar dc = new DisplayChar(currChar, currImgIdx, (int)currX, (int)currY, 1, 1);
-        FrameManager.addCharacter(dc);
+        currChar.setLeftMargin((int)currX);
+        currChar.setTopMargin((int)currY);
+        FrameManager.addCharacter(currChar);
         
         // Tool updates
-        allChars.add(currChar.getName());
+        int index = allChars.indexOf(currChar.getCharName());
+        
+        if (index >= 0)
+        allChars.add(currChar.getCharName());
         charaChoice.setItems(allChars);
         
     }
@@ -399,20 +359,17 @@ public class ToolController implements Initializable {
     private void removeChar() {
         
         if (currChar != null) {
-            FrameManager.removeCharacter(currChar.getName());
+            FrameManager.removeCharacter(currChar.getCharName());
             
             // Tool updates
-            allChars.remove(currChar.getName());
+            allChars.remove(currChar.getCharName());
             charaChoice.setItems(allChars);
 
             // Hide specific character properties
             charNameDisplay.setVisible(false);
-            charNameField.setVisible(false);
-            charNameChangeLabel.setVisible(false);
             
             charSetImgLabel.setVisible(false);
             charImgChoice.setVisible(false);
-            openCharImg.setVisible(false);
             
             charXLabel.setVisible(false);
             charYLabel.setVisible(false);
@@ -420,7 +377,7 @@ public class ToolController implements Initializable {
             charYOffset.setVisible(false);
             charSaveButton.setVisible(false);
             
-            framePane.getChildren().remove((ImageView) framePane.lookup("#" + currChar.getName() + "_img"));
+            framePane.getChildren().remove((ImageView) framePane.lookup("#" + currChar.getCharName() + "_img"));
             this.framePane.getChildren().remove(currImg);
         }
     }

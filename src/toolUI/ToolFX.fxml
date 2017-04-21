@@ -148,7 +148,6 @@
                                       <rowConstraints>
                                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -158,9 +157,8 @@
                                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                       </rowConstraints>
                                        <children>
-                                          <Label fx:id="charSetImgLabel" text="Set Image" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                                          <Label fx:id="charSetImgLabel" text="Set Image" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
                                           <ChoiceBox fx:id="charaChoice" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-                                          <Label fx:id="charNameChangeLabel" text="Change Name" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
                                           <Label layoutX="24.0" layoutY="99.0" text="Add/Edit Character">
                                              <font>
                                                 <Font name="System Bold" size="18.0" />
@@ -177,27 +175,21 @@
                                                 <Font name="System Bold Italic" size="18.0" />
                                              </font>
                                           </Label>
-                                          <ChoiceBox fx:id="charImgChoice" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-                                          <TextField fx:id="charNameField" scaleX="0.95" scaleY="0.95" scaleZ="0.95" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                                             <GridPane.margin>
-                                                <Insets />
-                                             </GridPane.margin>
-                                          </TextField>
-                                          <Button fx:id="openCharImg" mnemonicParsing="false" onMousePressed="#openImgFile" text="New Image" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
-                                          <Label fx:id="charXLabel" text="X offset:" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
-                                          <Label fx:id="charYLabel" text="Y offset:" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
-                                          <TextField fx:id="charXOffset" maxWidth="-Infinity" prefWidth="80.0" scaleX="0.95" scaleY="0.95" scaleZ="0.95" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                          <ChoiceBox fx:id="charImgChoice" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                                          <Label fx:id="charXLabel" text="X offset:" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
+                                          <Label fx:id="charYLabel" text="Y offset:" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
+                                          <TextField fx:id="charXOffset" maxWidth="-Infinity" prefWidth="80.0" scaleX="0.95" scaleY="0.95" scaleZ="0.95" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                              <GridPane.margin>
                                                 <Insets left="15.0" />
                                              </GridPane.margin>
                                           </TextField>
-                                          <TextField fx:id="charYOffset" maxWidth="-Infinity" prefWidth="80.0" scaleX="0.95" scaleY="0.95" scaleZ="0.95" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                                          <TextField fx:id="charYOffset" maxWidth="-Infinity" prefWidth="80.0" scaleX="0.95" scaleY="0.95" scaleZ="0.95" GridPane.columnIndex="1" GridPane.rowIndex="5">
                                              <GridPane.margin>
                                                 <Insets left="15.0" />
                                              </GridPane.margin>
                                           </TextField>
-                                          <Button fx:id="charSaveButton" mnemonicParsing="false" onAction="#setCharProp" text="Save Changes" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="8" />
-                                          <Button fx:id="removeCharButton" mnemonicParsing="false" onAction="#removeChar" text="Remove Character" GridPane.halignment="CENTER" GridPane.rowIndex="8" />
+                                          <Button fx:id="charSaveButton" mnemonicParsing="false" onAction="#setCharProp" text="Save Changes" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="7" />
+                                          <Button fx:id="removeCharButton" mnemonicParsing="false" onAction="#removeChar" text="Remove Character" GridPane.halignment="CENTER" GridPane.rowIndex="7" />
                                        </children>
                                     </GridPane>
                                  </content>

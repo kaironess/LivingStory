@@ -13,7 +13,7 @@ public class DisplayChar implements Serializable {
     private int height, width; //ratio between original picture height / width and screen height / width
     
     public DisplayChar(StoryChar character, int index) {
-        this(character, index, 0, 0, 0, 0);
+        this(character, index, 0, 0, 1, 1);
     }
     
     public DisplayChar(StoryChar character, int index, int leftMargin, int topMargin,
@@ -29,6 +29,14 @@ public class DisplayChar implements Serializable {
         return character.getImage(imgIndex);
     }
     
+    public void setCharImg(int newIndex) {
+        this.imgIndex = newIndex;
+    }
+    
+    public int getCharImgIndex() {
+        return imgIndex;
+    }
+    
     public String getCharName() {
         return character.getName();
     }
@@ -39,6 +47,14 @@ public class DisplayChar implements Serializable {
     
     public int getTopMargin() {
         return topMargin;
+    }
+    
+    public void setLeftMargin(int newMargin) {
+        leftMargin = newMargin;
+    }
+    
+    public void setTopMargin(int newMargin) {
+        topMargin = newMargin;
     }
     
     public StoryChar getStoryChar() {
