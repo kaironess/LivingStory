@@ -52,6 +52,11 @@
                         <MenuItem fx:id="statMenuCommand" mnemonicParsing="false" onAction="#openStatsDialog" text="Edit Stats" />
                      </items>
                   </Menu>
+                  <Menu fx:id="charMenu" mnemonicParsing="false" text="Characters">
+                     <items>
+                        <MenuItem fx:id="charMenuCommand" mnemonicParsing="false" onAction="#openCharDialog" text="Edit Chars" />
+                     </items>
+                  </Menu>
               </menus>
             </MenuBar>
          </top>
