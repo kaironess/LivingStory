@@ -27,4 +27,8 @@ public class CharManager {
     public static void deleteCharImg(String charName, Image img) {
         wip.getCharByName(charName).deleteImg(img);
     }
+    
+    public static void deleteCharImg(String charName, int index) {
+        wip.getCharByName(charName).deleteImg(index);
+    }
 }

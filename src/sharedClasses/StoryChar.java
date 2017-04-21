@@ -34,8 +34,12 @@ public class StoryChar implements Serializable {
         this.images.remove(img);
     }
     
+    public void deleteImg(int index) {
+        this.images.remove(index);
+    }
+    
     public Image getImage(int index) {
-        return this.images.get(index);
+        return images.get(index);
     }
     
     public int getImgNum() {
