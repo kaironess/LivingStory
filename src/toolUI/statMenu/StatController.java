@@ -1,9 +1,12 @@
 package toolUI.statMenu;
 
 import java.net.URL;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import creationToolClasses.StatManager;
+import creationToolClasses.WIP;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
@@ -31,12 +34,14 @@ import javafx.stage.Stage;
 import sharedClasses.Stat;
 
 public class StatController implements Initializable {
-        @FXML
-        private AnchorPane optionPane;
-        @FXML
-        private ListView statList;
-        @FXML
-        private Label newStatCmd;
+    private WIP wip = WIP.getWIP();
+    
+    @FXML
+    private AnchorPane optionPane;
+    @FXML
+    private ListView statList;
+    @FXML
+    private Label newStatCmd;
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
@@ -44,6 +49,7 @@ public class StatController implements Initializable {
     }
     
     private void setupStatList() {
+        // Functionality for the New Stat option
         newStatCmd.setOnMouseReleased(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -55,8 +61,34 @@ public class StatController implements Initializable {
                 // Traditional way to get the response value.
                 Optional<String> result = saveDialog.showAndWait();
                 if (result.isPresent()){
-                    Stat myStat = new Stat(result.get());
+                    StatManager.createStat(result.get());
+                    updateStatList();
                 }
+            }
+        });
+        
+        updateStatList();
+    }
+    
+    private void updateStatList() {
+        statList.getItems().clear();
+        statList.getItems().add(newStatCmd);
+        
+        List<Stat> stats = wip.stats;
+        
+        for (Stat stat : stats) {
+            Label newStat = new Label(stat.getName());
+            addStatDisplay(newStat);
+            statList.getItems().add(newStat);
+        }
+    }
+    
+    private void addStatDisplay(Label statLabel) {
+        // Functionality for each Stat in the list
+        newStatCmd.setOnMouseReleased(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+ 
             }
         });
     }
