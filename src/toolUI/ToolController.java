@@ -38,7 +38,9 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
-
+import javafx.scene.control.Toggle;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
 //import java.awt.Image;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -63,6 +65,7 @@ public class ToolController implements Initializable {
     int currImgIdx;
     ObservableList<String> allChars;
     ObservableList<String> allCharImgs;
+    ObservableList<String> allSongs;
     ImageView currImg;
     
     // MAIN/BASE WINDOW INJECTIONS
@@ -120,6 +123,14 @@ public class ToolController implements Initializable {
     
     @FXML
     private Button charSaveButton, removeCharButton;
+    
+    // FRAME EFFECTS INJECTIONS
+    
+    @FXML
+    private ChoiceBox<String> songChoice;
+    
+    @FXML
+    private ToggleButton loopOnToggle, loopOffToggle;
 
     // --------------------------------------------------------------------------
     //                              UI INITIALIZATIONS
@@ -142,6 +153,9 @@ public class ToolController implements Initializable {
             
             // Initialize frame character items
             charDefaultInit();
+            
+            // Initialize frame effect items
+            effectInit();
         }
     }
     
@@ -416,6 +430,53 @@ public class ToolController implements Initializable {
         Frame currFrame = FrameManager.getCurFrame();
         dialogLabel.setText(currFrame.getDialog());
         dialogLabel.toFront();
+    }
+    
+    /**
+     * Initialize frame effect listeners and lists
+     */
+    private void effectInit() {
+        allSongs = FXCollections.observableArrayList();
+        int song_num = wip.musics.size() - 1;
+        while (song_num >= 0) {
+            allSongs.add(wip.musics.get(song_num).getName());
+            song_num--;
+        }
+        songChoice.setItems(allSongs);
+        
+        // Listener to grab frame music selections
+        songChoice.getSelectionModel().selectedIndexProperty().addListener(
+                new ChangeListener<Number>() {
+                   public void changed(ObservableValue ov, 
+                           Number value, Number new_value) {
+                       int currSongIdx = new_value.intValue();
+                       if (currSongIdx >= 0) {
+                           Music chosen = wip.getMusicByName(allSongs.get(currSongIdx));
+                           FrameManager.addMusicTrigger(); //new MusicTrigger(chosen, PLAY);
+                       }
+                   }
+        });
+        
+        final ToggleGroup group = new ToggleGroup();
+        loopOnToggle.setToggleGroup(group);
+        loopOffToggle.setToggleGroup(group);
+        loopOnToggle.setUserData(true);
+        loopOffToggle.setUserData(false);
+        
+        group.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
+            @Override
+            public void changed(ObservableValue<? extends Toggle> ov,
+                Toggle toggle, Toggle new_toggle) {
+                    if (new_toggle == null) {
+                        // set no loop by default
+                    }
+                    else {
+                        // Gotta get MusicTrigger figured out
+                        // setLoop(group.getSelectedToggle().getUserData());
+                    }
+                 }
+        });
+        
     }
     
     // --------------------------------------------------------------------------
