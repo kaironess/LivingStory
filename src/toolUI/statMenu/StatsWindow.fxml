@@ -44,7 +44,8 @@
 					                  <Label fx:id="statValueLabel" text="Initial Value:" GridPane.rowIndex="2" />
 					                  <TextField fx:id="curStatName" onAction="#changeStatInfo" GridPane.columnIndex="1" />
 					                  <TextField fx:id="curStatVal" onAction="#changeStatInfo" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-					               	  <Button fx:id="saveStatInfo" mnemonicParsing="false" text="Save" onMousePressed="#changeStatInfo" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+					               	  <Button fx:id="saveStatInfo" mnemonicParsing="false" text="Save Stat" onMousePressed="#changeStatInfo" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+					               	  <Button fx:id="deleteStat" mnemonicParsing="false" text="Delete Stat" onMousePressed="#deleteStat" GridPane.columnIndex="2" GridPane.rowIndex="4" />
 					               </children>
 					               <padding>
 					                  <Insets left="10.0" right="10.0" />

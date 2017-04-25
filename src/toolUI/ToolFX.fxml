@@ -57,6 +57,11 @@
                         <MenuItem fx:id="charMenuCommand" mnemonicParsing="false" onAction="#openCharDialog" text="Edit Chars" />
                      </items>
                   </Menu>
+                  <Menu fx:id="bgMenu" mnemonicParsing="false" text="Backgrounds">
+                     <items>
+                        <MenuItem fx:id="bgMenuCommand" mnemonicParsing="false" onAction="#openBGDialog" text="Edit Backgrounds" />
+                     </items>
+                  </Menu>
               </menus>
             </MenuBar>
          </top>

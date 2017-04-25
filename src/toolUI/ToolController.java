@@ -422,27 +422,9 @@ public class ToolController implements Initializable {
     //                              TOP MENU CONTROLS
     // --------------------------------------------------------------------------
     
-    @FXML
-    void openStatsDialog() {
+    private void openDialog(String fxmlPath) {
         try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
-                 "statMenu" + File.separator + "StatsWindow.fxml"));
-                Parent root1 = (Parent) fxmlLoader.load();
-                Stage stage = new Stage();
-                Scene scene = new Scene(root1);
-                stage.setScene(scene);  
-                stage.show();
-        } 
-        catch(Exception e) {
-           e.printStackTrace();
-        }
-    }
-    
-    @FXML
-    void openCharDialog() {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
-             "charMenu" + File.separator + "CharsWindow.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxmlPath));
             Parent root1 = (Parent) fxmlLoader.load();
             Stage stage = new Stage();
             Scene scene = new Scene(root1);
@@ -452,6 +434,21 @@ public class ToolController implements Initializable {
         catch(Exception e) {
            e.printStackTrace();
         }
+    }
+    
+    @FXML
+    void openStatsDialog() {
+        openDialog("statMenu" + File.separator + "StatsWindow.fxml");
+    }
+    
+    @FXML
+    void openCharDialog() {
+        openDialog("charMenu" + File.separator + "CharsWindow.fxml");
+    }
+    
+    @FXML
+    void openBGDialog() {
+        openDialog("backgroundMenu" + File.separator + "BGWindow.fxml");
     }
     
     // Converts a regular Java Image to a JavaFX Image

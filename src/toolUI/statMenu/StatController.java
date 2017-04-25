@@ -73,8 +73,19 @@ public class StatController implements Initializable {
                 // Traditional way to get the response value.
                 Optional<String> result = saveDialog.showAndWait();
                 if (result.isPresent()){
-                    StatManager.createStat(result.get());
-                    updateStatList();
+                    String newStatName = result.get();
+                    // If a stat with that name already exists, dont let it be made
+                    if (wip.getStatByName(newStatName) == null) {
+                        StatManager.createStat(newStatName);
+                        updateStatList();
+                    }
+                    else {
+                        Alert alert = new Alert(AlertType.ERROR);
+                        alert.setTitle("Stat Exists");
+                        alert.setHeaderText(null);
+                        alert.setContentText("A stat with that name already exists.");
+                        alert.showAndWait();
+                    }
                 }
             }
         });
@@ -131,10 +142,29 @@ public class StatController implements Initializable {
     }
     
     @FXML
-    void changeStatInfo() {
+    public void changeStatInfo() {
         curDisplayStat.setCount(Integer.valueOf(curStatVal.getText()));
         curDisplayStat.rename(curStatName.getText());
         
         updateStatList();
+    }
+    
+    @FXML
+    public void deleteStat() {
+        String curStatName = curDisplayStat.getName();
+        
+        // Show a dialog asking if the player really wants to delete the stat
+        Alert confirm = new Alert(AlertType.CONFIRMATION);
+        confirm.setTitle("Delete Stat");
+        confirm.setHeaderText(null);
+        confirm.setContentText("You are about to delete " + curStatName + ". Is this okay?");
+        
+        Optional<ButtonType> result = confirm.showAndWait();
+        if (result.get() == ButtonType.OK){
+            StatManager.deleteStat(curStatName);
+            curDisplayStat = null;
+            statInfoPane.setVisible(false);
+            updateStatList();
+        }
     }
 }
