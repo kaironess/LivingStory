@@ -61,7 +61,7 @@
                                     <Insets right="10.0" />
                                  </GridPane.margin>
                               </Label>
-                              <Button fx:id="delCharButton" mnemonicParsing="false" text="Delete Character" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+                              <Button fx:id="delCharButton" mnemonicParsing="false" onAction="#deleteChar" text="Delete Character" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
                               <Button fx:id="saveCharButton" mnemonicParsing="false" text="Save Character" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
                               <TextField fx:id="charNameField" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                  <GridPane.margin>

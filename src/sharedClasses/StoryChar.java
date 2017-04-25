@@ -22,6 +22,7 @@ public class StoryChar implements Serializable {
         this.images = new LinkedList<Image>();
         if (img != null) {
             this.images.add(img);
+            System.out.println("im not null");
         }
         this.name = charName;
     }
@@ -52,6 +53,10 @@ public class StoryChar implements Serializable {
     
     public void setName(String newName) {
         this.name = newName;
+    }
+    
+    public List<Image> getImgs() {
+        return images;
     }
     
     // Overridden so that we can serialize BufferedImages

@@ -88,7 +88,7 @@ public class CharController implements Initializable {
      */
     @Override
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
-        newCharCmd = new Label("New Char");
+        newCharCmd = new Label("NEW CHAR");
         setupCharList();
         
         // Hide char option stuff
@@ -155,9 +155,12 @@ public class CharController implements Initializable {
         charLabel.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                // Reset fields                
                 charNameLabel.setText(charLabel.getText());
+                delImgChoice.getItems().clear();
                 
                 StoryChar curr = wip.getCharByName(charLabel.getText());
+                System.out.println("Char: " + charLabel.getText());
                 activeChar = curr;
                 
                 // Update the right side's info
@@ -172,8 +175,7 @@ public class CharController implements Initializable {
                     i++;
                 }
                 delImgChoice.setItems(FXCollections.observableArrayList(allCharImgs));
-                System.out.println("end listener");
-                
+                                
                 actionPane.setVisible(true);
             }
         });
@@ -187,7 +189,7 @@ public class CharController implements Initializable {
                            Number value, Number new_value) {
                        
                        int index = new_value.intValue();
-                       if (index < activeChar.getImgNum()) {
+                       if (index >= 0) {
                            CharManager.deleteCharImg(activeChar.getName(), index);
                        }
                    }
@@ -224,6 +226,13 @@ public class CharController implements Initializable {
             allCharImgs.add("IMG " + index);
             delImgChoice.setItems(FXCollections.observableArrayList(allCharImgs));
         }
+    }
+    
+    @FXML
+    private void deleteChar() {
+        CharManager.deleteChar(activeChar.getName());
+        updateCharList();
+        actionPane.setVisible(false);
     }
     
 }
