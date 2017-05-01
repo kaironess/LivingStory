@@ -38,6 +38,28 @@ public class FrameManager {
     }
     public static List<Decision> getDialogOptions() { return curFrame.getDialogOptions(); }
     
+    public static Decision fromID(int given) {
+        Decision result = null;
+        for (Decision d : curFrame.getDialogOptions()) {
+            if (d.getId() == given) {
+                result = d;
+                break;
+            }
+        }
+        return result;
+    }
+    
+    public static Decision fromText(String dialog) {
+        Decision result = null;
+        for (Decision d : curFrame.getDialogOptions()) {
+            if (d.getDialog().equals(dialog)) {
+                result = d;
+                break;
+            }
+        }
+        return result;
+    }
+    
     public static void addCharacter(DisplayChar character) { curFrame.addChar(character); }
     public static void removeCharacter(String charName) { curFrame.removeChar(charName); }
     public static void moveCharacter() {}
