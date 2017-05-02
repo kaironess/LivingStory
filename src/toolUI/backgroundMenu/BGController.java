@@ -102,8 +102,6 @@ public class BGController implements Initializable {
         
         curFrameBG.setMaxHeight(bgMenuAnchor.getPrefHeight() * .7);
         curFrameBG.setMinHeight(bgMenuAnchor.getPrefHeight() * .7);
-        curFrameBG.setMaxWidth(bgMenuAnchor.getPrefWidth());
-        curFrameBG.setMinWidth(bgMenuAnchor.getPrefWidth());
         
         allDefaultLabels = new ArrayList<>();
         allDefaultLabels.add(mainMenuBG);
@@ -191,6 +189,8 @@ public class BGController implements Initializable {
             
             curFrameIV.maxWidth(bgDisplayPane.getWidth());
             curFrameIV.setFitWidth(bgDisplayPane.getWidth());
+            curFrameIV.maxHeight(curFrameBG.getHeight());
+            curFrameIV.setFitHeight(curFrameBG.getHeight());
             curFrameIV.setPreserveRatio(true);
             
             curFrameBG.getChildren().add(curFrameIV);
