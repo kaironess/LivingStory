@@ -2,11 +2,21 @@ package creationToolClasses;
 
 import sharedClasses.*;
 import java.util.*;
+
+import javax.imageio.ImageIO;
+
+import createdGameClasses.GameController;
+
 import java.awt.Image;
 //import javafx.scene.image.Image;
+import java.io.File;
+import java.io.IOException;
 
-public class WIP {
+public final class WIP {
     private static WIP wip = new WIP();
+    
+    //First few bgs are for the diff menu screens
+    public enum BGIndex {MAIN_MENU, PAUSE_MENU, SETTINGS, SAVE, LOAD, GALLERY}
     
     public List<Frame> frames;
     public List<Image> bgs;
@@ -20,6 +30,16 @@ public class WIP {
         musics = new LinkedList<>();
         stats = new LinkedList<>();
         chars = new LinkedList<>();
+        
+        // Add one white picture for every default menu
+        for (BGIndex index : BGIndex.values()) {
+            try {
+                bgs.add(ImageIO.read(new File("src/creationToolClasses/whitePic.png")));
+            } 
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
     
     public static WIP getWIP() { return wip; }

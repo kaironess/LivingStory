@@ -512,6 +512,11 @@ public class ToolController implements Initializable {
         openDialog("backgroundMenu" + File.separator + "BGWindow.fxml");
     }
     
+    @FXML
+    void openMusicDialog() {
+        openDialog("musicMenu" + File.separator + "MusicWindow.fxml");
+    }
+    
     // Converts a regular Java Image to a JavaFX Image
     private javafx.scene.image.Image imgConverter(java.awt.Image img) {
         BufferedImage bi = (BufferedImage)img;

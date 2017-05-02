@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="bgMenuAnchor" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="toolUI.backgroundMenu.BGController">
+   <children>
+      <BorderPane fx:id="borderPane" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+	      <!-- SPLIT TOOL / GAME PREVIEW FUNCTIONALITY -->
+         <center>
+            <SplitPane fx:id="toolPane" dividerPositions="0.3280467445742905" prefHeight="600.0" prefWidth="300.0" BorderPane.alignment="CENTER">
+              <items>
+                <AnchorPane fx:id="optionPane" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+	                <children>
+	               		<ListView fx:id="bgList" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+	               			<Label fx:id="mainMenuBG" text="Main Menu"></Label>
+	               			<Label fx:id="pauseMenuBG" text="Pause Menu"></Label>
+	               			<Label fx:id="settingsBG" text="Settings"></Label>
+	               			<Label fx:id="saveMenuBG" text="Save Menu"></Label>
+	               			<Label fx:id="loadMenuBG" text="Load Menu"></Label>
+	               			<Label fx:id="galleryBG" text="Gallery"></Label>
+	               			<Label fx:id="frameBGs" text="Frame Backgrounds"></Label>
+	               		</ListView>
+	                </children>
+                </AnchorPane>
+                  
+                <!-- BG DISPLAY -->
+                <AnchorPane fx:id="bgDisplayPane" minHeight="0.0" minWidth="0.0">
+	                <children>
+	                	<StackPane fx:id="defBGPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+	                		<children>
+	                			<VBox fx:id="bgDisplayVBox" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+							       <children>
+					                  <ImageView fx:id="bgImageView" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+					                  </ImageView>
+							       </children>
+							    </VBox>
+							    <Button fx:id="changeBG" onAction="#changeDefImg" text="Change Background" StackPane.alignment="BOTTOM_RIGHT"></Button>
+	                		</children>
+	                	</StackPane>
+	                	<VBox fx:id="frameImgBox" AnchorPane.bottomAnchor="0.00" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+	                		<children>
+	                			<VBox fx:id="curFrameBG" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+	                				<children>
+	                					<ImageView fx:id="curFrameIV">
+	                					</ImageView>
+	                				</children>
+	                			</VBox>
+	                			<ScrollPane fx:id="frameBGScroll">
+								    <content>
+								        <HBox fx:id="frameImgs" BorderPane.alignment="TOP_CENTER">
+			                				<children>
+			                				</children>
+			                			</HBox>
+								    </content>
+								</ScrollPane>
+								<HBox AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+									<Button fx:id="addFrameBG" text="Add New Background" onAction="#addFrameBG" BorderPane.alignment="TOP_CENTER"></Button>
+									<Button fx:id="deleteFrameBG" text="Delete Current Background" onAction="#deleteCurBG" BorderPane.alignment="TOP_CENTER"></Button>
+								</HBox>
+	                		</children>
+	                	</VBox>
+	                </children>
+                </AnchorPane>
+              </items>
+            </SplitPane>
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>

@@ -187,6 +187,13 @@ public class GameController implements Serializable {
     }
     
     public Image getCurBG() {
+        // For nullified backgrounds
+        if (curFrame.getBG() < 0)
+            try {
+                return ImageIO.read(new File("src" + File.separator + "createdGameClasses" 
+                 + File.separator + "whitePic.png"));
+            } catch (IOException e) {  e.printStackTrace(); }
+        
         return bgList.get(curFrame.getBG() + bgOffset);
     }
     

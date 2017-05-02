@@ -62,6 +62,11 @@
                         <MenuItem fx:id="bgMenuCommand" mnemonicParsing="false" onAction="#openBGDialog" text="Edit Backgrounds" />
                      </items>
                   </Menu>
+                  <Menu fx:id="musicMenu" mnemonicParsing="false" text="Music">
+                     <items>
+                        <MenuItem fx:id="musicMenuCommand" mnemonicParsing="false" onAction="#openMusicDialog" text="Edit Music" />
+                     </items>
+                  </Menu>
               </menus>
             </MenuBar>
          </top>
