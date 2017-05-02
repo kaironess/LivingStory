@@ -139,10 +139,18 @@ public class BGController implements Initializable {
             allDefaultLabels.get(index).setOnMousePressed(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
-                    displayBG(index);
+                    displayDefaultBG(index);
                 }
             });
         }
+        
+        bgList.widthProperty().addListener(new ChangeListener<Number>() {
+            @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldWidth,
+             Number newWidth) {
+                double getWidth = newWidth.doubleValue();
+                frameBGs.setPrefWidth(getWidth);
+            }
+        });
         
         frameBGs.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
@@ -166,8 +174,9 @@ public class BGController implements Initializable {
     }
     
     // Adds functionality to a label so it displays the related bg image on the right
-    private void displayBG(int labelIndex) {
+    private void displayDefaultBG(int labelIndex) {
         defBGPane.setVisible(true);
+        frameImgBox.setVisible(false);
         curLabelIndex = labelIndex;
         bgImageView.setImage(imgConverter(wip.bgs.get(labelIndex)));
     }
@@ -239,7 +248,7 @@ public class BGController implements Initializable {
             try {
                 BufferedImage newBG = ImageIO.read(file);
                 wip.bgs.set(curLabelIndex, newBG);
-                displayBG(curLabelIndex);
+                displayDefaultBG(curLabelIndex);
             } catch (IOException e) { e.printStackTrace(); }
         }
     }

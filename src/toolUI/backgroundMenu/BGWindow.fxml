@@ -18,13 +18,13 @@
                 <AnchorPane fx:id="optionPane" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
 	                <children>
 	               		<ListView fx:id="bgList" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-	               			<Label fx:id="mainMenuBG" text="Main Menu"></Label>
-	               			<Label fx:id="pauseMenuBG" text="Pause Menu"></Label>
-	               			<Label fx:id="settingsBG" text="Settings"></Label>
-	               			<Label fx:id="saveMenuBG" text="Save Menu"></Label>
-	               			<Label fx:id="loadMenuBG" text="Load Menu"></Label>
-	               			<Label fx:id="galleryBG" text="Gallery"></Label>
-	               			<Label fx:id="frameBGs" text="Frame Backgrounds"></Label>
+	               			<Label fx:id="mainMenuBG" text="Main Menu" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"></Label>
+	               			<Label fx:id="pauseMenuBG" text="Pause Menu" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"></Label>
+	               			<Label fx:id="settingsBG" text="Settings" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"></Label>
+	               			<Label fx:id="saveMenuBG" text="Save Menu" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"></Label>
+	               			<Label fx:id="loadMenuBG" text="Load Menu" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"></Label>
+	               			<Label fx:id="galleryBG" text="Gallery" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"></Label>
+	               			<Label fx:id="frameBGs" text="Frame Backgrounds" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"></Label>
 	               		</ListView>
 	                </children>
                 </AnchorPane>
