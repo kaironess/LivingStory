@@ -131,6 +131,9 @@ public class ToolController implements Initializable {
     
     @FXML
     private ToggleButton loopOnToggle, loopOffToggle;
+    
+    @FXML
+    private Button frameDecButton, frameStatButton;
 
     // --------------------------------------------------------------------------
     //                              UI INITIALIZATIONS
@@ -153,9 +156,11 @@ public class ToolController implements Initializable {
             
             // Initialize frame character items
             charDefaultInit();
+            charListenerInit();
             
             // Initialize frame effect items
             effectInit();
+            
         }
     }
     
@@ -183,7 +188,7 @@ public class ToolController implements Initializable {
         charYOffset.setVisible(false);
         charSaveButton.setVisible(false);
         
-        charListenerInit();
+        //charListenerInit();
     }
     
     /**
@@ -341,6 +346,7 @@ public class ToolController implements Initializable {
             Frame currFrame = FrameManager.getCurFrame();
             //ImageView bgView = new ImageView(wip.bgs.get(currFrame.getBG()));
             ImageView bgView = new ImageView();
+            bgView.setId("CURR_BG");
             bgView.setImage(imgConverter(wip.bgs.get(currFrame.getBG())));
             this.framePane.getChildren().add(bgView);
         }
@@ -479,9 +485,91 @@ public class ToolController implements Initializable {
         
     }
     
+    @FXML
+    private void openDecDialog() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
+             "decisionsMenu" + File.separator + "DecsWindow.fxml"));
+            Parent root1 = (Parent) fxmlLoader.load();
+            Stage stage = new Stage();
+            Scene scene = new Scene(root1);
+            stage.setScene(scene);  
+            stage.show();
+        } 
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    @FXML
+    private void openFrameStatDialog() {
+        // not sure how to handle this
+        // make stat changes by decision or frame?
+    }
+    
     // --------------------------------------------------------------------------
     //                              TOP MENU CONTROLS
     // --------------------------------------------------------------------------
+    
+    @FXML
+    private void switchDFrame() {
+        // By default sets current frame as previous frame of the new frame
+        Frame nextFrame = new Frame(FrameManager.getCurFrame());
+        FrameManager.setCurFrame(nextFrame);
+        wip.frames.add(nextFrame);
+        
+        // Save curr frame properties
+        Color c = dialogColor.getValue();
+        int red = (int) Math.round(c.getRed() * 255);
+        int green = (int) Math.round(c.getGreen() * 255);
+        int blue = (int) Math.round(c.getBlue() * 255);
+        FrameManager.editDialogRGB(red, green, blue);
+        
+        dialogLabel.setText(null);
+        
+        FrameManager.editBG(wip.bgs.size() - 1);
+        
+        charXOffset.clear();
+        charYOffset.clear();
+        
+        // Display the current frame's dialog label
+        dialogInit();
+        
+        // Initialize frame character items
+        charDefaultInit();
+        
+        // Initialize frame effect items
+        effectInit();
+    }
+    @FXML
+    private void switchBFrame() {
+        // By default sets current frame as previous frame of the new frame
+        Frame nextFrame = new Frame(FrameManager.getCurFrame());
+        FrameManager.setCurFrame(nextFrame);
+        wip.frames.add(nextFrame);
+        
+        // Clear frame related properties
+        this.framePane.getChildren().clear();
+        
+        dialogLabel.setText(null);
+        dialogLabel.setStyle(null);
+        dialogLabel.toFront();
+        dialogColor.setValue(Color.WHITE);
+        dialogText.clear();
+        this.framePane.getChildren().remove((ImageView) framePane.lookup("#" + "CURR_BG"));
+        
+        charXOffset.clear();
+        charYOffset.clear();
+        
+        // Display the current frame's dialog label
+        dialogInit();
+        
+        // Initialize frame character items
+        charDefaultInit();
+        
+        // Initialize frame effect items
+        effectInit();
+    }
     
     private void openDialog(String fxmlPath) {
         try {

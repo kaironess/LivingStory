@@ -23,8 +23,8 @@
                   <items>
                         <MenuItem fx:id="openFile" mnemonicParsing="false" text="Open Project" />
                         <MenuItem fx:id="saveProject" mnemonicParsing="false" text="Save Project" />
-                        <MenuItem fx:id="newBFrame" mnemonicParsing="false" text="New Blank Frame" />
-                        <MenuItem fx:id="newDFrame" mnemonicParsing="false" text="New Duplicate Frame" />
+                        <MenuItem fx:id="newBFrame" mnemonicParsing="false" onAction="#switchBFrame" text="New Blank Frame" />
+                        <MenuItem fx:id="newDFrame" mnemonicParsing="false" onAction="#switchDFrame" text="New Duplicate Frame" />
                   </items>
                 </Menu>
                 
@@ -229,7 +229,7 @@
                                                 <Insets />
                                              </GridPane.margin>
                                           </Label>
-                                          <Label text="Decisions" GridPane.halignment="LEFT" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                                          <Label text="Next Frame" GridPane.halignment="LEFT" GridPane.rowIndex="3" GridPane.valignment="CENTER">
                                              <font>
                                                 <Font name="System Bold" size="18.0" />
                                              </font>
@@ -249,6 +249,10 @@
                                                 <Insets left="35.0" />
                                              </GridPane.margin>
                                           </ToggleButton>
+                                          <Button fx:id="frameDecButton" mnemonicParsing="false" onAction="#openDecDialog" text="Edit Decisions" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+                                          <Label text="Player Decisions" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
+                                          <Label text="Stat Changes" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
+                                          <Button fx:id="frameStatButton" mnemonicParsing="false" onAction="#openFrameStatDialog" text="Edit Stat Changes" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
                                        </children>
                                        <columnConstraints>
                                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="155.0" minWidth="10.0" prefWidth="145.0" />
