@@ -116,19 +116,7 @@ public class BGController implements Initializable {
         // Bind the imageView to its parent's size
         bgImageView.fitWidthProperty().bind(this.defBGPane.widthProperty());
         bgImageView.fitHeightProperty().bind(this.defBGPane.heightProperty());
-        
-        //TODO TEMP
-        for (int i = 0; i < 1; i++) {
-            try {
-                addImage(ImageIO.read(new File("src/testing/TestingMaterials/brachy.png")));
-                addImage(ImageIO.read(new File("src/testing/TestingMaterials/amSmols.jpg")));
-                addImage(ImageIO.read(new File("src/testing/TestingMaterials/poofball.jpg")));
-                addImage(ImageIO.read(new File("src/testing/TestingMaterials/puppers.jpg")));
-            } 
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+
     }
     
 

@@ -6,20 +6,34 @@ import java.util.*;
 import javax.imageio.ImageIO;
 
 import createdGameClasses.GameController;
+import createdGameClasses.Save;
 
 import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 //import javafx.scene.image.Image;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
-public final class WIP {
+public final class WIP implements Serializable {
+    static final long serialVersionUID = 123512357876L;
     private static WIP wip = new WIP();
     
     //First few bgs are for the diff menu screens
     public enum BGIndex {MAIN_MENU, PAUSE_MENU, SETTINGS, SAVE, LOAD, GALLERY}
     
     public List<Frame> frames;
-    public List<Image> bgs;
+    public transient List<Image> bgs;
     public List<Music> musics;
     public List<Stat> stats;
     public List<StoryChar> chars;
@@ -69,5 +83,73 @@ public final class WIP {
         }
         
         return null;
+    }
+    
+    public static void saveWIP(String path) {
+        // Trim if user entered the file extension too
+        if (path.endsWith(".LSWIP")) {
+            path = path.substring(0, path.length() - 6);
+        }
+        
+        Path savePath = Paths.get(path);
+        
+        // Save the wip
+        try {
+            FileOutputStream fos = new FileOutputStream(savePath + ".LSWIP");
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            
+            oos.writeObject(wip);
+            oos.close();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public static void loadWIP(String path) {
+        String filePath = path;
+        
+        try {
+            FileInputStream fis = new FileInputStream(filePath);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            
+            wip = (WIP)ois.readObject();
+            
+            ois.close();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    // Overridden so that we can serialize BufferedImages
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        out.defaultWriteObject();
+        out.writeInt(bgs.size());
+        
+        for (Image img : bgs) {
+            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+            ImageIO.write((RenderedImage)img, "png", buffer);
+            
+            out.writeInt(buffer.size());
+            buffer.writeTo(out);
+        }
+    }
+    
+    // Overridden so that we can serialize BufferedImages
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        
+        int imageCount = in.readInt();
+        bgs = new ArrayList<Image>();
+        
+        for (int i = 0; i < imageCount; i++) {
+            int size = in.readInt();
+            
+            byte[] buffer = new byte[size];
+            in.readFully(buffer);
+            
+            bgs.add(ImageIO.read(new ByteArrayInputStream(buffer)));
+        }
     }
 }

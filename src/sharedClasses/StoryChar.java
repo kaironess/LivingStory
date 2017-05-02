@@ -22,7 +22,6 @@ public class StoryChar implements Serializable {
         this.images = new LinkedList<Image>();
         if (img != null) {
             this.images.add(img);
-            System.out.println("im not null");
         }
         this.name = charName;
     }
@@ -66,7 +65,7 @@ public class StoryChar implements Serializable {
         
         for (Image img : images) {
             ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-            ImageIO.write((RenderedImage)img, "jpg", buffer);
+            ImageIO.write((RenderedImage)img, "png", buffer);
             
             out.writeInt(buffer.size());
             buffer.writeTo(out);

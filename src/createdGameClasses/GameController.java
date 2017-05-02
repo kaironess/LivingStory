@@ -210,7 +210,7 @@ public class GameController implements Serializable {
         
         for (Image img : bgList) {
             ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-            ImageIO.write((RenderedImage)img, "jpg", buffer);
+            ImageIO.write((RenderedImage)img, "png", buffer);
             
             out.writeInt(buffer.size());
             buffer.writeTo(out);

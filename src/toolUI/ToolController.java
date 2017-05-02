@@ -586,23 +586,41 @@ public class ToolController implements Initializable {
     }
     
     @FXML
-    void openStatsDialog() {
+    private void openStatsDialog() {
         openDialog("statMenu" + File.separator + "StatsWindow.fxml");
     }
     
     @FXML
-    void openCharDialog() {
+    private void openCharDialog() {
         openDialog("charMenu" + File.separator + "CharsWindow.fxml");
     }
     
     @FXML
-    void openBGDialog() {
+    private void openBGDialog() {
         openDialog("backgroundMenu" + File.separator + "BGWindow.fxml");
     }
     
     @FXML
-    void openMusicDialog() {
+    private void openMusicDialog() {
         openDialog("musicMenu" + File.separator + "MusicWindow.fxml");
+    }
+    
+    @FXML
+    private void openWIP() {
+        FileChooser fileChooser = new FileChooser();
+        File file = fileChooser.showOpenDialog(new Stage());
+        if (file != null) {    
+            WIP.loadWIP(file.getAbsolutePath());
+        }
+    }
+    
+    @FXML
+    private void saveWIP() {
+        FileChooser fileChooser = new FileChooser();
+        File file = fileChooser.showSaveDialog(new Stage());
+        if (file != null) {    
+            WIP.saveWIP(file.getAbsolutePath());
+        }
     }
     
     // Converts a regular Java Image to a JavaFX Image
