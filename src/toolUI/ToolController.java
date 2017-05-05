@@ -71,6 +71,8 @@ public class ToolController implements Initializable {
     ObservableList<String> allSongs;
     ImageView currImg;
     
+    private String curWIPPath = null;
+    
     // MAIN/BASE WINDOW INJECTIONS
     @FXML
     private AnchorPane basePane, framePane, propPane;
@@ -85,7 +87,8 @@ public class ToolController implements Initializable {
     private Menu fileMenu, editMenu, viewMenu, statMenu, charMenu;
     
     @FXML
-    private MenuItem openFile, statMenuCommand, charMenuCommand, saveProject, newDFrame, statList, newBFrame;
+    private MenuItem openFile, statMenuCommand, charMenuCommand, saveCurProject, saveNewProject,
+     newDFrame, statList, newBFrame;
     
     @FXML
     private SplitPane toolPane;
@@ -615,6 +618,7 @@ public class ToolController implements Initializable {
         if (file != null) {    
             try {
                 WIP.loadWIP(file.getAbsolutePath());
+                curWIPPath = file.getAbsolutePath();
             }
             catch (BadWIPException e) {
                 Alert alert = new Alert(AlertType.ERROR);
@@ -627,11 +631,43 @@ public class ToolController implements Initializable {
     }
     
     @FXML
-    private void saveWIP() {
+    private void saveCurWIP() {
+        if (curWIPPath != null) {
+            File file = new File(this.curWIPPath);
+            if (file != null) {    
+                WIP.saveWIP(file.getAbsolutePath());
+                
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("Save Success");
+                alert.setHeaderText(null);
+                alert.setContentText("Save Successful!");
+
+                alert.showAndWait();
+            }
+        }
+        else {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("No Project");
+            alert.setHeaderText(null);
+            alert.setContentText("No project is currently loaded that can be saved!");
+            alert.showAndWait();
+        }
+    }
+    
+    @FXML
+    private void saveNewWIP() {
         FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showSaveDialog(new Stage());
         if (file != null) {    
+            curWIPPath = file.getAbsolutePath();
             WIP.saveWIP(file.getAbsolutePath());
+            
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Save Success");
+            alert.setHeaderText(null);
+            alert.setContentText("Save Successful!");
+
+            alert.showAndWait();
         }
     }
     
