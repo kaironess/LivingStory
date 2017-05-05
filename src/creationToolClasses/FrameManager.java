@@ -65,13 +65,30 @@ public class FrameManager {
     public static void moveCharacter() {}
     public static List<DisplayChar> getCharacters() { return curFrame.getChars(); }
     
-    public static void addMusicTrigger() {}
+    public static void addMusicTrigger(Music music) {
+        curFrame.addMusicTrigger(new MusicTrigger(music, MusicTrigger.Trigger.PLAY));
+    }
     public static void removeMusicTrigger() {}
-    public static void updateMusicTrigger() {}
+    public static void updateMusicTrigger(int trigger) {}
     public static List<MusicTrigger> getTriggers() { return curFrame.getMusicTriggers(); }
     
-    public static void addStatChange() {}
+    public static void addStatChange(String statname) {
+        StatChange sc = new StatChange(curFrame, statname, 0);
+        curFrame.addStatChange(sc);
+    }
     public static void removeStatChange() {}
-    public static void updateStatChange() {}
+    public static void updateStatChange(String statname, int change) {
+        
+    }
+    public static StatChange hasStatChange(String statname) {
+        StatChange result = null;
+        for (StatChange sc : curFrame.getStatChanges()) {
+            if (sc.getStatName().equals(statname)) {
+                result = sc;
+                break;
+            }
+        }
+        return result;
+    }
     public static List<StatChange> getStatChanges() { return curFrame.getStatChanges(); }
 }

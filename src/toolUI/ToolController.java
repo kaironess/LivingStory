@@ -8,6 +8,7 @@ import java.util.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.event.EventHandler;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -57,6 +58,7 @@ import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.GridPane;
 
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.stage.FileChooser;
 
 public class ToolController implements Initializable {
@@ -66,14 +68,18 @@ public class ToolController implements Initializable {
     DisplayChar currChar = null;
     double currX = 0, currY = 0;
     int currImgIdx;
+    String currStat;
     ObservableList<String> allChars;
     ObservableList<String> allCharImgs;
     ObservableList<String> allSongs;
+    ObservableList<String> allStats;
+    ObservableList<String> allBGs;
     ImageView currImg;
     
     private String curWIPPath = null;
     
     // MAIN/BASE WINDOW INJECTIONS
+    
     @FXML
     private AnchorPane basePane, framePane, propPane;
     
@@ -105,7 +111,7 @@ public class ToolController implements Initializable {
     // FRAME SETUP INJECTIONS
     
     @FXML
-    private Button openFrameBG;
+    private ChoiceBox<String> bgChoice;
     
     @FXML
     private ColorPicker dialogColor;
@@ -133,13 +139,19 @@ public class ToolController implements Initializable {
     // FRAME EFFECTS INJECTIONS
     
     @FXML
-    private ChoiceBox<String> songChoice;
+    private ChoiceBox<String> songChoice, statChoice;
     
     @FXML
     private ToggleButton loopOnToggle, loopOffToggle;
     
     @FXML
-    private Button frameDecButton, frameStatButton;
+    private Button frameDecButton, statChangeButton;
+    
+    @FXML
+    private TextField statChangeText;
+    
+    @FXML
+    private Label changeValLabel, loopLabel;
 
     // --------------------------------------------------------------------------
     //                              UI INITIALIZATIONS
@@ -175,10 +187,10 @@ public class ToolController implements Initializable {
      */
     private void charDefaultInit() {
         allChars = FXCollections.observableArrayList();
-        int char_num = wip.chars.size() - 1;
-        while (char_num >= 0) {
-            allChars.add(wip.chars.get(char_num).getName());
-            char_num--;
+        int char_num = wip.chars.size() - 1, i = 0;
+        while (i <= char_num) {
+            allChars.add(wip.chars.get(i).getName());
+            i++;
         }
         charaChoice.setItems(allChars);
         
@@ -215,7 +227,7 @@ public class ToolController implements Initializable {
                            
                            // If char not already in frame, ADD new display char
                            if (currFrame.getChar(allChars.get(index)) == null) {
-                               currChar = new DisplayChar(wip.chars.get(index), 0);
+                               currChar = new DisplayChar(wip.chars.get(index), -1);
                                System.out.println("ADDING DISPLAY CHAR");
                            }
                            // If char already in frame, EDIT a display char
@@ -237,17 +249,19 @@ public class ToolController implements Initializable {
                        currImgIdx = new_value.intValue();
                        if (currImgIdx >= 0) {                           
                            // If chosen image is a diff image
-                           Image charImg = imgConverter(currChar.getCharImg());
                            if (currChar.getCharImgIndex() != currImgIdx) {
                                currChar.setCharImg(currImgIdx);
+                               Image charImg = imgConverter(currChar.getCharImg());
                                currImg = new ImageView(charImg);
                                currImg.setId(currChar.getCharName() + "_img");
                                framePane.getChildren().add(currImg);
+                               dialogLabel.toFront();
                            }
                            // If chosen image doesn't change
                            else {
                                ImageView im = (ImageView) framePane.lookup("#" + currChar.getCharName() + "_img");
                                currImg = im;
+                               dialogLabel.toFront();
                            }
                        }
                    }
@@ -314,9 +328,36 @@ public class ToolController implements Initializable {
     }
     
     /**
-     * Initialize frame dialog box
+     * Initialize frame dialog box and frame background
      */
     private void dialogInit() {
+        allBGs = FXCollections.observableArrayList();
+        int bg_num = wip.bgs.size() - 7, i = 0;
+        while (i < bg_num) {
+            String imgName = wip.bg_paths.get(i);
+            allBGs.add(imgName);
+            i++;
+        }
+        bgChoice.setItems(allBGs);
+        
+        // Listener to grab frame bg selections
+        bgChoice.getSelectionModel().selectedIndexProperty().addListener(
+                new ChangeListener<Number>() {
+                   public void changed(ObservableValue ov, 
+                           Number value, Number new_value) {
+                       currImgIdx = new_value.intValue();
+                       if (currImgIdx >= 0) {           
+                           FrameManager.editBG(currImgIdx + 6);
+                           
+                           Frame currFrame = FrameManager.getCurFrame();
+                           ImageView bgView = new ImageView();
+                           bgView.setId("CURR_BG");
+                           bgView.setImage(imgConverter(wip.bgs.get(currFrame.getBG())));
+                           framePane.getChildren().add(bgView);
+                       }
+                   }
+        });        
+        
         dialogLabel = new Label();
         dialogLabel.setMinHeight(this.basePane.getPrefHeight() / 8);
         dialogLabel.setPadding(new Insets(10, 10, 10, 10));
@@ -326,17 +367,14 @@ public class ToolController implements Initializable {
         this.framePane.setRightAnchor(dialogLabel, 10.0);
         this.framePane.setBottomAnchor(dialogLabel, 10.0);
         this.framePane.getChildren().addAll(dialogLabel);
+        
     }
     
     /**
      * Open file explorer and set bg image
      * @throws IOException
      */
-    //      Just remember that we need to edit our linked list
-    //      when adding the menu bgs to the front in the correct order
-    //      That functionality will be done later
-    @FXML
-    private void openBGFile() throws IOException {
+    /**
         FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(new Stage());
         if (file != null) {
@@ -356,7 +394,7 @@ public class ToolController implements Initializable {
             bgView.setImage(imgConverter(wip.bgs.get(currFrame.getBG())));
             this.framePane.getChildren().add(bgView);
         }
-    }
+    } */
 
     /**
      * Save all character property changes
@@ -448,11 +486,16 @@ public class ToolController implements Initializable {
      * Initialize frame effect listeners and lists
      */
     private void effectInit() {
+        statChangeButton.setVisible(false);
+        statChangeText.setVisible(false);
+        changeValLabel.setVisible(false);
+        loopLabel.setVisible(false);
+        
         allSongs = FXCollections.observableArrayList();
-        int song_num = wip.musics.size() - 1;
-        while (song_num >= 0) {
+        int song_num = wip.musics.size() - 1, i = 0;
+        while (i <= song_num) {
             allSongs.add(wip.musics.get(song_num).getName());
-            song_num--;
+            i++;
         }
         songChoice.setItems(allSongs);
         
@@ -464,7 +507,11 @@ public class ToolController implements Initializable {
                        int currSongIdx = new_value.intValue();
                        if (currSongIdx >= 0) {
                            Music chosen = wip.getMusicByName(allSongs.get(currSongIdx));
-                           FrameManager.addMusicTrigger(); //new MusicTrigger(chosen, PLAY);
+                           FrameManager.addMusicTrigger(chosen); // auto PLAY set
+                           
+                           loopLabel.setVisible(true);
+                           loopOnToggle.setVisible(true);
+                           loopOffToggle.setVisible(true);
                        }
                    }
         });
@@ -474,43 +521,75 @@ public class ToolController implements Initializable {
         loopOffToggle.setToggleGroup(group);
         loopOnToggle.setUserData(true);
         loopOffToggle.setUserData(false);
+        loopOnToggle.setVisible(false);
+        loopOffToggle.setVisible(false);
         
         group.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
             @Override
             public void changed(ObservableValue<? extends Toggle> ov,
                 Toggle toggle, Toggle new_toggle) {
+                    MusicTrigger mt = FrameManager.getTriggers().get(0); 
                     if (new_toggle == null) {
                         // set no loop by default
+                        mt.setLoop(false);
                     }
                     else {
-                        // Gotta get MusicTrigger figured out
-                        // setLoop(group.getSelectedToggle().getUserData());
+                        mt.setLoop((boolean) group.getSelectedToggle().getUserData());
                     }
                  }
         });
         
+        // STAT CHANGE LISTENERS
+        allStats = FXCollections.observableArrayList();
+        int stat_num = wip.stats.size() - 1;
+        i = 0;
+        while (i <= stat_num) {
+            allStats.add(wip.stats.get(i).getName());
+            i++;
+        }
+        statChoice.setItems(allStats);
+        
+        // Listener to grab frame music selections
+        statChoice.getSelectionModel().selectedIndexProperty().addListener(
+                new ChangeListener<Number>() {
+                   public void changed(ObservableValue ov, 
+                           Number value, Number new_value) {
+                       int currStatIdx = new_value.intValue();
+                       if (currStatIdx >= 0) {
+                           String stat = allStats.get(currStatIdx);
+                           currStat = stat;
+                           StatChange sc = FrameManager.hasStatChange(stat);
+                           if (sc != null) {
+                               statChangeText.setText("" + sc.getChange());
+                           }
+                           else {
+                               FrameManager.addStatChange(allStats.get(currStatIdx));
+                               statChangeText.setText("0");
+                           }
+                       }
+                       statChangeText.setVisible(true);
+                       statChangeButton.setVisible(true);
+                       changeValLabel.setVisible(true);
+                   }
+        });
     }
     
     @FXML
     private void openDecDialog() {
+        openDialog("decisionsMenu" + File.separator + "DecsWindow.fxml");
+    }
+
+    @FXML
+    private void saveStatChange() {
+        // stat changes are applied at the frame level
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
-             "decisionsMenu" + File.separator + "DecsWindow.fxml"));
-            Parent root1 = (Parent) fxmlLoader.load();
-            Stage stage = new Stage();
-            Scene scene = new Scene(root1);
-            stage.setScene(scene);  
-            stage.show();
-        } 
-        catch(Exception e) {
+            int change = Integer.parseInt(statChangeText.getText());
+            FrameManager.updateStatChange(currStat, change);
+            
+        } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-    
-    @FXML
-    private void openFrameStatDialog() {
-        // not sure how to handle this
-        // make stat changes by decision or frame?
+        
     }
     
     // --------------------------------------------------------------------------
@@ -537,6 +616,7 @@ public class ToolController implements Initializable {
         
         charXOffset.clear();
         charYOffset.clear();
+        statChangeText.clear();
         
         // Display the current frame's dialog label
         dialogInit();
@@ -566,6 +646,7 @@ public class ToolController implements Initializable {
         
         charXOffset.clear();
         charYOffset.clear();
+        statChangeText.clear();
         
         // Display the current frame's dialog label
         dialogInit();
@@ -577,13 +658,23 @@ public class ToolController implements Initializable {
         effectInit();
     }
     
+    // OPENING NEW WINDOWS ---------------------------------------------------
+    
+    
     private void openDialog(String fxmlPath) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxmlPath));
             Parent root1 = (Parent) fxmlLoader.load();
             Stage stage = new Stage();
             Scene scene = new Scene(root1);
-            stage.setScene(scene);  
+            stage.setScene(scene);
+            stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                public void handle(WindowEvent we) {
+                    dialogInit();
+                    charDefaultInit();
+                    effectInit();
+                }
+            });  
             stage.show();
         } 
         catch(Exception e) {
