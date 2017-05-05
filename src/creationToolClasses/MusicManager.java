@@ -20,7 +20,7 @@ public class MusicManager {
     }
     
     public static void changeFile(String musicName, String fileName) {
-        wip.getMusicByName(musicName).updateMusicPlayer(fileName);
+        wip.getMusicByName(musicName).changeMediaFile(fileName);
     }
 
 }

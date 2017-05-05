@@ -25,4 +25,8 @@ public class StatChange implements Serializable {
         
         return stats;
     }
+    
+    public boolean forStat(Stat stat) {
+        return stat.getName().equals(statName);
+    }
 }

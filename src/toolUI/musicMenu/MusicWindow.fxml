@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="musicMenuAnchor" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="toolUI.musicMenu.MusicController">
+   <children>
+      <BorderPane fx:id="borderPane" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+	      <!-- SPLIT TOOL / GAME PREVIEW FUNCTIONALITY -->
+         <center>
+            <SplitPane fx:id="toolPane" dividerPositions="0.3280467445742905" prefHeight="600.0" prefWidth="300.0" BorderPane.alignment="CENTER">
+              <items>
+                <AnchorPane fx:id="optionPane" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+	                <children>
+	               		<ListView fx:id="musicList" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+	               			<Label fx:id="newMusic" text="New Music" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"></Label>
+	               		</ListView>
+	                </children>
+                </AnchorPane>
+                  
+                <!-- MUSIC INFO DISPLAY -->
+                <AnchorPane fx:id="musicDisplayPane" minHeight="0.0" minWidth="0.0">
+	                <children>
+                	<VBox fx:id="musicInfoBox" layoutX="109.0" layoutY="47.0" prefHeight="400.0" prefWidth="300.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+				         <children>
+				         	<HBox AnchorPane.bottomAnchor="0.1" AnchorPane.leftAnchor="0.1" AnchorPane.rightAnchor="0.1" AnchorPane.topAnchor="0.1">
+				         		<children>
+				         			<Label fx:id="musicNameLabel" text="Music Name:" />
+			                  		<TextField fx:id="curMusicName" onAction="#changeMusicInfo"/>
+				         		</children>
+				         	</HBox>
+		                    <VBox fx:id="musicControlBox" GridPane.rowIndex="2" AnchorPane.bottomAnchor="0.1" AnchorPane.leftAnchor="0.1" AnchorPane.rightAnchor="0.1" AnchorPane.topAnchor="0.1">
+		                    </VBox>
+		                    <VBox AnchorPane.bottomAnchor="0.1" AnchorPane.leftAnchor="0.1" AnchorPane.rightAnchor="0.1" AnchorPane.topAnchor="0.1">
+		                    	<children>
+		                    		<HBox>
+				                    	<children>
+				                    		<Button fx:id="playMusicButton" mnemonicParsing="false" text="Play Music" onMousePressed="#playCurMusic"/>
+				                	        <Button fx:id="pauseMusicButton" mnemonicParsing="false" text="Pause Music" onMousePressed="#pauseCurMusic"/>
+				                    		<Button fx:id="stopMusicButton" mnemonicParsing="false" text="Stop Music" onMousePressed="#stopCurMusic"/>
+				                    	</children>
+				                    </HBox>
+		                    		<HBox>
+				                    	<children>
+				                    		<Button fx:id="saveMusicInfo" mnemonicParsing="false" text="Save Music" onMousePressed="#changeMusicInfo"/>
+				                	        <Button fx:id="deleteMusic" mnemonicParsing="false" text="Delete Music" onMousePressed="#deleteMusic"/>
+				                    	</children>
+				                    </HBox>
+		                    	</children>
+		                    </VBox>
+				         </children>
+				      </VBox>
+	                </children>
+                </AnchorPane>
+              </items>
+            </SplitPane>
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>

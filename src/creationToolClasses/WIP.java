@@ -38,6 +38,8 @@ public final class WIP implements Serializable {
     public List<Stat> stats;
     public List<StoryChar> chars;
     
+    public static class BadWIPException extends Exception {}
+    
     private WIP() {
         frames = new LinkedList<>();
         bgs = new LinkedList<>();
@@ -85,6 +87,32 @@ public final class WIP implements Serializable {
         return null;
     }
     
+    public void deleteStat(Stat stat) {
+        // Erase all StatChanges that are using this Stat
+        for (Frame frame : wip.frames) {
+            for (StatChange sc : frame.getStatChanges()) {
+                if (sc.forStat(stat)) {
+                    frame.getStatChanges().remove(sc);
+                }
+            }
+        }
+        
+        wip.stats.remove(stat);
+    }
+    
+    public void deleteMusic(Music music) {
+        // Erase all MusicTriggers that are using this Music
+        for (Frame frame : wip.frames) {
+            for (MusicTrigger trigger : frame.getMusicTriggers()) {
+                if (trigger.forMusic(music)) {
+                    frame.getMusicTriggers().remove(trigger);
+                }
+            }
+        }
+        
+        wip.musics.remove(music);
+    }
+    
     public static void saveWIP(String path) {
         // Trim if user entered the file extension too
         if (path.endsWith(".LSWIP")) {
@@ -106,7 +134,7 @@ public final class WIP implements Serializable {
         }
     }
     
-    public static void loadWIP(String path) {
+    public static void loadWIP(String path) throws BadWIPException {
         String filePath = path;
         
         try {
@@ -119,6 +147,7 @@ public final class WIP implements Serializable {
         }
         catch (Exception e) {
             e.printStackTrace();
+            throw new BadWIPException();
         }
     }
     

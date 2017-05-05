@@ -37,7 +37,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import sharedClasses.Frame;
+import sharedClasses.MusicTrigger;
 import sharedClasses.Stat;
+import sharedClasses.StatChange;
 
 public class StatController implements Initializable {
     private WIP wip = WIP.getWIP();
@@ -161,7 +164,7 @@ public class StatController implements Initializable {
         
         Optional<ButtonType> result = confirm.showAndWait();
         if (result.get() == ButtonType.OK){
-            StatManager.deleteStat(curStatName);
+            wip.deleteStat(curDisplayStat);
             curDisplayStat = null;
             statInfoPane.setVisible(false);
             updateStatList();

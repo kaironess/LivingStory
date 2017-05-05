@@ -1,10 +1,20 @@
 package sharedClasses;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
+import createdGameClasses.Save;
 import javafx.scene.media.*;
 import javafx.stage.Stage;
 import javafx.embed.swing.JFXPanel;
@@ -12,8 +22,13 @@ import javafx.embed.swing.JFXPanel;
 public class Music implements Serializable {
     static final long serialVersionUID = 5L;
     
+    private static int musicIndex = 0;
+    private static String musicDir = System.getProperty("user.dir") + File.separator + 
+     "GameMusic" + File.separator;
+    
     private String name;
-    private MediaPlayer player;
+    private transient MediaPlayer player;
+    private File mediaFile;
     private State curState;
     
     enum State {PLAYING, PAUSED, STOPPED};
@@ -22,15 +37,38 @@ public class Music implements Serializable {
         return "src\\testing\\TestingMaterials\\" + addOn;
     }
     
-    public Music(String musicName, String fileName) {
+    public Music(String musicName, String filePath) {
         this.name = musicName;
         new JFXPanel(); // Needed to initialize stuff for MediaPlayer
-        updateMusicPlayer(fileName);
+        setupMusicFiles(filePath);
+        setupMediaPlayer();
     }
     
-    public void updateMusicPlayer(String fileName) {
-        String filePath = getMatPath(fileName);
-        player = new MediaPlayer(new Media(new File(filePath).toURI().toString()));
+    private void setupMusicFiles(String filePath) {
+        Path savePath = Paths.get(this.musicDir);
+        
+        // Make the save folder for music if it doesn't exist
+        if (!Files.exists(savePath)) {
+            boolean madeSaveFile = new File(savePath.toString()).mkdirs();
+        }
+            
+        Path origFile = Paths.get(filePath);
+        String[] fileDirs = filePath.split(Pattern.quote(System.getProperty("file.separator")));
+        Path copyFile = Paths.get(savePath + File.separator + fileDirs[fileDirs.length - 1]);
+        
+        // Save the file
+        try {
+            Files.copy(origFile, copyFile, StandardCopyOption.COPY_ATTRIBUTES);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        mediaFile = new File(copyFile.toUri());
+    }
+    
+    public void setupMediaPlayer() {
+        player = new MediaPlayer(new Media(mediaFile.toURI().toString()));
         loop();
         
         // Update curState depending on player activity
@@ -92,5 +130,16 @@ public class Music implements Serializable {
     
     public void setName(String newName) {
         this.name = newName;
+    }
+    
+    public void changeMediaFile(String filePath) {
+        mediaFile = new File(filePath);
+        setupMediaPlayer();
+    }
+    
+    
+    private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException {
+        s.defaultReadObject();
+        setupMediaPlayer();
     }
 }

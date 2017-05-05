@@ -2,6 +2,7 @@ package toolUI;
 
 import sharedClasses.*;
 import creationToolClasses.*;
+import creationToolClasses.WIP.BadWIPException;
 import createdGameClasses.*;
 import java.util.*;
 import java.awt.image.BufferedImage;
@@ -25,6 +26,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 
 import javafx.scene.control.Accordion;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -610,7 +613,16 @@ public class ToolController implements Initializable {
         FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(new Stage());
         if (file != null) {    
-            WIP.loadWIP(file.getAbsolutePath());
+            try {
+                WIP.loadWIP(file.getAbsolutePath());
+            }
+            catch (BadWIPException e) {
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Loading Error");
+                alert.setHeaderText(null);
+                alert.setContentText("This save is not compatible and could not be loaded!");
+                alert.showAndWait();
+            }
         }
     }
     

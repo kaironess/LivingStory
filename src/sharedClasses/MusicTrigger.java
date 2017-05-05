@@ -48,4 +48,8 @@ public class MusicTrigger implements Serializable {
     public void setLoop(boolean isLooped) {
         this.loop = isLooped;
     }
+    
+    public boolean forMusic(Music music) {
+        return this.music.equals(music);
+    }
 }
