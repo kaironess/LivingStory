@@ -332,7 +332,7 @@ public class ToolController implements Initializable {
      */
     private void dialogInit() {
         allBGs = FXCollections.observableArrayList();
-        int bg_num = wip.bgs.size() - 7, i = 0;
+        int bg_num = wip.bgs.size() - 6, i = 0;
         while (i < bg_num) {
             String imgName = wip.bg_paths.get(i);
             allBGs.add(imgName);
