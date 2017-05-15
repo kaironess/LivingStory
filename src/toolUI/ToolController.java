@@ -77,6 +77,7 @@ public class ToolController implements Initializable {
     ImageView currImg;
     
     private String curWIPPath = null;
+    private boolean init = true;
     
     // MAIN/BASE WINDOW INJECTIONS
     
@@ -94,7 +95,7 @@ public class ToolController implements Initializable {
     
     @FXML
     private MenuItem openFile, statMenuCommand, charMenuCommand, saveCurProject, saveNewProject,
-     newDFrame, statList, newBFrame;
+     newDFrame, statList, newBFrame, goToFrame;
     
     @FXML
     private SplitPane toolPane;
@@ -179,6 +180,8 @@ public class ToolController implements Initializable {
             // Initialize frame effect items
             effectInit();
             
+            init = false;
+            
         }
     }
     
@@ -213,6 +216,10 @@ public class ToolController implements Initializable {
      * Initialize all character property listeners
      */
     private void charListenerInit() {
+        
+        if (!init) {
+            return;
+        }
         // Listener to grab character selection
         charaChoice.getSelectionModel().selectedIndexProperty().addListener(
                 new ChangeListener<Number>() {
@@ -228,12 +235,10 @@ public class ToolController implements Initializable {
                            // If char not already in frame, ADD new display char
                            if (currFrame.getChar(allChars.get(index)) == null) {
                                currChar = new DisplayChar(wip.chars.get(index), -1);
-                               System.out.println("ADDING DISPLAY CHAR");
                            }
                            // If char already in frame, EDIT a display char
                            else {
                                currChar = currFrame.getChar(allChars.get(index));
-                               System.out.println("EDITING DISPLAY CHAR");
                            }
                        }
                        
@@ -354,6 +359,7 @@ public class ToolController implements Initializable {
                            bgView.setId("CURR_BG");
                            bgView.setImage(imgConverter(wip.bgs.get(currFrame.getBG())));
                            framePane.getChildren().add(bgView);
+                           dialogLabel.toFront();
                        }
                    }
         });        
@@ -363,10 +369,17 @@ public class ToolController implements Initializable {
         dialogLabel.setPadding(new Insets(10, 10, 10, 10));
         dialogLabel.setWrapText(true);
         dialogLabel.setBorder(new Border(new BorderStroke(Color.GRAY, BorderStrokeStyle.SOLID, null, null)));
+        
         this.framePane.setLeftAnchor(dialogLabel, 10.0);
         this.framePane.setRightAnchor(dialogLabel, 10.0);
         this.framePane.setBottomAnchor(dialogLabel, 10.0);
         this.framePane.getChildren().addAll(dialogLabel);
+        
+        Frame currFrame = FrameManager.getCurFrame();
+        int val[] = currFrame.getDialogRGB();
+        dialogLabel.setStyle("-fx-background-color: rgba(" + val[0] + ", " + 
+                val[1] + ", " + val[2] + ", 0.8)");
+        dialogLabel.toFront();
         
     }
     
@@ -428,6 +441,9 @@ public class ToolController implements Initializable {
             // Tool updates
             allChars.remove(currChar.getCharName());
             charaChoice.setItems(allChars);
+            framePane.getChildren().remove((ImageView) framePane.lookup("#" + currChar.getCharName() + "_img"));
+            this.framePane.getChildren().remove(currImg);
+        }
 
             // Hide specific character properties
             charNameDisplay.setVisible(false);
@@ -440,10 +456,6 @@ public class ToolController implements Initializable {
             charXOffset.setVisible(false);
             charYOffset.setVisible(false);
             charSaveButton.setVisible(false);
-            
-            framePane.getChildren().remove((ImageView) framePane.lookup("#" + currChar.getCharName() + "_img"));
-            this.framePane.getChildren().remove(currImg);
-        }
     }
     
     /**
@@ -600,6 +612,7 @@ public class ToolController implements Initializable {
     private void switchDFrame() {
         // By default sets current frame as previous frame of the new frame
         Frame nextFrame = new Frame(FrameManager.getCurFrame());
+        int bg = FrameManager.getCurFrame().getBG();
         FrameManager.setCurFrame(nextFrame);
         wip.frames.add(nextFrame);
         
@@ -612,12 +625,14 @@ public class ToolController implements Initializable {
         
         dialogLabel.setText(null);
         
-        FrameManager.editBG(wip.bgs.size() - 1);
+        
+        FrameManager.editBG(bg);
         
         charXOffset.clear();
         charYOffset.clear();
         statChangeText.clear();
         
+        init = false;
         // Display the current frame's dialog label
         dialogInit();
         
@@ -648,6 +663,7 @@ public class ToolController implements Initializable {
         charYOffset.clear();
         statChangeText.clear();
         
+        init = true;
         // Display the current frame's dialog label
         dialogInit();
         
@@ -668,13 +684,65 @@ public class ToolController implements Initializable {
             Stage stage = new Stage();
             Scene scene = new Scene(root1);
             stage.setScene(scene);
-            stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-                public void handle(WindowEvent we) {
-                    dialogInit();
-                    charDefaultInit();
-                    effectInit();
-                }
-            });  
+            
+            if (fxmlPath.contains("frameMenu")) {
+                stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                    public void handle(WindowEvent we) {
+
+                        framePane.getChildren().clear();
+                        dialogInit();
+                        charDefaultInit();
+                        effectInit();
+                        
+                        // Retrieve dialog settings
+                        Frame currFrame = FrameManager.getCurFrame();
+                        System.out.println("new frame idx is " + wip.frames.indexOf(currFrame));
+                        dialogLabel.setText(currFrame.getDialog());
+                        dialogColor.setValue(Color.WHITE);
+                        dialogText.clear();
+                        
+                        // Retrieve BG settings
+                        framePane.getChildren().remove((ImageView) framePane.lookup("#" + "CURR_BG"));
+                        int index = currFrame.getBG();
+                        if (index >= 0) {
+                            ImageView bgView = new ImageView();
+                            bgView.setId("CURR_BG");
+                            bgView.setImage(imgConverter(wip.bgs.get(index)));
+                            framePane.getChildren().add(bgView);
+                        }
+                        dialogLabel.toFront();
+                        
+                        // Handle characters
+                        ArrayList<DisplayChar> dc = currFrame.getChars();
+                        currChar = null;
+                        for (DisplayChar chara : dc) {
+                            if (chara.getCharImgIndex() >= 0) {
+                                Image charImg = imgConverter(chara.getCharImg());
+                                ImageView im = new ImageView(charImg);
+                                im.setId(chara.getCharName() + "_img");
+                                im.setTranslateX(chara.getLeftMargin());
+                                im.setTranslateY(chara.getTopMargin());
+                                
+                                framePane.getChildren().add(im);
+                                dialogLabel.toFront();
+                            }
+                        }
+                        charXOffset.clear();
+                        charYOffset.clear();
+                        statChangeText.clear();
+                    }
+                });
+            }
+            else {
+                stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                    public void handle(WindowEvent we) {
+                        // Handle changes
+                        dialogInit();
+                        charDefaultInit();
+                        effectInit();
+                    }
+                });  
+            }
             stage.show();
         } 
         catch(Exception e) {
@@ -700,6 +768,11 @@ public class ToolController implements Initializable {
     @FXML
     private void openMusicDialog() {
         openDialog("musicMenu" + File.separator + "MusicWindow.fxml");
+    }
+    
+    @FXML
+    private void switchNFrame() {
+        openDialog("frameMenu" + File.separator + "FrameWindow.fxml");        
     }
     
     @FXML

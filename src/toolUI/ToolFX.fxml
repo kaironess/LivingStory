@@ -26,6 +26,7 @@
                         <MenuItem fx:id="saveNewProject" mnemonicParsing="false" onAction="#saveNewWIP" text="Save Project As..." />
                         <MenuItem fx:id="newBFrame" mnemonicParsing="false" onAction="#switchBFrame" text="New Blank Frame" />
                         <MenuItem fx:id="newDFrame" mnemonicParsing="false" onAction="#switchDFrame" text="New Duplicate Frame" />
+                        <MenuItem fx:id="goToFrame" mnemonicParsing="false" onAction="#switchNFrame" text="Go To Frame..." />
                   </items>
                 </Menu>
                 
