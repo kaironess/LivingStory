@@ -18,6 +18,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -79,10 +80,25 @@ public class FrSwitchController implements Initializable {
                 int index = Integer.parseInt(num);
                 currFrame = wip.frames.get(index);
                 FrameManager.setCurFrame(currFrame);
+                
+                //fr.setText("*" + text);
                 System.out.println("curr frame changed to " + index);
-
-                //Stage stage = (Stage) basePane.getScene().getWindow();
-                //stage.hide();
+            }
+        });
+        
+        fr.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
+                    String text = fr.getText();
+                    String num = "" + text.charAt(text.length() - 1);
+                    int index = Integer.parseInt(num);
+                    currFrame = wip.frames.get(index);
+                    FrameManager.setCurFrame(currFrame);
+                    
+                    fr.setText("*" + text);
+                    System.out.println("curr frame changed to " + index);
+                }
             }
         });
     }
