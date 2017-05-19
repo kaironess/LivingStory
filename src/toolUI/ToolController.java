@@ -579,7 +579,17 @@ public class ToolController implements Initializable {
     
     private void openDialog(String fxmlPath) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxmlPath));
+            FXMLLoader fxmlLoader = null;
+            // If using a jar
+            if (wip.classLoader != null) {
+                fxmlPath = fxmlPath.replace(File.separator, "/");
+                URL dialogPath = wip.classLoader.getResource("toolUI/" + fxmlPath);
+                fxmlLoader = new FXMLLoader(dialogPath);
+            }
+            // If using an ide
+            else {
+                fxmlLoader = new FXMLLoader(getClass().getResource(fxmlPath));
+            }
             Parent root1 = (Parent) fxmlLoader.load();
             Stage stage = new Stage();
             Scene scene = new Scene(root1);

@@ -18,9 +18,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -28,6 +30,7 @@ import java.nio.file.Paths;
 public final class WIP implements Serializable {
     static final long serialVersionUID = 123512357876L;
     private static WIP wip = new WIP();
+    public transient ClassLoader classLoader = null;
     
     //First few bgs are for the diff menu screens
     public enum BGIndex {MAIN_MENU, PAUSE_MENU, SETTINGS, SAVE, LOAD, GALLERY}
@@ -41,6 +44,23 @@ public final class WIP implements Serializable {
     public static class BadWIPException extends Exception {}
     
     private WIP() {
+        BufferedImage whiteImage = null;
+        
+        try {
+            // If we are running a jar, get the image from the jar
+            if (getClass().getProtectionDomain().getCodeSource().getLocation().toString().endsWith(".jar")) {
+               classLoader = this.getClass().getClassLoader();
+               InputStream is = classLoader.getResourceAsStream("creationToolClasses/whitePic.png");
+               whiteImage = ImageIO.read(is);
+               is.close();
+            }
+            // Otherwise running in ide, so just grab it
+            else {
+                whiteImage = ImageIO.read(new File("src" + File.separator + "creationToolClasses" +
+                        File.separator + "whitePic.png"));
+            }
+        } catch (Exception e) { e.printStackTrace(); }
+        
         frames = new LinkedList<>();
         bgs = new LinkedList<>();
         musics = new LinkedList<>();
@@ -49,12 +69,7 @@ public final class WIP implements Serializable {
         
         // Add one white picture for every default menu
         for (BGIndex index : BGIndex.values()) {
-            try {
-                bgs.add(ImageIO.read(new File("src/creationToolClasses/whitePic.png")));
-            } 
-            catch (IOException e) {
-                e.printStackTrace();
-            }
+            bgs.add(whiteImage);
         }
     }
     
