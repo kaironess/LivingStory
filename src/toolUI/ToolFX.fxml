@@ -26,6 +26,7 @@
                         <MenuItem fx:id="saveNewProject" mnemonicParsing="false" onAction="#saveNewWIP" text="Save Project As..." />
                         <MenuItem fx:id="newBFrame" mnemonicParsing="false" onAction="#switchBFrame" text="New Blank Frame" />
                         <MenuItem fx:id="newDFrame" mnemonicParsing="false" onAction="#switchDFrame" text="New Duplicate Frame" />
+                        <MenuItem fx:id="goToFrame" mnemonicParsing="false" onAction="#switchNFrame" text="Go To Frame..." />
                   </items>
                 </Menu>
                 
@@ -109,7 +110,6 @@
                                                 <Insets top="15.0" />
                                              </padding>
                                           </Label>
-                                          <Button fx:id="openFrameBG" mnemonicParsing="false" onMousePressed="#openBGFile" text="Open File" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
                                           <Label text="Dialog Box" GridPane.rowIndex="2">
                                              <padding>
                                                 <Insets left="10.0" />
@@ -130,6 +130,7 @@
                                                 <Insets right="10.0" />
                                              </GridPane.margin>
                                           </Button>
+                                          <ChoiceBox fx:id="bgChoice" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                                        </children>
                                        <columnConstraints>
                                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="154.0" minWidth="10.0" prefWidth="108.0" />
@@ -239,7 +240,7 @@
                                              </padding>
                                           </Label>
                                           <ChoiceBox fx:id="songChoice" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                                          <Label text="Loop" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                                          <Label fx:id="loopLabel" text="Loop" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
                                           <ToggleButton fx:id="loopOffToggle" mnemonicParsing="false" text="OFF" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
                                              <GridPane.margin>
                                                 <Insets right="35.0" />
@@ -253,7 +254,10 @@
                                           <Button fx:id="frameDecButton" mnemonicParsing="false" onAction="#openDecDialog" text="Edit Decisions" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
                                           <Label text="Player Decisions" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
                                           <Label text="Stat Changes" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
-                                          <Button fx:id="frameStatButton" mnemonicParsing="false" onAction="#openFrameStatDialog" text="Edit Stat Changes" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+                                          <Button fx:id="statChangeButton" mnemonicParsing="false" onAction="#saveStatChange" text="Save" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7" />
+                                          <ChoiceBox fx:id="statChoice" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+                                          <Label fx:id="changeValLabel" text="Change Value" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
+                                          <TextField fx:id="statChangeText" maxWidth="100.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
                                        </children>
                                        <columnConstraints>
                                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="155.0" minWidth="10.0" prefWidth="145.0" />

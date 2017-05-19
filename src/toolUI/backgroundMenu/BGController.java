@@ -249,6 +249,9 @@ public class BGController implements Initializable {
             try {
                 BufferedImage newBG = ImageIO.read(file);
                 wip.bgs.add(newBG);
+                String path = file.toURI().toString();
+                String imgName = path.substring(path.lastIndexOf("/") + 1);
+                wip.bg_paths.add(imgName);
                 curFrameIndex = wip.bgs.size() - 1;
                 displayFrameImages();
             } catch (IOException e) { e.printStackTrace(); }

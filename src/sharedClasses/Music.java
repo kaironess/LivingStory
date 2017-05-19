@@ -20,7 +20,7 @@ import javafx.stage.Stage;
 import javafx.embed.swing.JFXPanel;
 
 public class Music implements Serializable {
-    static final long serialVersionUID = 5L;
+    static final long serialVersionUID = 2L;
     
     private static int musicIndex = 0;
     private static String musicDir = System.getProperty("user.dir") + File.separator + 

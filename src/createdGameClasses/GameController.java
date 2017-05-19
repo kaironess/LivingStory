@@ -150,7 +150,7 @@ public class GameController implements Serializable {
     public void setMusicVol(double newVol) {
         for (Music music : this.musicList)
             music.setVol(newVol);
-        this.settings.musicVol = newVol;
+        this.settings.musicVol = (double) newVol;
     }
     
     public void nextFrame() {

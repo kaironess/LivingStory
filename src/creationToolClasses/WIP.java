@@ -37,6 +37,7 @@ public final class WIP implements Serializable {
     
     public List<Frame> frames;
     public transient List<Image> bgs;
+    public List<String> bg_paths;
     public List<Music> musics;
     public List<Stat> stats;
     public List<StoryChar> chars;
@@ -66,6 +67,7 @@ public final class WIP implements Serializable {
         musics = new LinkedList<>();
         stats = new LinkedList<>();
         chars = new LinkedList<>();
+        bg_paths = new LinkedList<>();
         
         // Add one white picture for every default menu
         for (BGIndex index : BGIndex.values()) {

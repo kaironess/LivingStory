@@ -11,7 +11,7 @@ public class MusicTrigger implements Serializable {
     private Trigger trigger;
     private boolean loop;
     
-    enum Trigger {PLAY, PAUSE, STOP}
+    public enum Trigger {PLAY, PAUSE, STOP}
     
     public MusicTrigger(Music toTrigger, Trigger trigger) {
         this.music = toTrigger;
