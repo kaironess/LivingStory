@@ -4,7 +4,7 @@ import java.awt.Image;
 import java.io.Serializable;
 
 public class DisplayChar implements Serializable {
-    static final long serialVersionUID = 4L;
+    static final long serialVersionUID = 5L;
     
     private StoryChar character;
     private int imgIndex;

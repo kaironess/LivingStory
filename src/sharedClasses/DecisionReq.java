@@ -13,6 +13,15 @@ public class DecisionReq implements Requirement, Serializable {
         this.currDecisions = currDec;
     }
     
+    public DecisionReq(Decision currDec) {
+        currDecisions = new ArrayList<Decision>();
+        currDecisions.add(currDec);
+    }
+    
+    public ArrayList<Integer> getCurrDecReq() {
+        return getNeededId(currDecisions);
+    }
+    
     private ArrayList<Integer> getNeededId(List<Decision> myDec) {
         // Get all the IDs of the needed decisions for later use
         ArrayList<Integer> allId = new ArrayList<Integer>();

@@ -8,6 +8,7 @@ public class FrameManager {
     
     private WIP wip = WIP.getWIP();
     private static Frame curFrame;
+    private static Decision curDec;
     
     public static void createFrame() {
         //Frame newFrame = new Frame();
@@ -15,6 +16,11 @@ public class FrameManager {
     
     public static void setCurFrame(Frame newFrame) { curFrame = newFrame; }
     public static Frame getCurFrame() { return curFrame; }
+    
+    public static void setCurDec(Decision newDec) {
+        curDec = newDec;
+    }
+    public static Decision getCurDec() { return curDec; }
     
     public static void editBG(int index) { curFrame.setBG(index); }
     public static void editDialog(String dialog) { curFrame.setDialog(dialog); }
@@ -39,14 +45,7 @@ public class FrameManager {
     public static List<Decision> getDialogOptions() { return curFrame.getDialogOptions(); }
     
     public static Decision fromID(int given) {
-        Decision result = null;
-        for (Decision d : curFrame.getDialogOptions()) {
-            if (d.getId() == given) {
-                result = d;
-                break;
-            }
-        }
-        return result;
+        return curFrame.fromID(given);
     }
     
     public static Decision fromText(String dialog) {

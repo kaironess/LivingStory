@@ -79,6 +79,17 @@ public class Frame implements Serializable {
         nextDecisions.add(next);
     }
     
+    public Decision fromID(int given) {
+        Decision result = null;
+        for (Decision d : dialogOptions) {
+            if (d.getId() == given) {
+                result = d;
+                break;
+            }
+        }
+        return result;
+    }
+    
     public void applyStatChanges(List<Stat> stats) {
         for (StatChange sc : statChanges) 
             sc.updateStats(stats);

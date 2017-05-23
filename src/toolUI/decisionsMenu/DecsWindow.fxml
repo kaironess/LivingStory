@@ -59,6 +59,8 @@
                                     <Insets right="10.0" top="5.0" />
                                  </GridPane.margin>
                               </Button>
+                              <Label fx:id="dReqLabel" text="Requirements" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
+                              <Button fx:id="addDReqButton" mnemonicParsing="false" onAction="#openDReq" text="Set / Add" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
                            </children>
                         </GridPane>
                      </children>

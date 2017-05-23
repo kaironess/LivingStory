@@ -51,6 +51,10 @@ public class Decision implements Serializable {
         this.requirements.add(re);
     }
     
+    public void removeReq(Requirement re) {
+        this.requirements.remove(re);
+    }
+    
     public void setNextFrame(Frame next) {
         this.nextFrame = next;
     }

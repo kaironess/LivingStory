@@ -23,6 +23,11 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.paint.Color;
+import javafx.stage.WindowEvent;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -60,10 +65,10 @@ public class DecController implements Initializable {
     private ListView decisionList;
     
     @FXML
-    private Label newDecCmd, dialogLabel, branchLabel, nextFrameLabel;
+    private Label newDecCmd, dialogLabel, branchLabel, nextFrameLabel, dReqLabel;
     
     @FXML
-    private Button saveDecButton;
+    private Button saveDecButton, addDReqButton;
     
     @FXML
     private TextArea decDialog;
@@ -149,6 +154,7 @@ public class DecController implements Initializable {
                 nextFrameChoice.getItems().clear();
                 currId = Integer.parseInt(decLabel.getText().replaceAll("[\\D]", ""));
                 currDec = FrameManager.fromID(currId);
+                FrameManager.setCurDec(currDec);
                 
                 // Update the right side's info
                 // frame list
@@ -193,6 +199,26 @@ public class DecController implements Initializable {
         // visual test
         Decision check = FrameManager.fromText(text);
         decDialog.setText(check.getDialog());
+    }
+    
+    @FXML
+    private void openDReq() {
+        try {
+            String fxmlPath = "DecReqsWindow.fxml";
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxmlPath));
+            Parent root1 = (Parent) fxmlLoader.load();
+            Stage stage = new Stage();
+            Scene scene = new Scene(root1);
+            stage.setScene(scene);
+            
+            stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                public void handle(WindowEvent we) {
+                    // ???
+                }
+            });
+            stage.show();
+        }
+        catch (Exception e) { e.printStackTrace(); }
     }
     
 }
