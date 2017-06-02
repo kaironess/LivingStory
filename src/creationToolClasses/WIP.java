@@ -160,12 +160,19 @@ public final class WIP implements Serializable {
             
             WIP loadedWIP = (WIP)ois.readObject();
             
-            wip.frames = loadedWIP.frames;
-            wip.bgs = loadedWIP.bgs;
-            wip.bg_paths = loadedWIP.bg_paths;
-            wip.musics = loadedWIP.musics;
-            wip.stats = loadedWIP.stats;
-            wip.chars = loadedWIP.chars;
+            wip.frames.clear();
+            wip.bgs.clear();
+            wip.bg_paths.clear();
+            wip.musics.clear();
+            wip.stats.clear();
+            wip.chars.clear();
+            
+            wip.frames.addAll(loadedWIP.frames);
+            wip.bgs.addAll(loadedWIP.bgs);
+            wip.bg_paths.addAll(loadedWIP.bg_paths);
+            wip.musics.addAll(loadedWIP.musics);
+            wip.stats.addAll(loadedWIP.stats);
+            wip.chars.addAll(loadedWIP.chars);
             
             ois.close();
         }
