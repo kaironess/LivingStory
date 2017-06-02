@@ -509,7 +509,7 @@ public class ToolController implements Initializable {
         allSongs = FXCollections.observableArrayList();
         int song_num = wip.musics.size() - 1, i = 0;
         while (i <= song_num) {
-            allSongs.add(wip.musics.get(song_num).getName());
+            allSongs.add(wip.musics.get(i).getName());
             i++;
         }
         songChoice.setItems(allSongs);

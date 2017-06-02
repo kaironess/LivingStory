@@ -24,7 +24,7 @@ public class SetupGameController {
         GameController gc = createGameController();
         
         try {
-            FileOutputStream fos = new FileOutputStream("testGame.save");
+            FileOutputStream fos = new FileOutputStream("game.gc");
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             
             oos.writeObject(gc);
