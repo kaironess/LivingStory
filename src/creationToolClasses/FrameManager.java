@@ -64,8 +64,10 @@ public class FrameManager {
     public static void moveCharacter() {}
     public static List<DisplayChar> getCharacters() { return curFrame.getChars(); }
     
-    public static void addMusicTrigger(Music music) {
-        curFrame.addMusicTrigger(new MusicTrigger(music, MusicTrigger.Trigger.PLAY));
+    public static MusicTrigger addMusicTrigger(Music music) {
+        MusicTrigger mt = new MusicTrigger(music, MusicTrigger.Trigger.PLAY);
+        curFrame.addMusicTrigger(mt);
+        return mt;
     }
     public static void removeMusicTrigger() {}
     public static void updateMusicTrigger(int trigger) {}

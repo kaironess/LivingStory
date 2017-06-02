@@ -94,6 +94,8 @@ public class UIControl implements Initializable {
     private ScrollPane loadSavesScroll, saveSavesScroll;
 
     private Slider volumeSlider;   
+    
+    private boolean atBeginning = true;
 
     @Override // This method is called by the FXMLLoader when initialization is complete
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
@@ -104,7 +106,6 @@ public class UIControl implements Initializable {
             
             this.gc = (GameController)ois.readObject();
             this.gc.setup();
-            displayCurFrame();
             
             ois.close();
         }
@@ -534,11 +535,19 @@ public class UIControl implements Initializable {
     // Displays the given Pane and sets all other Panes to be not visible
     private void displayPane(Pane displayPane) {
         // Reset the game if we're returning to the main menu
-        if (displayPane.equals(mainPane)) 
+        if (displayPane.equals(mainPane)) {
             this.gc.reset();
+            this.gc.stop();
+            this.atBeginning = true;
+        }
         // Display the current frame if we're going to the game pane
-        else if (displayPane.equals(gamePane))
+        else if (displayPane.equals(gamePane)) {
+            if (this.atBeginning) {
+                this.gc.start();
+            }
+            this.atBeginning = false;
             displayCurFrame();
+        }
         else if (displayPane.equals(savePane))
             updateSaveSavesBox();
         else if (displayPane.equals(loadPane)) 

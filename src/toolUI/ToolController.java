@@ -349,8 +349,11 @@ public class ToolController implements Initializable {
             allBGs.add(imgName);
             i++;
         }
+        // Set the chosen image in the choicebox if one exists already
         bgChoice.setItems(allBGs);
-        
+        if (FrameManager.getCurFrame() != null && FrameManager.getCurFrame().getBG() > -1) {
+            bgChoice.getSelectionModel().select(FrameManager.getCurFrame().getBG());
+        }
         // Listener to grab frame bg selections
         bgChoice.getSelectionModel().selectedIndexProperty().addListener(
                 new ChangeListener<Number>() {

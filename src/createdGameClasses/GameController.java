@@ -56,11 +56,23 @@ public class GameController implements Serializable {
         System.out.println("Game has been started.");
     }
     
+    // Stop the game music
+    public void stop() {
+        for (Music music : musicList) 
+            music.stop();
+    }
+    
+    public void start() {
+        this.curFrame.applyStatChanges(this.stats);
+        this.curFrame.applyMusicTriggers();
+    }
     
     // Resets the game 
     public void reset() {
-        if (frameList.size() > 0)
+        
+        if (frameList.size() > 0) {
             this.curFrame = frameList.get(0);
+        }
         else
             this.curFrame = null;
         
