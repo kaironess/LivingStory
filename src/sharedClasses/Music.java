@@ -7,6 +7,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.URL;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -60,9 +61,14 @@ public class Music implements Serializable {
         try {
             Files.copy(origFile, copyFile, StandardCopyOption.COPY_ATTRIBUTES);
         }
-        catch (Exception e) {
-            e.printStackTrace();
+        catch (FileAlreadyExistsException e) { 
+            try {
+                Files.delete(copyFile);
+                Files.copy(origFile, copyFile, StandardCopyOption.COPY_ATTRIBUTES);
+            }
+            catch (Exception ex) { ex.printStackTrace(); }
         }
+        catch (Exception e) { e.printStackTrace(); }
         
         mediaFile = new File(copyFile.toUri());
     }

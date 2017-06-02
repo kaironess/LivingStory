@@ -99,7 +99,7 @@ public class UIControl implements Initializable {
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
         // Testing: Load in a Game
         try {
-            FileInputStream fis = new FileInputStream("testGame.save");
+            FileInputStream fis = new FileInputStream("game.gc");
             ObjectInputStream ois = new ObjectInputStream(fis);
             
             this.gc = (GameController)ois.readObject();

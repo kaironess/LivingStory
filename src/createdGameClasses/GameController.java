@@ -193,7 +193,7 @@ public class GameController implements Serializable {
                 return ImageIO.read(new File("src" + File.separator + "createdGameClasses" 
                  + File.separator + "whitePic.png"));
             } catch (IOException e) {  e.printStackTrace(); }
-        
+        System.out.println(curFrame.getBG());
         return bgList.get(curFrame.getBG() + bgOffset);
     }
     

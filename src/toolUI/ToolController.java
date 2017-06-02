@@ -15,6 +15,9 @@ import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
 
+import org.apache.tools.ant.Project;
+import org.apache.tools.ant.ProjectHelper;
+
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.beans.value.ChangeListener;
@@ -352,12 +355,12 @@ public class ToolController implements Initializable {
                            Number value, Number new_value) {
                        currImgIdx = new_value.intValue();
                        if (currImgIdx >= 0) {           
-                           FrameManager.editBG(currImgIdx + 6);
+                           FrameManager.editBG(currImgIdx);
                            
                            Frame currFrame = FrameManager.getCurFrame();
                            ImageView bgView = new ImageView();
                            bgView.setId("CURR_BG");
-                           bgView.setImage(imgConverter(wip.bgs.get(currFrame.getBG())));
+                           bgView.setImage(imgConverter(wip.bgs.get(currFrame.getBG() + WIP.BGIndex.values().length)));
                            framePane.getChildren().add(bgView);
                            dialogLabel.toFront();
                        }
@@ -843,6 +846,41 @@ public class ToolController implements Initializable {
 
             alert.showAndWait();
         }
+    }
+    
+    @FXML
+    private void finalizeGame() {
+        // Create and save the GameController for the game
+        GameController gc = new GameController(wip.frames, wip.bgs, wip.stats, wip.musics);
+        
+        try {
+            FileOutputStream fos = new FileOutputStream("game.gc");
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            
+            oos.writeObject(gc);
+            oos.close();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        
+        // Run the xml file and make the game jar
+        File buildFile;
+        
+        if (wip.classLoader != null) {
+            buildFile = null;
+        }
+        else {
+            buildFile = new File("createGame.xml");
+        }
+        Project p = new Project();
+        p.setUserProperty("ant.file", buildFile.getAbsolutePath());
+        p.init();
+        ProjectHelper helper = ProjectHelper.getProjectHelper();
+        p.addReference("ant.projectHelper", helper);
+        helper.parse(p, buildFile);
+        p.executeTarget(p.getDefaultTarget());
     }
     
     // Converts a regular Java Image to a JavaFX Image

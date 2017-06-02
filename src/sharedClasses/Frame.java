@@ -96,8 +96,10 @@ public class Frame implements Serializable {
     }
     
     public void applyMusicTriggers() {
-        for (MusicTrigger trigger : musicTriggers)
+        for (MusicTrigger trigger : musicTriggers) {
+            System.out.println("triggered");
             trigger.trigger();
+        }
     }
     
     public void addChar(DisplayChar character) { curChars.add(character); }

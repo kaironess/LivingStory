@@ -24,6 +24,7 @@
                         <MenuItem fx:id="openFile" mnemonicParsing="false" onAction="#openWIP" text="Open Project" />
                         <MenuItem fx:id="saveCurProject" mnemonicParsing="false" onAction="#saveCurWIP" text="Save Current Project" />
                         <MenuItem fx:id="saveNewProject" mnemonicParsing="false" onAction="#saveNewWIP" text="Save Project As..." />
+                        <MenuItem fx:id="finalizeGame" mnemonicParsing="false" onAction="#finalizeGame" text="Finalize Game" />
                         <MenuItem fx:id="newBFrame" mnemonicParsing="false" onAction="#switchBFrame" text="New Blank Frame" />
                         <MenuItem fx:id="newDFrame" mnemonicParsing="false" onAction="#switchDFrame" text="New Duplicate Frame" />
                         <MenuItem fx:id="goToFrame" mnemonicParsing="false" onAction="#switchNFrame" text="Go To Frame..." />
