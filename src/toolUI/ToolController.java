@@ -717,10 +717,10 @@ public class ToolController implements Initializable {
                         // Retrieve BG settings
                         framePane.getChildren().remove((ImageView) framePane.lookup("#" + "CURR_BG"));
                         int index = currFrame.getBG();
-                        if (index >= 0) {
+                        if (index >= 0 && index < wip.bgs.size()) {
                             ImageView bgView = new ImageView();
                             bgView.setId("CURR_BG");
-                            bgView.setImage(imgConverter(wip.bgs.get(index)));
+                            bgView.setImage(imgConverter(wip.bgs.get(index + WIP.BGIndex.values().length)));
                             framePane.getChildren().add(bgView);
                         }
                         dialogLabel.toFront();
@@ -793,9 +793,35 @@ public class ToolController implements Initializable {
         FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(new Stage());
         if (file != null) {    
-            try {
+            try {          
+                
+                // Read the file
                 WIP.loadWIP(file.getAbsolutePath());
                 curWIPPath = file.getAbsolutePath();
+                
+                framePane.getChildren().clear();
+                dialogInit();
+                charDefaultInit();
+                effectInit(); 
+                
+                // Get first frame of the loaded WIP
+                Frame startFrame = wip.frames.get(0);
+                FrameManager.setCurFrame(startFrame);
+                int bg = FrameManager.getCurFrame().getBG();
+                System.out.println("bg num: " + wip.bgs.size());
+                if (bg > 0) {
+                    ImageView bgView = new ImageView();
+                    bgView.setId("CURR_BG");
+                    bgView.setImage(imgConverter(wip.bgs.get(bg + WIP.BGIndex.values().length)));
+                    framePane.getChildren().add(bgView);
+                }
+                
+                dialogLabel.toFront();
+                int rgb[] = startFrame.getDialogRGB();
+                dialogLabel.setStyle("-fx-background-color: rgba(" + rgb[0] + ", " + 
+                        rgb[1] + ", " + rgb[2] + ", 0.8)");
+                dialogLabel.setText(startFrame.getDialog());
+                dialogText.setText(startFrame.getDialog());
             }
             catch (BadWIPException e) {
                 Alert alert = new Alert(AlertType.ERROR);

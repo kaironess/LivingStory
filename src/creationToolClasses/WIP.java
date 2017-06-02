@@ -158,7 +158,14 @@ public final class WIP implements Serializable {
             FileInputStream fis = new FileInputStream(filePath);
             ObjectInputStream ois = new ObjectInputStream(fis);
             
-            wip = (WIP)ois.readObject();
+            WIP loadedWIP = (WIP)ois.readObject();
+            
+            wip.frames = loadedWIP.frames;
+            wip.bgs = loadedWIP.bgs;
+            wip.bg_paths = loadedWIP.bg_paths;
+            wip.musics = loadedWIP.musics;
+            wip.stats = loadedWIP.stats;
+            wip.chars = loadedWIP.chars;
             
             ois.close();
         }
