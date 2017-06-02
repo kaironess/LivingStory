@@ -169,9 +169,12 @@ public class ToolController implements Initializable {
 
         if (wip == null) {
             wip = WIP.getWIP();  
-            Frame startFrame = new Frame(null);
-            FrameManager.setCurFrame(startFrame);
-            wip.frames.add(startFrame);
+            
+            if (wip.frames.size() == 0) {
+                Frame startFrame = new Frame(null);
+                FrameManager.setCurFrame(startFrame);
+                wip.frames.add(startFrame);
+            }
             
             // Display the current frame's dialog label
             dialogInit();
@@ -793,23 +796,24 @@ public class ToolController implements Initializable {
         FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(new Stage());
         if (file != null) {    
-            try {          
-                
+            try {                      
                 // Read the file
                 WIP.loadWIP(file.getAbsolutePath());
-                curWIPPath = file.getAbsolutePath();
-                
+                curWIPPath = file.getAbsolutePath();                
                 framePane.getChildren().clear();
+                
+                Frame startFrame = wip.frames.get(0);
+                FrameManager.setCurFrame(startFrame);
+
                 dialogInit();
                 charDefaultInit();
                 effectInit(); 
                 
                 // Get first frame of the loaded WIP
-                Frame startFrame = wip.frames.get(0);
-                FrameManager.setCurFrame(startFrame);
                 int bg = FrameManager.getCurFrame().getBG();
+                System.out.println("frame bg num: " + bg);
                 System.out.println("bg num: " + wip.bgs.size());
-                if (bg > 0) {
+                if (bg >= 0) {
                     ImageView bgView = new ImageView();
                     bgView.setId("CURR_BG");
                     bgView.setImage(imgConverter(wip.bgs.get(bg + WIP.BGIndex.values().length)));
@@ -822,6 +826,26 @@ public class ToolController implements Initializable {
                         rgb[1] + ", " + rgb[2] + ", 0.8)");
                 dialogLabel.setText(startFrame.getDialog());
                 dialogText.setText(startFrame.getDialog());
+                
+                // Handle characters
+                ArrayList<DisplayChar> dc = startFrame.getChars();
+                currChar = null;
+                for (DisplayChar chara : dc) {
+                    if (chara.getCharImgIndex() >= 0) {
+                        Image charImg = imgConverter(chara.getCharImg());
+                        ImageView im = new ImageView(charImg);
+                        im.setId(chara.getCharName() + "_img");
+                        im.setTranslateX(chara.getLeftMargin());
+                        im.setTranslateY(chara.getTopMargin());
+                        
+                        framePane.getChildren().add(im);
+                        dialogLabel.toFront();
+                    }
+                }
+                charXOffset.clear();
+                charYOffset.clear();
+                statChangeText.clear();                
+                
             }
             catch (BadWIPException e) {
                 Alert alert = new Alert(AlertType.ERROR);
