@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="createGame" name="Create Game for Project">
+    <property name="dir.buildfile" value="."/>
+    <property name="dir.workspace" value="C:/Users/Kaironess/workspace"/>
+    <property name="dir.jarfile" value="${dir.buildfile}"/>
+    <target name="createGame">
+        <jar destfile="${dir.jarfile}/Game.jar" filesetmanifest="mergewithoutmain">
+            <manifest>
+                <attribute name="Main-Class" value="gameUI.Main"/>
+                <attribute name="Class-Path" value="."/>
+            </manifest>
+            <fileset dir="${dir.workspace}/LivingStory/bin"/>
+        </jar>
+    </target>
+</project>
