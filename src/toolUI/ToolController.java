@@ -11,12 +11,18 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ResourceBundle;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 import javax.imageio.ImageIO;
 
 import org.apache.tools.ant.Project;
+import org.apache.tools.ant.PropertyHelper;
 import org.apache.tools.ant.ProjectHelper;
+import org.apache.commons.io.FileUtils;
 
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -905,35 +911,15 @@ public class ToolController implements Initializable {
     private void finalizeGame() {
         // Create and save the GameController for the game
         GameController gc = new GameController(wip.frames, wip.bgs, wip.stats, wip.musics);
+        FinalizeGame.finalizeGame(gc);
         
-        try {
-            FileOutputStream fos = new FileOutputStream("game.gc");
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            
-            oos.writeObject(gc);
-            oos.close();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        
-        
-        // Run the xml file and make the game jar
-        File buildFile;
-        
-        if (wip.classLoader != null) {
-            buildFile = null;
-        }
-        else {
-            buildFile = new File("createGame.xml");
-        }
-        Project p = new Project();
-        p.setUserProperty("ant.file", buildFile.getAbsolutePath());
-        p.init();
-        ProjectHelper helper = ProjectHelper.getProjectHelper();
-        p.addReference("ant.projectHelper", helper);
-        helper.parse(p, buildFile);
-        p.executeTarget(p.getDefaultTarget());
+        // Alert box
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Game Creation Success");
+        alert.setHeaderText(null);
+        alert.setContentText("Game Creation Successful!");
+
+        alert.showAndWait();
     }
     
     // Converts a regular Java Image to a JavaFX Image
