@@ -3,8 +3,11 @@ package gameUI;
 import sharedClasses.*;
 import java.util.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
+import java.net.URI;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -96,13 +99,23 @@ public class UIControl implements Initializable {
     private Slider volumeSlider;   
     
     private boolean atBeginning = true;
+    
+    private ClassLoader classLoader = null;
 
     @Override // This method is called by the FXMLLoader when initialization is complete
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
         // Testing: Load in a Game
         try {
-            FileInputStream fis = new FileInputStream("game.gc");
-            ObjectInputStream ois = new ObjectInputStream(fis);
+            InputStream is = null;
+            if (getClass().getProtectionDomain().getCodeSource().getLocation().toString().endsWith(".jar")) {
+                classLoader = this.getClass().getClassLoader();
+                is = classLoader.getResourceAsStream("game.gc");
+            }
+            else {
+                is = new FileInputStream("game.gc");
+            }
+            
+            ObjectInputStream ois = new ObjectInputStream(is);
             
             this.gc = (GameController)ois.readObject();
             this.gc.setup();
