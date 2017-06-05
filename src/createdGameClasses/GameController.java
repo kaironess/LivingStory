@@ -179,27 +179,30 @@ public class GameController implements Serializable {
     }
     
     public void nextFrame() {
-        List<Decision> decs = curFrame.getNextDecisions();
-        Decision activeDec = null;
-        
-        // Run through list and choose which decision to take
-        // Prioritize earlier decisions as opposed to later ones
-        for (int i = decs.size() - 1; i >= 0; i--) {
-            if (decs.get(i).satisfiesAllReqs(this.stats)) {
-                activeDec = decs.get(i);
+        // Only auto proceed to a new frame if there are no dialog options
+        if (curFrame.getDialogOptions().size() == 0) {
+            List<Decision> decs = curFrame.getNextDecisions();
+            Decision activeDec = null;
+            
+            // Run through list and choose which decision to take
+            // Prioritize earlier decisions as opposed to later ones
+            for (int i = decs.size() - 1; i >= 0; i--) {
+                if (decs.get(i).satisfiesAllReqs(this.stats)) {
+                    activeDec = decs.get(i);
+                }
             }
-        }
-        
-        // Get the next frame from the decision made
-        if (activeDec != null && activeDec.getNextFrame() != null) {
-            this.decisionsMade.add(activeDec);
-            curFrame = activeDec.getNextFrame();
-            curFrame.applyStatChanges(this.stats);
-            curFrame.applyMusicTriggers();
-        }
-        // Otherwise if we cannot progress, end the game
-        else {
-            endGame();
+            
+            // Get the next frame from the decision made
+            if (activeDec != null && activeDec.getNextFrame() != null) {
+                this.decisionsMade.add(activeDec);
+                curFrame = activeDec.getNextFrame();
+                curFrame.applyStatChanges(this.stats);
+                curFrame.applyMusicTriggers();
+            }
+            // Otherwise if we cannot progress, end the game
+            else {
+                endGame();
+            }
         }
     }
     
