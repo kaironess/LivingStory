@@ -1,4 +1,4 @@
-package toolUI.decisionsMenu;
+package toolUI.dialogDecsMenu;
 
 import java.awt.Image;
 import java.io.File;
@@ -44,7 +44,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-public class DecController implements Initializable {
+public class DialogDecController implements Initializable {
     // --------------------------------------------------------------------------
     //                              UI INJECTIONS
     // --------------------------------------------------------------------------
@@ -90,7 +90,7 @@ public class DecController implements Initializable {
      */
     @Override
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
-        newDecCmd = new Label("NEW DECISION");
+        newDecCmd = new Label("New Dialog Decision");
         setupDecList();
         
         // Hide char option stuff
@@ -105,7 +105,7 @@ public class DecController implements Initializable {
             @Override
             public void handle(MouseEvent event) {
                 currDec = new Decision(FrameManager.getCurFrame());
-                FrameManager.getCurFrame().addDecision(0, currDec);
+                FrameManager.getCurFrame().addDialog(0, currDec);
                 currId = currDec.getId();
                 updateDecList();
             }
@@ -127,7 +127,7 @@ public class DecController implements Initializable {
         decisionList.getItems().clear();
         decisionList.getItems().add(newDecCmd);
         
-        List<Decision> dialogs = FrameManager.getCurFrame().getNextDecisions();
+        List<Decision> dialogs = FrameManager.getCurFrame().getDialogOptions();
         
         for (Decision d : dialogs) {
             Label newDec = new Label("Decision " + d.getId());
@@ -156,17 +156,25 @@ public class DecController implements Initializable {
                 currDec = dec;
                 FrameManager.setCurDec(currDec);
                 
+                int currDecFrame = -1;
+                
                 // Update the right side's info
                 // frame list
                 int i = 0, frameNum = wip.frames.size();
                 ArrayList<String> allFrames = new ArrayList<String>();
+                boolean pastCurFrame = false;
                 while (i < frameNum) {
                     if (!wip.frames.get(i).equals(FrameManager.getCurFrame())) {
                         allFrames.add("FRAME " + i);
+                        pastCurFrame = true;
                     }
+                    if (wip.frames.get(i).equals(currDec.getCurrFrame())) 
+                        currDecFrame =  pastCurFrame ? i - 1 : i;
                     i++;
                 }
                 nextFrameChoice.setItems(FXCollections.observableArrayList(allFrames));
+                if (currDecFrame != -1)
+                    nextFrameChoice.getSelectionModel().select(currDecFrame);
                 
                 // dialog text area
                 decDialog.setText(currDec.getDialog() != null ? currDec.getDialog() : "");
@@ -177,7 +185,7 @@ public class DecController implements Initializable {
     }
     
     private void decListenerInit() {
-        DecController self = this;
+        DialogDecController self = this;
         // Listener to grab next frame selection
         nextFrameChoice.getSelectionModel().selectedIndexProperty().addListener(
                 new ChangeListener<Number>() {
@@ -197,29 +205,7 @@ public class DecController implements Initializable {
         String text = decDialog.getText();
         currDec.setDialog(text);
         
-        // visual test
-        Decision check = FrameManager.fromText(text);
-        decDialog.setText(check.getDialog());
-    }
-    
-    @FXML
-    private void openDReq() {
-        try {
-            String fxmlPath = "DecReqsWindow.fxml";
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxmlPath));
-            Parent root1 = (Parent) fxmlLoader.load();
-            Stage stage = new Stage();
-            Scene scene = new Scene(root1);
-            stage.setScene(scene);
-            
-            stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-                public void handle(WindowEvent we) {
-                    // ???
-                }
-            });
-            stage.show();
-        }
-        catch (Exception e) { e.printStackTrace(); }
+        decDialog.setText(currDec.getDialog());
     }
     
 }

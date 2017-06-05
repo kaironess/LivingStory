@@ -160,6 +160,12 @@ public class UIControl implements Initializable {
                     pane.setPrefWidth(newWidth.doubleValue());
             }
         });
+        // Don't allow tab navigation to leave the next button
+        basePane.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == KeyCode.TAB) {
+                event.consume();
+            }
+        });
         
         // Handle next frame event
         nextButton.setAlignment(Pos.TOP_RIGHT);
@@ -592,6 +598,7 @@ public class UIControl implements Initializable {
     
     // Updates the display to show the current frame
     private void displayCurFrame() {
+        GameController gc = this.gc;
         this.gamePane.getChildren().removeAll();
         
         // Display the frame's background picture
@@ -645,14 +652,14 @@ public class UIControl implements Initializable {
             btn.setOnMousePressed(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
-                    // Do something??
-                    // Will the gc be able to tell a dialog has been chosen
+                    gc.choseDialog(d);
+                    displayCurFrame();
                 }
              });
             dialogChoices.getChildren().addAll(btn);
         }
         this.gamePane.getChildren().addAll(dialogChoices);
-        
+        nextButton.requestFocus();
     }
     
     @FXML

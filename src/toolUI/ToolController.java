@@ -602,8 +602,13 @@ public class ToolController implements Initializable {
     }
     
     @FXML
-    private void openDecDialog() {
-        openDialog("decisionsMenu" + File.separator + "DecsWindow.fxml");
+    private void openDialogDecWindow() {
+        openDialog("dialogDecsMenu" + File.separator + "DialogDecsWindow.fxml");
+    }
+    
+    @FXML
+    private void openDecWindow() {
+        openDialog("dialogDecsMenu" + File.separator + "DialogDecsWindow.fxml");
     }
 
     @FXML
@@ -623,10 +628,19 @@ public class ToolController implements Initializable {
     //                              TOP MENU CONTROLS
     // --------------------------------------------------------------------------
     
+    private void linkFrames(Frame one, Frame two) {
+       Decision dec = new Decision(one);
+       dec.setNextFrame(two);
+       one.addDecision(dec);
+    }
+    
     @FXML
     private void switchDFrame() {
         // By default sets current frame as previous frame of the new frame
         Frame nextFrame = new Frame(FrameManager.getCurFrame());
+        // Add a decision to link the new frame to the last frame
+        linkFrames(FrameManager.getCurFrame(), nextFrame);
+        
         int bg = FrameManager.getCurFrame().getBG();
         FrameManager.setCurFrame(nextFrame);
         wip.frames.add(nextFrame);
@@ -639,7 +653,6 @@ public class ToolController implements Initializable {
         FrameManager.editDialogRGB(red, green, blue);
         
         dialogLabel.setText(null);
-        
         
         FrameManager.editBG(bg);
         
@@ -661,6 +674,9 @@ public class ToolController implements Initializable {
     private void switchBFrame() {
         // By default sets current frame as previous frame of the new frame
         Frame nextFrame = new Frame(FrameManager.getCurFrame());
+        // Add a decision to link the new frame to the last frame
+        linkFrames(FrameManager.getCurFrame(), nextFrame);
+        
         FrameManager.setCurFrame(nextFrame);
         wip.frames.add(nextFrame);
         

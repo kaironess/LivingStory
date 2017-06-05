@@ -165,6 +165,19 @@ public class GameController implements Serializable {
         this.settings.musicVol = (double) newVol;
     }
     
+    public void choseDialog(Decision dec) {
+        if (dec.getCurrFrame().equals(curFrame) && dec.getNextFrame() != null) {
+            this.decisionsMade.add(dec);
+            curFrame = dec.getNextFrame();
+            curFrame.applyStatChanges(this.stats);
+            curFrame.applyMusicTriggers();
+        }
+        // Otherwise if we cannot progress, end the game
+        else {
+            endGame();
+        }
+    }
+    
     public void nextFrame() {
         List<Decision> decs = curFrame.getNextDecisions();
         Decision activeDec = null;

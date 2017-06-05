@@ -75,8 +75,16 @@ public class Frame implements Serializable {
         dialogOptions.add(option);
     }
     
+    public void addDialog(int pos, Decision option) {
+        dialogOptions.add(option);
+    }
+    
     public void addDecision(Decision next) {
         nextDecisions.add(next);
+    }
+    
+    public void addDecision(int pos, Decision option) {
+        nextDecisions.add(option);
     }
     
     public Decision fromID(int given) {
