@@ -8,6 +8,8 @@ public class StatReq implements Requirement {
     private int neededCount;
     private String statName;
     
+    public StatReq() {}
+    
     public StatReq(String statName, int neededCount) {
         this.statName = statName;
         this.neededCount = neededCount;

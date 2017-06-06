@@ -222,4 +222,24 @@ public class DecController implements Initializable {
         catch (Exception e) { e.printStackTrace(); }
     }
     
+    @FXML
+    private void openStatReq() {
+        try {
+            String fxmlPath = "StatReqsWindow.fxml";
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxmlPath));
+            Parent root1 = (Parent) fxmlLoader.load();
+            Stage stage = new Stage();
+            Scene scene = new Scene(root1);
+            stage.setScene(scene);
+            
+            stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                public void handle(WindowEvent we) {
+                    // ???
+                }
+            });
+            stage.show();
+        }
+        catch (Exception e) { e.printStackTrace(); }
+    }
+    
 }
