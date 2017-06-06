@@ -169,7 +169,7 @@ public class DialogDecController implements Initializable {
                         otherFrames.add(wip.frames.get(i));
                     }
                     if (wip.frames.get(i).equals(currDec.getNextFrame())) 
-                        currDecFrame = i;
+                        currDecFrame = allFrames.size() - 1;
                     i++;
                 }
                 nextFrameChoice.setItems(FXCollections.observableArrayList(allFrames));
