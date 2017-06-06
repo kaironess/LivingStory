@@ -84,6 +84,7 @@ public class DialogDecController implements Initializable {
     private WIP wip = WIP.getWIP();
     private Decision currDec;
     private int currId;
+    private ArrayList<Frame> otherFrames = new ArrayList<>();
     
     /**
      * This method is called by the FXMLLoader when injections are complete
@@ -165,6 +166,7 @@ public class DialogDecController implements Initializable {
                 while (i < frameNum) {
                     if (!wip.frames.get(i).equals(FrameManager.getCurFrame())) {
                         allFrames.add("FRAME " + i);
+                        otherFrames.add(wip.frames.get(i));
                     }
                     if (wip.frames.get(i).equals(currDec.getNextFrame())) 
                         currDecFrame = i;
@@ -191,8 +193,7 @@ public class DialogDecController implements Initializable {
                            Number value, Number new_value) {
                        int index = new_value.intValue();
                        if (index >= 0) {
-                           Frame next = wip.frames.get(index);
-                           self.currDec.setNextFrame(next);
+                           self.currDec.setNextFrame(otherFrames.get(index));
                        }
                    }
                 });
