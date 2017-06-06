@@ -103,9 +103,10 @@ public class Frame implements Serializable {
             sc.updateStats(stats);
     }
     
-    public void applyMusicTriggers() {
+    public void applyMusicTriggers(HashMap<Music, Music.State> map) {
         for (MusicTrigger trigger : musicTriggers) {
             trigger.trigger();
+            map.put(trigger.getMusic(), trigger.getMusic().getState());
         }
     }
     

@@ -517,13 +517,24 @@ public class ToolController implements Initializable {
         changeValLabel.setVisible(false);
         loopLabel.setVisible(false);
         
+        Music curMusic = null;
+        int musicIndex = -1;
+        
+        if (FrameManager.getCurFrame().getMusicTriggers().size() > 0) {
+            curMusic = FrameManager.getCurFrame().getMusicTriggers().get(0).getMusic();
+        }
+        
         allSongs = FXCollections.observableArrayList();
         int song_num = wip.musics.size() - 1, i = 0;
         while (i <= song_num) {
             allSongs.add(wip.musics.get(i).getName());
+            if (wip.musics.get(i).equals(curMusic)) {
+                musicIndex = i;
+            }
             i++;
         }
         songChoice.setItems(allSongs);
+        songChoice.getSelectionModel().select(musicIndex);
         
         // Listener to grab frame music selections
         songChoice.getSelectionModel().selectedIndexProperty().addListener(

@@ -27,6 +27,10 @@ public class MusicTrigger implements Serializable {
         return loop;
     }
     
+    public Music getMusic() {
+        return music;
+    }
+    
     public void trigger() {
         if (loop)
             music.loop();

@@ -15,6 +15,7 @@ import java.nio.file.Paths;
 import java.awt.Image;
 import java.awt.image.RenderedImage;
 import java.util.*;
+import java.util.Map.Entry;
 
 import javax.imageio.ImageIO;
 
@@ -37,6 +38,8 @@ public class GameController implements Serializable {
     private Settings settings;
     private List<Decision> decisionsMade;
     
+    private HashMap<Music, Music.State> musicStatus;
+    
     public GameController(List<Frame> frames, List<Image> bgs, List<Stat> stats, List<Music> music) {
         this.frameList = frames;
         this.bgList = bgs;
@@ -44,6 +47,11 @@ public class GameController implements Serializable {
         this.stats = stats;
         this.settings = new Settings();
         this.decisionsMade = new LinkedList<>();
+        this.musicStatus = new HashMap<>();
+        
+        for (Music m : musicList) {
+            musicStatus.put(m, m.getState());
+        }
         
         if (frameList.size() > 0)
             this.curFrame = frameList.get(0);
@@ -64,7 +72,7 @@ public class GameController implements Serializable {
     
     public void start() {
         this.curFrame.applyStatChanges(this.stats);
-        this.curFrame.applyMusicTriggers();
+        this.curFrame.applyMusicTriggers(musicStatus);
     }
     
     // Resets the game 
@@ -81,7 +89,7 @@ public class GameController implements Serializable {
     }
     
     public void createSave(String saveName) {
-        Save newSave = new Save(curFrame, decisionsMade, settings, stats);
+        Save newSave = new Save(curFrame, decisionsMade, settings, stats, musicStatus);
         Path savePath = Paths.get(this.savePath);
         
         // Make the save folder if it doesn't exist
@@ -116,6 +124,12 @@ public class GameController implements Serializable {
             decisionsMade = save.getDecisionsMade();
             settings = save.getSettings();
             stats = save.getStats();
+            musicStatus = save.getMusicStatus();
+            
+            for (Entry<Music, Music.State> entry : musicStatus.entrySet()) {
+                if(entry.getValue() == Music.State.PLAYING)
+                    entry.getKey().play();
+            }
             
             ois.close();
         }
@@ -170,7 +184,7 @@ public class GameController implements Serializable {
             this.decisionsMade.add(dec);
             curFrame = dec.getNextFrame();
             curFrame.applyStatChanges(this.stats);
-            curFrame.applyMusicTriggers();
+            curFrame.applyMusicTriggers(musicStatus);
         }
         // Otherwise if we cannot progress, end the game
         else {
@@ -197,7 +211,7 @@ public class GameController implements Serializable {
                 this.decisionsMade.add(activeDec);
                 curFrame = activeDec.getNextFrame();
                 curFrame.applyStatChanges(this.stats);
-                curFrame.applyMusicTriggers();
+                curFrame.applyMusicTriggers(musicStatus);
             }
             // Otherwise if we cannot progress, end the game
             else {

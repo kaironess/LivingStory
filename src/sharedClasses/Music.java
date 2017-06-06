@@ -32,7 +32,7 @@ public class Music implements Serializable {
     private File mediaFile;
     private State curState;
     
-    enum State {PLAYING, PAUSED, STOPPED};
+    public enum State {PLAYING, PAUSED, STOPPED};
 
     private String getMatPath(String addOn) {
         return "src\\testing\\TestingMaterials\\" + addOn;
@@ -136,6 +136,10 @@ public class Music implements Serializable {
     
     public void setName(String newName) {
         this.name = newName;
+    }
+    
+    public State getState() {
+        return this.curState;
     }
     
     public void changeMediaFile(String filePath) {
