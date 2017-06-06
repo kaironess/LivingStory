@@ -608,7 +608,7 @@ public class ToolController implements Initializable {
     
     @FXML
     private void openDecWindow() {
-        openDialog("dialogDecsMenu" + File.separator + "DialogDecsWindow.fxml");
+        openDialog("decisionsMenu" + File.separator + "DecsWindow.fxml");
     }
 
     @FXML
@@ -669,6 +669,7 @@ public class ToolController implements Initializable {
         
         // Initialize frame effect items
         effectInit();
+        dialogLabel.toFront();
     }
     @FXML
     private void switchBFrame() {
@@ -703,6 +704,7 @@ public class ToolController implements Initializable {
         
         // Initialize frame effect items
         effectInit();
+        dialogLabel.toFront();
     }
     
     // OPENING NEW WINDOWS ---------------------------------------------------

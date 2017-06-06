@@ -208,4 +208,12 @@ public class DialogDecController implements Initializable {
         decDialog.setText(currDec.getDialog());
     }
     
+    @FXML
+    private void deleteDec() throws IOException {
+        currDec.getCurrFrame().getDialogOptions().remove(currDec);
+        updateDecList();
+        currDec = null;
+        actionPane.setVisible(false);
+    }
+    
 }

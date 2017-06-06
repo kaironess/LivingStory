@@ -76,7 +76,7 @@ public class Frame implements Serializable {
     }
     
     public void addDialog(int pos, Decision option) {
-        dialogOptions.add(option);
+        dialogOptions.add(pos, option);
     }
     
     public void addDecision(Decision next) {
@@ -84,7 +84,7 @@ public class Frame implements Serializable {
     }
     
     public void addDecision(int pos, Decision option) {
-        nextDecisions.add(option);
+        nextDecisions.add(pos, option);
     }
     
     public Decision fromID(int given) {

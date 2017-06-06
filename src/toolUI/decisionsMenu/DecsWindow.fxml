@@ -48,19 +48,13 @@
                               </Label>
                               <Label fx:id="nextFrameLabel" text="Next Frame" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                               <ChoiceBox fx:id="nextFrameChoice" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                              <Label fx:id="dialogLabel" text="Dialog" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP" />
-                              <TextArea fx:id="decDialog" prefHeight="121.0" prefWidth="328.0" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.rowSpan="2">
-                                 <GridPane.margin>
-                                    <Insets right="10.0" />
-                                 </GridPane.margin>
-                              </TextArea>
-                              <Button fx:id="saveDecButton" mnemonicParsing="false" onAction="#saveDecDialog" text="Save" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
+                              <Button fx:id="deleteDecButton" mnemonicParsing="false" onAction="#deleteDec" text="Delete Decision" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
                                  <GridPane.margin>
                                     <Insets right="10.0" top="5.0" />
                                  </GridPane.margin>
                               </Button>
-                              <Label fx:id="dReqLabel" text="Requirements" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
-                              <Button fx:id="addDReqButton" mnemonicParsing="false" onAction="#openDReq" text="Set / Add" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
+                              <Label fx:id="dReqLabel" text="Requirements" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                              <Button fx:id="addDReqButton" mnemonicParsing="false" onAction="#openDReq" text="Set / Add" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
                            </children>
                         </GridPane>
                      </children>

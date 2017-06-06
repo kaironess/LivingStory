@@ -71,9 +71,6 @@ public class DecController implements Initializable {
     private Button saveDecButton, addDReqButton;
     
     @FXML
-    private TextArea decDialog;
-    
-    @FXML
     private ChoiceBox<String> nextFrameChoice;
     
     
@@ -90,7 +87,7 @@ public class DecController implements Initializable {
      */
     @Override
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
-        newDecCmd = new Label("NEW DECISION");
+        newDecCmd = new Label("New Decision");
         setupDecList();
         
         // Hide char option stuff
@@ -156,21 +153,26 @@ public class DecController implements Initializable {
                 currDec = dec;
                 FrameManager.setCurDec(currDec);
                 
+                int currDecFrame = -1;
+                
                 // Update the right side's info
                 // frame list
                 int i = 0, frameNum = wip.frames.size();
                 ArrayList<String> allFrames = new ArrayList<String>();
+                boolean pastCurFrame = false;
                 while (i < frameNum) {
                     if (!wip.frames.get(i).equals(FrameManager.getCurFrame())) {
                         allFrames.add("FRAME " + i);
+                        pastCurFrame = true;
                     }
+                    if (wip.frames.get(i).equals(currDec.getCurrFrame())) 
+                        currDecFrame =  pastCurFrame ? i - 1 : i;
                     i++;
                 }
                 nextFrameChoice.setItems(FXCollections.observableArrayList(allFrames));
+                if (currDecFrame != -1)
+                    nextFrameChoice.getSelectionModel().select(currDecFrame);
                 
-                // dialog text area
-                decDialog.setText(currDec.getDialog() != null ? currDec.getDialog() : "");
-                                
                 actionPane.setVisible(true);
             }
         });
@@ -193,13 +195,11 @@ public class DecController implements Initializable {
     }
     
     @FXML
-    private void saveDecDialog() throws IOException {
-        String text = decDialog.getText();
-        currDec.setDialog(text);
-        
-        // visual test
-        Decision check = FrameManager.fromText(text);
-        decDialog.setText(check.getDialog());
+    private void deleteDec() throws IOException {
+        currDec.getCurrFrame().getNextDecisions().remove(currDec);
+        updateDecList();
+        currDec = null;
+        actionPane.setVisible(false);
     }
     
     @FXML

@@ -59,6 +59,11 @@
                                     <Insets right="10.0" top="5.0" />
                                  </GridPane.margin>
                               </Button>
+                              <Button fx:id="deleteDecButton" mnemonicParsing="false" onAction="#deleteDec" text="Delete Decision" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="6">
+                                 <GridPane.margin>
+                                    <Insets right="10.0" top="5.0" />
+                                 </GridPane.margin>
+                              </Button>
                            </children>
                         </GridPane>
                      </children>
