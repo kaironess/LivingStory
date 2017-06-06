@@ -1,10 +1,16 @@
 package creationToolClasses;
 
+import java.util.List;
+
 import sharedClasses.*;
 
 public class StatManager {
     private StatManager() {}
     private static WIP wip = WIP.getWIP();
+    
+    public static List<Stat> getStats() {
+        return wip.stats;
+    }
     
     public static void createStat(String statName) {
         Stat newStat = new Stat(statName);

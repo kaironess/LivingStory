@@ -38,7 +38,7 @@
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <Label fx:id="branchLabel" text="BRANCH #1">
+                              <Label fx:id="branchLabel" text="">
                                  <font>
                                     <Font name="System Bold" size="18.0" />
                                  </font>
@@ -48,6 +48,8 @@
                               </Label>
                               <Label fx:id="statLabel" text="Stat" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                               <ChoiceBox fx:id="statChoice" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                              <Label fx:id="requiredNumLabel" text="Required Value" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                              <TextField fx:id="requiredNum" maxWidth="100.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
                               <Button fx:id="deleteDecButton" mnemonicParsing="false" onAction="#deleteCurReq" text="Delete Requirement" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="6">
                                  <GridPane.margin>
                                     <Insets right="10.0" top="5.0" />

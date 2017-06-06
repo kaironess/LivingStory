@@ -27,5 +27,21 @@ public class StatReq implements Requirement {
         
         return neededCount <= relStat.getCount();
     }
+    
+    public String getStatName() {
+        return statName;
+    }
+    
+    public int getCount() {
+        return neededCount;
+    }
+    
+    public void setStatName(String statName) {
+        this.statName = statName;
+    }
+    
+    public void setCount(int count) {
+        this.neededCount = count;
+    }
 
 }
