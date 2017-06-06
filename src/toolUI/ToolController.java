@@ -582,6 +582,11 @@ public class ToolController implements Initializable {
             System.out.println(sc.getStatName() + ": " + Integer.toString(sc.getChange()));
             statChangeText.setText(Integer.toString(sc.getChange()));
         }
+        else {
+            statChangeText.setVisible(false);
+            statChangeButton.setVisible(false);
+            changeValLabel.setVisible(false);
+        }
         
         statChoice.getSelectionModel().selectedIndexProperty().addListener(
             new ChangeListener<Number>() {
@@ -775,7 +780,6 @@ public class ToolController implements Initializable {
                         }
                         charXOffset.clear();
                         charYOffset.clear();
-                        statChangeText.clear();
                     }
                 });
             }
