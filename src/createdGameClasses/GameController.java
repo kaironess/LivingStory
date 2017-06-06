@@ -187,7 +187,7 @@ public class GameController implements Serializable {
             // Run through list and choose which decision to take
             // Prioritize earlier decisions as opposed to later ones
             for (int i = decs.size() - 1; i >= 0; i--) {
-                if (decs.get(i).satisfiesAllReqs(this.stats)) {
+                if (decs.get(i).satisfiesAllReqs(this.stats, this.decisionsMade)) {
                     activeDec = decs.get(i);
                 }
             }

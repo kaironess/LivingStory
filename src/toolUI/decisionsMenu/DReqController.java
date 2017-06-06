@@ -47,6 +47,8 @@ public class DReqController implements Initializable {
     @FXML
     private ListView decisionReqList;
     
+    private List<Decision> allDecs;
+    
     /**
      * This method is called by the FXMLLoader when injections are complete
      */
@@ -54,6 +56,8 @@ public class DReqController implements Initializable {
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
         // init
         dr_list = new ArrayList<DecisionReq>();
+        allDecs = new ArrayList<Decision>();
+        currDec = FrameManager.getCurDec();
         
         listViewInit();
         setupDReqList();
@@ -120,7 +124,7 @@ public class DReqController implements Initializable {
 
     private void setupDReqList() {
         decisionReqList.getItems().clear();
-        Label format = new Label("Decision [FRAME#].[DEC#] (UNIQUE ID)");
+        Label format = new Label("Decision [FRAME#] [TEXT]");
         format.setFont(Font.font("Verdana", FontWeight.BOLD, 10));
         
         decisionReqList.getItems().add(format);
@@ -130,13 +134,22 @@ public class DReqController implements Initializable {
         String name;
         int f_index = 0, d_index = 0;
         
+        List<Decision> requiredDecs = new ArrayList<>();
+        
+        for (Requirement req : this.currDec.getReqs())
+            if (req instanceof DecisionReq)
+                requiredDecs.addAll(((DecisionReq) req).getNeededDecisions());
+        
         // Get all possible decisions
         for (Frame f : frame_list) {
             List<Decision> d_list = f.getDialogOptions();
             d_index = 0;
             for (Decision d : d_list) {
-                name = "Decision " + f_index + "." + d_index;
-                name += " (" + d.getId() + ")";
+                name = "";
+                allDecs.add(d);
+                if (requiredDecs.contains(d))
+                    name = "*";
+                name += "[" + f_index + "] " + d.getDialog();
                 dreq_list.add(name);
                 d_index++;
             }
@@ -162,17 +175,27 @@ public class DReqController implements Initializable {
     }
     
     private void addListener(Label label) {
+        DReqController self = this;
         
         label.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
+                Decision dec = allDecs.get(decisionReqList.getItems().indexOf(label) - 1);
+                
                 if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
                     String text = label.getText();
                     if (text.charAt(0) == '*') {
                         label.setText(text.substring(1));
+                        for (Requirement req : self.currDec.getReqs()) {
+                            if (req instanceof DecisionReq && ((DecisionReq) req).needsDecision(dec)) {
+                                self.currDec.removeReq(req);
+                            }
+                        }
                     }
                     else {
                         label.setText("*" + text);
+                        Requirement req = new DecisionReq(dec);
+                        self.currDec.addReq(req);
                     }
                 }
             }

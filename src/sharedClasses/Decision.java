@@ -63,9 +63,12 @@ public class Decision implements Serializable {
         this.dialogChoice = message;
     }
     
-    public boolean satisfiesAllReqs(List<Stat> curStats) {
+    public boolean satisfiesAllReqs(List<Stat> curStats, List<Decision> decsMade) {
         for (Requirement r : requirements) {
-            if (!r.isFulfilled(curStats)) {
+            if (r instanceof StatReq && !r.isFulfilled(curStats)) {
+                return false;
+            }
+            else if (r instanceof DecisionReq && !r.isFulfilled(decsMade)) {
                 return false;
             }
         }

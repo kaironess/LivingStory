@@ -6,16 +6,24 @@ import java.util.*;
 public class DecisionReq implements Requirement, Serializable {
     static final long serialVersionUID = 2L;
 
-    private ArrayList<Decision> neededDecisions;
+    public ArrayList<Decision> neededDecisions;
     private ArrayList<Decision> currDecisions;
     
     public DecisionReq(ArrayList<Decision> currDec) {
-        this.currDecisions = currDec;
+        this.neededDecisions = currDec;
     }
     
     public DecisionReq(Decision currDec) {
-        currDecisions = new ArrayList<Decision>();
-        currDecisions.add(currDec);
+        neededDecisions = new ArrayList<Decision>();
+        neededDecisions.add(currDec);
+    }
+    
+    public boolean needsDecision(Decision dec) {
+        return neededDecisions.contains(dec);
+    }
+    
+    public List<Decision> getNeededDecisions() {
+        return neededDecisions;
     }
     
     public ArrayList<Integer> getCurrDecReq() {
@@ -35,13 +43,10 @@ public class DecisionReq implements Requirement, Serializable {
     @SuppressWarnings("unchecked")
     public boolean isFulfilled(List<?> pastDec) {
         boolean check = true;
-        ArrayList<Integer> neededId = getNeededId((List<Decision>)(Object)pastDec);
         
-        for (Decision d : currDecisions) {
-            int index = neededId.indexOf(d.getId());
-            if (index < 0) {
-                check = false;
-            }
+        for (Decision d : neededDecisions) {
+            if (!((List<Decision>)(Object)pastDec).contains(d))
+                return false;
         }
         return check;
     }
