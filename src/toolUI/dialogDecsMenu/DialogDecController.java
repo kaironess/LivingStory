@@ -162,14 +162,12 @@ public class DialogDecController implements Initializable {
                 // frame list
                 int i = 0, frameNum = wip.frames.size();
                 ArrayList<String> allFrames = new ArrayList<String>();
-                boolean pastCurFrame = false;
                 while (i < frameNum) {
                     if (!wip.frames.get(i).equals(FrameManager.getCurFrame())) {
                         allFrames.add("FRAME " + i);
-                        pastCurFrame = true;
                     }
-                    if (wip.frames.get(i).equals(currDec.getCurrFrame())) 
-                        currDecFrame =  pastCurFrame ? i - 1 : i;
+                    if (wip.frames.get(i).equals(currDec.getNextFrame())) 
+                        currDecFrame = i;
                     i++;
                 }
                 nextFrameChoice.setItems(FXCollections.observableArrayList(allFrames));

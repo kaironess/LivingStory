@@ -24,6 +24,10 @@ public class StatChange implements Serializable {
         return change;
     }
     
+    public void setChange(int change) {
+        this.change = change;
+    }
+    
     public List<Stat> updateStats(List<Stat> stats) {
         for (Stat s : stats) {
             if (s.getName().equals(this.statName)) {

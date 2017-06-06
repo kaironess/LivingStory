@@ -74,13 +74,21 @@ public class FrameManager {
     public static List<MusicTrigger> getTriggers() { return curFrame.getMusicTriggers(); }
     
     public static void addStatChange(String statname) {
+        for (StatChange sc : FrameManager.getCurFrame().getStatChanges()) {
+            if (sc.getStatName().equals(statname))
+                return;
+        }
         StatChange sc = new StatChange(curFrame, statname, 0);
         curFrame.addStatChange(sc);
     }
     public static void removeStatChange() {}
     public static void updateStatChange(String statname, int change) {
-        
+        for (StatChange sc : FrameManager.getCurFrame().getStatChanges()) {
+            if (sc.getStatName().equals(statname))
+                sc.setChange(change);
+        }
     }
+    
     public static StatChange hasStatChange(String statname) {
         StatChange result = null;
         for (StatChange sc : curFrame.getStatChanges()) {

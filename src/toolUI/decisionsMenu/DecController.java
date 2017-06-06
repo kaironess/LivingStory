@@ -159,14 +159,12 @@ public class DecController implements Initializable {
                 // frame list
                 int i = 0, frameNum = wip.frames.size();
                 ArrayList<String> allFrames = new ArrayList<String>();
-                boolean pastCurFrame = false;
                 while (i < frameNum) {
                     if (!wip.frames.get(i).equals(FrameManager.getCurFrame())) {
                         allFrames.add("FRAME " + i);
-                        pastCurFrame = true;
                     }
-                    if (wip.frames.get(i).equals(currDec.getCurrFrame())) 
-                        currDecFrame =  pastCurFrame ? i - 1 : i;
+                    if (wip.frames.get(i).equals(currDec.getNextFrame())) 
+                        currDecFrame = i;
                     i++;
                 }
                 nextFrameChoice.setItems(FXCollections.observableArrayList(allFrames));
@@ -182,16 +180,16 @@ public class DecController implements Initializable {
         DecController self = this;
         // Listener to grab next frame selection
         nextFrameChoice.getSelectionModel().selectedIndexProperty().addListener(
-                new ChangeListener<Number>() {
-                   public void changed(ObservableValue ov, 
-                           Number value, Number new_value) {
-                       int index = new_value.intValue();
-                       if (index >= 0) {
-                           Frame next = wip.frames.get(index);
-                           self.currDec.setNextFrame(next);
-                       }
+            new ChangeListener<Number>() {
+               public void changed(ObservableValue ov, 
+                       Number value, Number new_value) {
+                   int index = new_value.intValue();
+                   if (index >= 0) {
+                       Frame next = wip.frames.get(index);
+                       self.currDec.setNextFrame(next);
                    }
-                });
+               }
+            });
     }
     
     @FXML

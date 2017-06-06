@@ -234,54 +234,54 @@ public class ToolController implements Initializable {
         }
         // Listener to grab character selection
         charaChoice.getSelectionModel().selectedIndexProperty().addListener(
-                new ChangeListener<Number>() {
-                   public void changed(ObservableValue ov, 
-                           Number value, Number new_value) {
+            new ChangeListener<Number>() {
+               public void changed(ObservableValue ov, 
+                       Number value, Number new_value) {
+                   
+                   // CHANGE PROPERTY FIELDS TO MATCH CHOSEN CHARACTER
+                   int index = new_value.intValue();
+                   if (index >= 0) {
+                       Frame currFrame = FrameManager.getCurFrame();
+                       System.out.println(allChars.get(index));
                        
-                       // CHANGE PROPERTY FIELDS TO MATCH CHOSEN CHARACTER
-                       int index = new_value.intValue();
-                       if (index >= 0) {
-                           Frame currFrame = FrameManager.getCurFrame();
-                           System.out.println(allChars.get(index));
-                           
-                           // If char not already in frame, ADD new display char
-                           if (currFrame.getChar(allChars.get(index)) == null) {
-                               currChar = new DisplayChar(wip.chars.get(index), -1);
-                           }
-                           // If char already in frame, EDIT a display char
-                           else {
-                               currChar = currFrame.getChar(allChars.get(index));
-                           }
+                       // If char not already in frame, ADD new display char
+                       if (currFrame.getChar(allChars.get(index)) == null) {
+                           currChar = new DisplayChar(wip.chars.get(index), -1);
                        }
-                       
-                       charPropInit();
+                       // If char already in frame, EDIT a display char
+                       else {
+                           currChar = currFrame.getChar(allChars.get(index));
+                       }
                    }
-                });
+                   
+                   charPropInit();
+               }
+            });
         
         // Listener to grab character image selections
         charImgChoice.getSelectionModel().selectedIndexProperty().addListener(
-                new ChangeListener<Number>() {
-                   public void changed(ObservableValue ov, 
-                           Number value, Number new_value) {
-                       currImgIdx = new_value.intValue();
-                       if (currImgIdx >= 0) {                           
-                           // If chosen image is a diff image
-                           if (currChar.getCharImgIndex() != currImgIdx) {
-                               currChar.setCharImg(currImgIdx);
-                               Image charImg = imgConverter(currChar.getCharImg());
-                               currImg = new ImageView(charImg);
-                               currImg.setId(currChar.getCharName() + "_img");
-                               framePane.getChildren().add(currImg);
-                               dialogLabel.toFront();
-                           }
-                           // If chosen image doesn't change
-                           else {
-                               ImageView im = (ImageView) framePane.lookup("#" + currChar.getCharName() + "_img");
-                               currImg = im;
-                               dialogLabel.toFront();
-                           }
+            new ChangeListener<Number>() {
+               public void changed(ObservableValue ov, 
+                       Number value, Number new_value) {
+                   currImgIdx = new_value.intValue();
+                   if (currImgIdx >= 0) {                           
+                       // If chosen image is a diff image
+                       if (currChar.getCharImgIndex() != currImgIdx) {
+                           currChar.setCharImg(currImgIdx);
+                           Image charImg = imgConverter(currChar.getCharImg());
+                           currImg = new ImageView(charImg);
+                           currImg.setId(currChar.getCharName() + "_img");
+                           framePane.getChildren().add(currImg);
+                           dialogLabel.toFront();
+                       }
+                       // If chosen image doesn't change
+                       else {
+                           ImageView im = (ImageView) framePane.lookup("#" + currChar.getCharName() + "_img");
+                           currImg = im;
+                           dialogLabel.toFront();
                        }
                    }
+               }
         });
         
         // Listener to grab character img x translations
@@ -362,21 +362,21 @@ public class ToolController implements Initializable {
         }
         // Listener to grab frame bg selections
         bgChoice.getSelectionModel().selectedIndexProperty().addListener(
-                new ChangeListener<Number>() {
-                   public void changed(ObservableValue ov, 
-                           Number value, Number new_value) {
-                       currImgIdx = new_value.intValue();
-                       if (currImgIdx >= 0) {           
-                           FrameManager.editBG(currImgIdx);
-                           
-                           Frame currFrame = FrameManager.getCurFrame();
-                           ImageView bgView = new ImageView();
-                           bgView.setId("CURR_BG");
-                           bgView.setImage(imgConverter(wip.bgs.get(currFrame.getBG() + WIP.BGIndex.values().length)));
-                           framePane.getChildren().add(bgView);
-                           dialogLabel.toFront();
-                       }
+            new ChangeListener<Number>() {
+               public void changed(ObservableValue ov, 
+                       Number value, Number new_value) {
+                   currImgIdx = new_value.intValue();
+                   if (currImgIdx >= 0) {           
+                       FrameManager.editBG(currImgIdx);
+                       
+                       Frame currFrame = FrameManager.getCurFrame();
+                       ImageView bgView = new ImageView();
+                       bgView.setId("CURR_BG");
+                       bgView.setImage(imgConverter(wip.bgs.get(currFrame.getBG() + WIP.BGIndex.values().length)));
+                       framePane.getChildren().add(bgView);
+                       dialogLabel.toFront();
                    }
+               }
         });        
         
         dialogLabel = new Label();
@@ -460,17 +460,17 @@ public class ToolController implements Initializable {
             this.framePane.getChildren().remove(currImg);
         }
 
-            // Hide specific character properties
-            charNameDisplay.setVisible(false);
-            
-            charSetImgLabel.setVisible(false);
-            charImgChoice.setVisible(false);
-            
-            charXLabel.setVisible(false);
-            charYLabel.setVisible(false);
-            charXOffset.setVisible(false);
-            charYOffset.setVisible(false);
-            charSaveButton.setVisible(false);
+        // Hide specific character properties
+        charNameDisplay.setVisible(false);
+        
+        charSetImgLabel.setVisible(false);
+        charImgChoice.setVisible(false);
+        
+        charXLabel.setVisible(false);
+        charYLabel.setVisible(false);
+        charXOffset.setVisible(false);
+        charYOffset.setVisible(false);
+        charSaveButton.setVisible(false);
     }
     
     /**
@@ -491,7 +491,6 @@ public class ToolController implements Initializable {
         dialogLabel.setStyle("-fx-background-color: rgba(" + val[0] + ", " + 
                 val[1] + ", " + val[2] + ", 0.8)");
         dialogLabel.toFront();
-
     }
     
     /**
@@ -528,19 +527,19 @@ public class ToolController implements Initializable {
         
         // Listener to grab frame music selections
         songChoice.getSelectionModel().selectedIndexProperty().addListener(
-                new ChangeListener<Number>() {
-                   public void changed(ObservableValue ov, 
-                           Number value, Number new_value) {
-                       int currSongIdx = new_value.intValue();
-                       if (currSongIdx >= 0) {
-                           Music chosen = wip.getMusicByName(allSongs.get(currSongIdx));
-                           FrameManager.addMusicTrigger(chosen); // auto PLAY set
-                           
-                           loopLabel.setVisible(true);
-                           loopOnToggle.setVisible(true);
-                           loopOffToggle.setVisible(true);
-                       }
+            new ChangeListener<Number>() {
+               public void changed(ObservableValue ov, 
+                       Number value, Number new_value) {
+                   int currSongIdx = new_value.intValue();
+                   if (currSongIdx >= 0) {
+                       Music chosen = wip.getMusicByName(allSongs.get(currSongIdx));
+                       FrameManager.addMusicTrigger(chosen); // auto PLAY set
+                       
+                       loopLabel.setVisible(true);
+                       loopOnToggle.setVisible(true);
+                       loopOffToggle.setVisible(true);
                    }
+               }
         });
         
         final ToggleGroup group = new ToggleGroup();
@@ -576,28 +575,35 @@ public class ToolController implements Initializable {
         }
         statChoice.setItems(allStats);
         
-        // Listener to grab frame music selections
+        if (FrameManager.getCurFrame().getStatChanges().size() > 0) {
+            StatChange sc = FrameManager.getCurFrame().getStatChanges().get(0);
+            String firstStat = sc.getStatName();
+            statChoice.getSelectionModel().select(sc.getStatName());
+            System.out.println(sc.getStatName() + ": " + Integer.toString(sc.getChange()));
+            statChangeText.setText(Integer.toString(sc.getChange()));
+        }
+        
         statChoice.getSelectionModel().selectedIndexProperty().addListener(
-                new ChangeListener<Number>() {
-                   public void changed(ObservableValue ov, 
-                           Number value, Number new_value) {
-                       int currStatIdx = new_value.intValue();
-                       if (currStatIdx >= 0) {
-                           String stat = allStats.get(currStatIdx);
-                           currStat = stat;
-                           StatChange sc = FrameManager.hasStatChange(stat);
-                           if (sc != null) {
-                               statChangeText.setText("" + sc.getChange());
-                           }
-                           else {
-                               FrameManager.addStatChange(allStats.get(currStatIdx));
-                               statChangeText.setText("0");
-                           }
+            new ChangeListener<Number>() {
+               public void changed(ObservableValue ov, 
+                       Number value, Number new_value) {
+                   int currStatIdx = new_value.intValue();
+                   if (currStatIdx >= 0) {
+                       String stat = allStats.get(currStatIdx);
+                       currStat = stat;
+                       StatChange sc = FrameManager.hasStatChange(stat);
+                       if (sc != null) {
+                           statChangeText.setText(Integer.toString(sc.getChange()));
                        }
-                       statChangeText.setVisible(true);
-                       statChangeButton.setVisible(true);
-                       changeValLabel.setVisible(true);
+                       else {
+                           FrameManager.addStatChange(allStats.get(currStatIdx));
+                           statChangeText.setText("0");
+                       }
                    }
+                   statChangeText.setVisible(true);
+                   statChangeButton.setVisible(true);
+                   changeValLabel.setVisible(true);
+               }
         });
     }
     
@@ -618,10 +624,7 @@ public class ToolController implements Initializable {
             int change = Integer.parseInt(statChangeText.getText());
             FrameManager.updateStatChange(currStat, change);
             
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
+        } catch (Exception e) { e.printStackTrace(); }
     }
     
     // --------------------------------------------------------------------------
